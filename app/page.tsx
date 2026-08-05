@@ -12,20 +12,20 @@ import { site } from "@/lib/site";
 export default function HomePage() {
   return (
     <>
-      {/* Hero — the book IS the site, so it gets the whole opening frame. */}
+      {/* Hero - the book IS the site, so it gets the whole opening frame. */}
       <section id="book" aria-label="The '86 Kids" className="relative overflow-hidden">
         <RetroWave className="h-72" />
         <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 py-20 sm:px-6 md:grid-cols-[1.2fr_1fr] md:py-28">
           <div>
             <p className="anim-rise font-display text-xs tracking-[0.3em] text-accent uppercase">
-              Strap yourself in — it&rsquo;s 1986
+              Strap yourself in. It&rsquo;s 1986
             </p>
             <h1 className="neon-text neon-pulse anim-rise anim-delay-1 font-display mt-4 text-4xl leading-tight sm:text-5xl lg:text-6xl">
               The &rsquo;86 Kids
             </h1>
             <p className="anim-rise anim-delay-2 mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
               A funny, big-hearted memoir of growing up in Wausau, Wisconsin in
-              the mid-1980s — bikes, basketball, nicknames, first crushes, and
+              the mid-1980s: bikes, basketball, nicknames, first crushes, and
               the last summer before middle school. Think{" "}
               <em>The Wonder Years</em> meets <em>Seinfeld</em>.
             </p>
@@ -40,7 +40,7 @@ export default function HomePage() {
                 </a>
               </Button>
               <Button asChild size="lg" variant="ghost">
-                <a href="#story">Keep scrolling — meet the &rsquo;86 kids ↓</a>
+                <a href="#story">Keep scrolling to meet the &rsquo;86 kids ↓</a>
               </Button>
             </div>
             <div className="anim-rise anim-delay-4 mt-6 flex items-center gap-2 text-sm text-muted-foreground">
@@ -62,7 +62,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* The story — book copy and the polaroid that proves it all happened. */}
+      {/* The story - book copy and the polaroid that proves it all happened. */}
       <section
         id="story"
         aria-label="About the book"
@@ -79,7 +79,7 @@ export default function HomePage() {
             <div className="mt-5 space-y-4 leading-relaxed text-muted-foreground">
               <p>
                 One year in young Matt&rsquo;s life on Wausau&rsquo;s southeast
-                side — school days at John Marshall Elementary, pickup
+                side: school days at John Marshall Elementary, pickup
                 basketball, family life, a first crush, and the summer before
                 everything changed with the move to middle school.
               </p>
@@ -117,14 +117,14 @@ export default function HomePage() {
                 height={1022}
               />
               <figcaption className="polaroid-caption">
-                The real &rsquo;86 kids — Wausau, mid-1980s
+                The real &rsquo;86 kids, Wausau, mid-1980s
               </figcaption>
             </figure>
           </Reveal>
         </div>
       </section>
 
-      {/* Reviews — real Amazon words, lightly trimmed, named. */}
+      {/* Reviews - real Amazon words, lightly trimmed, named. */}
       <section aria-label="Reader reviews" className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
         <Reveal>
           <p className="font-display text-xs tracking-[0.3em] text-accent uppercase">
@@ -175,7 +175,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* About Matt — one section, face first. */}
+      {/* About Matt - one section, face first. */}
       <section
         id="matt"
         aria-label="About Matt Sem"
@@ -204,12 +204,12 @@ export default function HomePage() {
               <p>
                 Matt is a Wausau native and a certified PTR tennis teaching
                 professional with more than 25 years on the court. The
-                &rsquo;86 Kids is his first book — written for family and
+                &rsquo;86 Kids is his first book, written for family and
                 friends, published after everyone kept telling him the same
                 thing: other people miss those times too.
               </p>
               <p>
-                He still lives in Wausau — the same town whose 1980s streets,
+                He still lives in Wausau, the same town whose 1980s streets,
                 schools, and characters fill the book. In his words, sharing it
                 is the point: &ldquo;It&rsquo;s a great feeling to have
                 somebody else you know read it and then say that they like
@@ -223,7 +223,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* What's next — future books, deliberately their own thing. */}
+      {/* What's next - future books, deliberately their own thing. */}
       <section id="next" aria-label="Upcoming books" className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
         <Reveal>
           <p className="font-display text-xs tracking-[0.3em] text-accent uppercase">
@@ -245,14 +245,14 @@ export default function HomePage() {
             {
               title: "Glimpses",
               blurb:
-                "An honest account of recovery — written not just for Matt, but for anyone who's struggling.",
+                "An honest account of recovery, written not just for Matt, but for anyone who's struggling.",
               status: "In progress",
               delay: 2 as const,
             },
             {
               title: "Monsters Among Us",
               blurb:
-                "True-story vignettes about how nobody's flawless — and how we all surprise ourselves sometimes.",
+                "True-story vignettes about how nobody's flawless, and how we all surprise ourselves sometimes.",
               status: "Finished, resting",
               delay: 3 as const,
             },
@@ -283,7 +283,7 @@ export default function HomePage() {
           <Reveal>
             <h2 className="font-display text-3xl">Where to get your copy</h2>
             <p className="mt-4 leading-relaxed text-muted-foreground">
-              Online at Amazon, or in person around Wausau — and every local
+              Online at Amazon, or in person around Wausau, and every local
               purchase comes with a free &rsquo;86 Kids bookmark.
             </p>
             <ul className="mt-6 grid gap-3 text-sm">
@@ -297,22 +297,22 @@ export default function HomePage() {
                   Amazon
                 </a>{" "}
                 <span className="text-muted-foreground">
-                  — Kindle {site.book.formats[0].price}, paperback{" "}
+                  · Kindle {site.book.formats[0].price}, paperback{" "}
                   {site.book.formats[1].price}, hardcover{" "}
                   {site.book.formats[2].price}
                 </span>
               </li>
               <li>
                 <span className="font-semibold">Janke Book Store</span>{" "}
-                <span className="text-muted-foreground">— Wausau, WI</span>
+                <span className="text-muted-foreground">· Wausau, WI</span>
               </li>
               <li>
                 <span className="font-semibold">The Story Cellar</span>{" "}
-                <span className="text-muted-foreground">— Wausau, WI</span>
+                <span className="text-muted-foreground">· Wausau, WI</span>
               </li>
               <li>
                 <span className="font-semibold">Barnes &amp; Noble</span>{" "}
-                <span className="text-muted-foreground">— Wausau, WI</span>
+                <span className="text-muted-foreground">· Wausau, WI</span>
               </li>
             </ul>
           </Reveal>
@@ -321,7 +321,7 @@ export default function HomePage() {
               Were you an &rsquo;86 kid too?
             </h2>
             <p className="mt-3 max-w-md leading-relaxed text-muted-foreground">
-              Book clubs, local media, or memories of your own from 1986 —
+              Book clubs, local media, or memories of your own from 1986.
               Matt reads everything that comes in.
             </p>
             <Button asChild size="lg" className="mt-6">

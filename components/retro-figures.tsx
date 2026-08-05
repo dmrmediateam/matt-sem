@@ -1,7 +1,7 @@
 /**
  * The hero's 3D synthwave floor: a perspective scene holding the tilted
- * grid plane and neon-pink '80s figures — BMX kid, boombox, cassette,
- * arcade joystick, roller skate, Walkman — that ride the wave itself.
+ * grid plane and neon-pink '80s figures - BMX kid, boombox, cassette,
+ * arcade joystick, roller skate, Walkman - that ride the wave itself.
  * Each figure is counter-rotated out of the floor (.figure-stand) so it
  * stands in the scene and scales with depth; stacked drop-shadows
  * (.figure-3d) give the line art extruded thickness. The row renders
@@ -90,7 +90,7 @@ function Walkman() {
 }
 
 /* One rider per lane: spread across the width, with staggered durations and
-   negative delays so the wave is always mid-flow — no synchronized waves,
+   negative delays so the wave is always mid-flow - no synchronized waves,
    no empty floor on first paint. */
 const riders: {
   Figure: () => React.JSX.Element;

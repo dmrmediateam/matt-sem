@@ -3,7 +3,7 @@ export const site = {
   name: "Matt Sem",
   title: "Matt Sem | Author of The '86 Kids",
   description:
-    "Official site of Wausau, Wisconsin author Matt Sem — home of The '86 Kids, a funny, nostalgic memoir of growing up in the 1980s.",
+    "Official site of Wausau, Wisconsin author Matt Sem, home of The '86 Kids: a funny, nostalgic memoir of growing up in the 1980s.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://mattsembooks.com",
   email: "semmatttennis1@gmail.com",
   location: "Wausau, Wisconsin",

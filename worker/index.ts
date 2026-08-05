@@ -54,7 +54,7 @@ async function handleContact(request: Request, env: Env): Promise<Response> {
   if (!env.CONTACT_WEBHOOK_URL) {
     // Fail loudly rather than telling the visitor it worked. A silently
     // dropped lead is worse than an error message.
-    console.error("CONTACT_WEBHOOK_URL is not set — submission dropped");
+    console.error("CONTACT_WEBHOOK_URL is not set - submission dropped");
     return bad("The contact form isn't configured yet.", 500);
   }
 

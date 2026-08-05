@@ -6,7 +6,7 @@ export function BookCover({ className }: { className?: string }) {
   return (
     <Image
       src="/images/86-kids-cover.jpg"
-      alt="Cover of The '86 Kids by Matt Sem — a boy holding a tennis racket on a blue-toned court"
+      alt="Cover of The '86 Kids by Matt Sem, showing a boy holding a tennis racket on a blue-toned court"
       width={625}
       height={1000}
       priority

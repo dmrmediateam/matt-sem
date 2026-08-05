@@ -11,7 +11,7 @@ export function SiteFooter() {
             Matt Sem
           </p>
           <p className="mt-3 max-w-xs text-sm text-muted-foreground">
-            Author of {site.book.title} — stories from a Wausau, Wisconsin
+            Author of {site.book.title}: stories from a Wausau, Wisconsin
             childhood, straight out of the 1980s.
           </p>
         </div>
@@ -55,9 +55,9 @@ export function SiteFooter() {
                 Amazon (Kindle, paperback, hardcover)
               </a>
             </li>
-            <li>Janke Book Store — Wausau</li>
-            <li>The Story Cellar — Wausau</li>
-            <li>Barnes &amp; Noble — Wausau</li>
+            <li>Janke Book Store · Wausau</li>
+            <li>The Story Cellar · Wausau</li>
+            <li>Barnes &amp; Noble · Wausau</li>
           </ul>
         </div>
       </div>
@@ -68,7 +68,7 @@ export function SiteFooter() {
             &copy; {new Date().getFullYear()} Matt Sem. All rights reserved.
           </p>
           <p className="text-xs text-muted-foreground">
-            Site design by Erich Quist — built with a lot of neon.
+            Site design by Erich Quist, built with a lot of neon.
           </p>
         </div>
       </div>

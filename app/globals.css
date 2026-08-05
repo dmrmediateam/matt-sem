@@ -18,17 +18,17 @@
     Default to a system stack: it renders instantly, needs no network at build
     time, and avoids the EU privacy question around Google Fonts. Swap in
     next/font (google or local) during branding if the client specified a
-    typeface — see references/brand-and-content.md.
+    typeface - see references/brand-and-content.md.
   */
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
-  /* ---- BRAND TOKENS: "Blue '80s" — the site is dark by design ---- */
-  /* Primary action color — electric cyan, buttons and links. */
+  /* ---- BRAND TOKENS: "Blue '80s" - the site is dark by design ---- */
+  /* Primary action color - electric cyan, buttons and links. */
   --primary: oklch(0.78 0.13 220);
   --primary-foreground: oklch(0.17 0.05 262);
-  /* Secondary emphasis — neon magenta, used sparingly for highlights. */
+  /* Secondary emphasis - neon magenta, used sparingly for highlights. */
   --accent: oklch(0.68 0.22 340);
   --accent-foreground: oklch(0.985 0.01 340);
   /* ---------------------------------- */
@@ -136,7 +136,7 @@
 
 /* ---- "Blue '80s" flourishes ---- */
 
-/* Retro horizon grid — a perspective floor of cyan lines that fades upward.
+/* Retro horizon grid - a perspective floor of cyan lines that fades upward.
    The background-position animation drives the "driving into the sunset"
    scroll; it must match background-size height exactly to loop seamlessly. */
 .retro-grid {

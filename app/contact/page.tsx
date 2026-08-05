@@ -7,7 +7,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Contact Matt Sem",
   description:
-    "Get in touch with Matt Sem, author of The '86 Kids — book clubs, media, events, or just to say hi from a fellow '80s kid.",
+    "Get in touch with Matt Sem, author of The '86 Kids. Book clubs, media, events, or just saying hi from a fellow '80s kid.",
 };
 
 export default function ContactPage() {
@@ -23,7 +23,7 @@ export default function ContactPage() {
           </h1>
           <p className="mt-4 max-w-md text-muted-foreground">
             Book clubs, local media, event invitations, or memories of your own
-            from 1986 — Matt reads everything that comes in.
+            from 1986. Matt reads everything that comes in.
           </p>
           <ul className="mt-8 grid gap-4 text-sm">
             <li className="flex items-center gap-3">

@@ -7,7 +7,7 @@ import { site } from "@/lib/site";
 
 import "./globals.css";
 
-// Display face only — body text stays on the system stack for speed.
+// Display face only - body text stays on the system stack for speed.
 // Rammetto One is the closest Google Font to the chunky Cooper Black-style
 // lettering on the book cover; it ships a single 400 weight.
 const displayFont = Rammetto_One({

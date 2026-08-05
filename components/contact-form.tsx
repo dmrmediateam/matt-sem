@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 /**
  * Posts to the Cloudflare Worker at /api/contact.
  *
- * This is a client component talking to a Worker, not a Next.js Server Action —
+ * This is a client component talking to a Worker, not a Next.js Server Action -
  * static export has no server, so Server Actions and API routes are unavailable.
  */
 export function ContactForm() {
@@ -48,7 +48,7 @@ export function ContactForm() {
   if (status === "sent") {
     return (
       <div className="rounded-lg border bg-card p-6" role="status">
-        <p className="font-medium">Thanks — your message is on its way.</p>
+        <p className="font-medium">Thanks! Your message is on its way.</p>
         <p className="text-muted-foreground mt-1 text-sm">
           Matt will get back to you soon.
         </p>
@@ -58,7 +58,7 @@ export function ContactForm() {
 
   return (
     <form onSubmit={onSubmit} className="grid gap-4">
-      {/* Honeypot — hidden from people, filled in by bots. */}
+      {/* Honeypot - hidden from people, filled in by bots. */}
       <div className="hidden" aria-hidden="true">
         <label htmlFor="company">Company</label>
         <input id="company" name="company" tabIndex={-1} autoComplete="off" />
