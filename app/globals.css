@@ -24,54 +24,77 @@
     "Helvetica Neue", Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
-  /* ---- BRAND TOKENS: "Blue '80s" - the site is dark by design ---- */
-  /* Primary action color - electric cyan, buttons and links. */
-  --primary: oklch(0.78 0.13 220);
-  --primary-foreground: oklch(0.17 0.05 262);
-  /* Secondary emphasis - neon magenta, used sparingly for highlights. */
-  --accent: oklch(0.68 0.22 340);
+  /* ---- BRAND TOKENS: faded '80s, inspired by the book cover ----
+     Washed glossy blues and a dusty pink. Soft, not techno. */
+  --primary: oklch(0.76 0.09 220);
+  --primary-foreground: oklch(0.2 0.04 262);
+  --accent: oklch(0.7 0.14 348);
   --accent-foreground: oklch(0.985 0.01 340);
-  /* ---------------------------------- */
 
-  --background: oklch(0.18 0.045 265);
-  --foreground: oklch(0.94 0.015 240);
-  --card: oklch(0.22 0.05 265);
-  --card-foreground: oklch(0.94 0.015 240);
-  --popover: oklch(0.22 0.05 265);
-  --popover-foreground: oklch(0.94 0.015 240);
-  --secondary: oklch(0.28 0.06 265);
-  --secondary-foreground: oklch(0.94 0.015 240);
-  --muted: oklch(0.26 0.05 265);
-  --muted-foreground: oklch(0.74 0.035 250);
+  --background: oklch(0.23 0.032 262);
+  --foreground: oklch(0.93 0.012 240);
+  --card: oklch(0.27 0.036 262);
+  --card-foreground: oklch(0.93 0.012 240);
+  --popover: oklch(0.27 0.036 262);
+  --popover-foreground: oklch(0.93 0.012 240);
+  --secondary: oklch(0.32 0.04 262);
+  --secondary-foreground: oklch(0.93 0.012 240);
+  --muted: oklch(0.3 0.035 262);
+  --muted-foreground: oklch(0.75 0.02 250);
   --destructive: oklch(0.704 0.191 22.216);
   --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 14%);
-  --input: oklch(1 0 0 / 18%);
-  --ring: oklch(0.78 0.13 220);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.76 0.09 220);
 }
 
 /* The site ships dark-only; .dark mirrors :root so the class is a no-op. */
 .dark {
-  --primary: oklch(0.78 0.13 220);
-  --primary-foreground: oklch(0.17 0.05 262);
-  --accent: oklch(0.68 0.22 340);
+  --primary: oklch(0.76 0.09 220);
+  --primary-foreground: oklch(0.2 0.04 262);
+  --accent: oklch(0.7 0.14 348);
   --accent-foreground: oklch(0.985 0.01 340);
 
-  --background: oklch(0.18 0.045 265);
-  --foreground: oklch(0.94 0.015 240);
-  --card: oklch(0.22 0.05 265);
-  --card-foreground: oklch(0.94 0.015 240);
-  --popover: oklch(0.22 0.05 265);
-  --popover-foreground: oklch(0.94 0.015 240);
-  --secondary: oklch(0.28 0.06 265);
-  --secondary-foreground: oklch(0.94 0.015 240);
-  --muted: oklch(0.26 0.05 265);
-  --muted-foreground: oklch(0.74 0.035 250);
+  --background: oklch(0.23 0.032 262);
+  --foreground: oklch(0.93 0.012 240);
+  --card: oklch(0.27 0.036 262);
+  --card-foreground: oklch(0.93 0.012 240);
+  --popover: oklch(0.27 0.036 262);
+  --popover-foreground: oklch(0.93 0.012 240);
+  --secondary: oklch(0.32 0.04 262);
+  --secondary-foreground: oklch(0.93 0.012 240);
+  --muted: oklch(0.3 0.035 262);
+  --muted-foreground: oklch(0.75 0.02 250);
   --destructive: oklch(0.704 0.191 22.216);
   --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 14%);
-  --input: oklch(1 0 0 / 18%);
-  --ring: oklch(0.78 0.13 220);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.76 0.09 220);
+}
+
+/* Light sections: everything inside reads the same token names, so scoping
+   new values here flips a whole section to a white background without any
+   component changes. Apply with className="section-light". */
+.section-light {
+  --background: oklch(0.975 0.003 240);
+  --foreground: oklch(0.3 0.028 262);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.3 0.028 262);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.3 0.028 262);
+  --secondary: oklch(0.93 0.006 240);
+  --secondary-foreground: oklch(0.3 0.028 262);
+  --muted: oklch(0.94 0.005 240);
+  --muted-foreground: oklch(0.47 0.02 260);
+  --primary: oklch(0.5 0.1 235);
+  --primary-foreground: oklch(0.98 0.002 240);
+  --accent: oklch(0.54 0.16 348);
+  --accent-foreground: oklch(0.98 0.002 240);
+  --border: oklch(0.3 0.028 262 / 14%);
+  --input: oklch(0.3 0.028 262 / 20%);
+  --ring: oklch(0.5 0.1 235);
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
 @theme inline {
@@ -115,6 +138,19 @@
   }
   body {
     background-color: var(--background);
+    /* Faded VHS haze: two soft washes instead of a flat dark field. */
+    background-image:
+      radial-gradient(
+        60% 45% at 15% 0%,
+        oklch(0.35 0.05 300 / 22%),
+        transparent
+      ),
+      radial-gradient(
+        50% 40% at 85% 10%,
+        oklch(0.36 0.05 215 / 18%),
+        transparent
+      );
+    background-repeat: no-repeat;
     color: var(--foreground);
     -webkit-font-smoothing: antialiased;
   }
@@ -141,8 +177,8 @@
    scroll; it must match background-size height exactly to loop seamlessly. */
 .retro-grid {
   background-image:
-    linear-gradient(to top, oklch(0.78 0.13 220 / 22%) 1px, transparent 1px),
-    linear-gradient(to right, oklch(0.78 0.13 220 / 22%) 1px, transparent 1px);
+    linear-gradient(to top, oklch(0.76 0.09 220 / 14%) 1px, transparent 1px),
+    linear-gradient(to right, oklch(0.76 0.09 220 / 14%) 1px, transparent 1px);
   background-size: 42px 42px;
   mask-image: linear-gradient(to top, black 0%, transparent 75%);
   transform: perspective(420px) rotateX(48deg) scale(1.4);
@@ -183,8 +219,8 @@
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(to top, oklch(0.78 0.13 220 / 22%) 1px, transparent 1px),
-    linear-gradient(to right, oklch(0.78 0.13 220 / 22%) 1px, transparent 1px);
+    linear-gradient(to top, oklch(0.76 0.09 220 / 14%) 1px, transparent 1px),
+    linear-gradient(to right, oklch(0.76 0.09 220 / 14%) 1px, transparent 1px);
   background-size: 42px 42px;
   mask-image: linear-gradient(to top, black 0%, transparent 75%);
 }
@@ -223,17 +259,17 @@
 /* Faux-extrusion: stacked hard drop-shadows give the line art thickness,
    plus the neon glow. */
 .figure-3d {
-  opacity: 0.8;
-  filter: drop-shadow(0 1.5px 0 oklch(0.42 0.18 340))
-    drop-shadow(0 1.5px 0 oklch(0.3 0.14 340))
-    drop-shadow(0 0 8px oklch(0.68 0.22 340 / 0.8));
+  opacity: 0.7;
+  filter: drop-shadow(0 1.5px 0 oklch(0.45 0.12 348))
+    drop-shadow(0 1.5px 0 oklch(0.34 0.09 348))
+    drop-shadow(0 0 7px oklch(0.7 0.14 348 / 0.45));
 }
 
 /* Soft neon glow for headline text. */
 .neon-text {
   text-shadow:
-    0 0 12px oklch(0.78 0.13 220 / 55%),
-    0 0 42px oklch(0.68 0.22 340 / 30%);
+    0 0 14px oklch(0.76 0.09 220 / 28%),
+    0 0 46px oklch(0.7 0.14 348 / 14%);
 }
 
 /* Slow breathing glow for the hero headline. */
@@ -245,13 +281,13 @@
   0%,
   100% {
     text-shadow:
-      0 0 12px oklch(0.78 0.13 220 / 55%),
-      0 0 42px oklch(0.68 0.22 340 / 30%);
+      0 0 14px oklch(0.76 0.09 220 / 28%),
+      0 0 46px oklch(0.7 0.14 348 / 14%);
   }
   50% {
     text-shadow:
-      0 0 18px oklch(0.78 0.13 220 / 85%),
-      0 0 64px oklch(0.68 0.22 340 / 50%);
+      0 0 18px oklch(0.76 0.09 220 / 42%),
+      0 0 60px oklch(0.7 0.14 348 / 22%);
   }
 }
 
@@ -339,9 +375,9 @@
 .hover-lift:hover {
   transform: translateY(-4px);
   box-shadow:
-    0 0 0 1px oklch(0.78 0.13 220 / 55%),
-    0 0 28px oklch(0.78 0.13 220 / 30%),
-    0 0 72px oklch(0.68 0.22 340 / 18%);
+    0 0 0 1px oklch(0.76 0.09 220 / 30%),
+    0 12px 28px oklch(0 0 0 / 25%),
+    0 0 56px oklch(0.7 0.14 348 / 10%);
 }
 
 /* Every animation in one place, so one media query silences them all. */
@@ -374,9 +410,9 @@
 /* Neon edge for cards and the book cover. */
 .neon-edge {
   box-shadow:
-    0 0 0 1px oklch(0.78 0.13 220 / 45%),
-    0 0 24px oklch(0.78 0.13 220 / 25%),
-    0 0 64px oklch(0.68 0.22 340 / 15%);
+    0 0 0 1px oklch(0.76 0.09 220 / 25%),
+    0 10px 30px oklch(0 0 0 / 30%),
+    0 0 50px oklch(0.7 0.14 348 / 8%);
 }
 
 /* ---- Polaroid frames ----
@@ -439,4 +475,11 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+/* ---- Review quotes ----
+   Quotes read as set type: a large old-style serif, clearly distinct from
+   the reviewer names underneath (small caps in the display face). */
+.quote-serif {
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
 }

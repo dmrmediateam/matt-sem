@@ -9,6 +9,10 @@ export const site = {
   location: "Wausau, Wisconsin",
   amazonUrl:
     "https://www.amazon.com/86-Kids-sometimes-humorous-Childhood-ebook/dp/B0FJ23N722",
+  // TODO: replace with the direct product URL once the client sends it
+  // (Tony has asked Matt for the link). Search results page until then.
+  barnesNobleUrl:
+    "https://www.barnesandnoble.com/s/the%2086%20kids%20matt%20sem",
   book: {
     title: "The '86 Kids",
     subtitle:

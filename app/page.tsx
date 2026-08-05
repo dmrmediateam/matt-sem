@@ -36,13 +36,27 @@ export default function HomePage() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Get the book on Amazon
+                  Buy on Amazon
                 </a>
               </Button>
-              <Button asChild size="lg" variant="ghost">
-                <a href="#story">Keep scrolling to meet the &rsquo;86 kids ↓</a>
+              <Button asChild size="lg" variant="outline">
+                <a
+                  href={site.barnesNobleUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Buy at Barnes &amp; Noble
+                </a>
               </Button>
             </div>
+            <p className="anim-rise anim-delay-4 mt-4">
+              <a
+                href="#story"
+                className="text-sm text-muted-foreground transition-colors hover:text-primary"
+              >
+                Or keep scrolling to meet the &rsquo;86 kids ↓
+              </a>
+            </p>
             <div className="anim-rise anim-delay-4 mt-6 flex items-center gap-2 text-sm text-muted-foreground">
               <span className="flex text-primary" aria-hidden>
                 {Array.from({ length: 5 }).map((_, i) => (
@@ -66,7 +80,7 @@ export default function HomePage() {
       <section
         id="story"
         aria-label="About the book"
-        className="border-y border-border/60 bg-card/50"
+        className="section-light border-y border-border/60"
       >
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 py-20 sm:px-6 md:grid-cols-[1.1fr_1fr]">
           <Reveal>
@@ -125,7 +139,8 @@ export default function HomePage() {
       </section>
 
       {/* Reviews - real Amazon words, lightly trimmed, named. */}
-      <section aria-label="Reader reviews" className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <section aria-label="Reader reviews" className="section-light">
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
         <Reveal>
           <p className="font-display text-xs tracking-[0.3em] text-accent uppercase">
             From the back row
@@ -156,22 +171,55 @@ export default function HomePage() {
             },
           ].map((review) => (
             <Reveal key={review.name} delay={review.delay}>
-              <Card className="hover-lift h-full bg-card/70">
+              <Card className="hover-lift h-full">
                 <CardContent className="flex h-full flex-col pt-6">
-                  <p className="flex-1 leading-relaxed text-muted-foreground">
+                  <p className="quote-serif flex-1 text-xl leading-relaxed italic">
                     &ldquo;{review.quote}&rdquo;
                   </p>
-                  <footer className="mt-5 text-sm">
-                    <span className="font-semibold">{review.name}</span>
-                    <span className="text-muted-foreground">
-                      {" "}
-                      · Amazon review
+                  <footer className="mt-6">
+                    <span className="font-display text-xs tracking-[0.2em] text-accent uppercase">
+                      {review.name}
+                    </span>
+                    <span className="ml-2 text-xs text-muted-foreground">
+                      Amazon review
                     </span>
                   </footer>
                 </CardContent>
               </Card>
             </Reveal>
           ))}
+        </div>
+        </div>
+      </section>
+
+      {/* The '80s Edition promo: the deluxe box gets its own moment. */}
+      <section aria-label="The '80s Edition deluxe box">
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+          <Reveal>
+            <div className="relative overflow-hidden rounded-xl border-2 border-accent/50 bg-gradient-to-br from-card via-background to-card px-6 py-12 sm:px-12">
+              <div className="max-w-2xl">
+                <p className="font-display text-xs tracking-[0.3em] text-accent uppercase">
+                  Deluxe box
+                </p>
+                <h2 className="font-display mt-3 text-3xl">
+                  The &rsquo;80s Edition
+                </h2>
+                <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
+                  Like the deluxe cassette with the bonus tracks: an
+                  autographed copy of The &rsquo;86 Kids plus a collector&rsquo;s
+                  bookmark matching the cover art, boxed and shipped from
+                  Wausau. $30, straight from Matt.
+                </p>
+                <div className="mt-7 flex flex-wrap gap-4">
+                  <Button asChild size="lg">
+                    <Link href="/books/the-86-kids/">
+                      See editions &amp; pricing
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
@@ -224,7 +272,8 @@ export default function HomePage() {
       </section>
 
       {/* What's next - future books, deliberately their own thing. */}
-      <section id="next" aria-label="Upcoming books" className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <section id="next" aria-label="Upcoming books" className="section-light border-y border-border/60">
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
         <Reveal>
           <p className="font-display text-xs tracking-[0.3em] text-accent uppercase">
             On the workbench
@@ -272,19 +321,18 @@ export default function HomePage() {
             </Reveal>
           ))}
         </div>
+        </div>
       </section>
 
       {/* Where to buy + closing CTA. */}
-      <section
-        aria-label="Where to buy"
-        className="border-t border-border/60 bg-card/50"
-      >
+      <section aria-label="Where to buy">
         <div className="mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-6 md:grid-cols-2">
           <Reveal>
             <h2 className="font-display text-3xl">Where to get your copy</h2>
             <p className="mt-4 leading-relaxed text-muted-foreground">
-              Online at Amazon, or in person around Wausau, and every local
-              purchase comes with a free &rsquo;86 Kids bookmark.
+              Online at Amazon or Barnes &amp; Noble, or in person around
+              Wausau, and every local purchase comes with a free &rsquo;86
+              Kids bookmark.
             </p>
             <ul className="mt-6 grid gap-3 text-sm">
               <li>
@@ -300,6 +348,19 @@ export default function HomePage() {
                   · Kindle {site.book.formats[0].price}, paperback{" "}
                   {site.book.formats[1].price}, hardcover{" "}
                   {site.book.formats[2].price}
+                </span>
+              </li>
+              <li>
+                <a
+                  href={site.barnesNobleUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-primary hover:underline"
+                >
+                  Barnes &amp; Noble
+                </a>{" "}
+                <span className="text-muted-foreground">
+                  · online and in the Wausau store
                 </span>
               </li>
               <li>
