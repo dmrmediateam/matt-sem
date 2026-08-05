@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Star } from "lucide-react";
 
 import { BookCover } from "@/components/book-cover";
@@ -92,6 +93,19 @@ export default function BookPage() {
             things made sense.
           </p>
         </div>
+
+        <figure className="mt-12">
+          <Image
+            src="/images/matt-sem.jpg"
+            alt="A 1980s snapshot of a group of Wausau kids in a living room, raising cans of Mountain Dew"
+            width={1500}
+            height={1022}
+            className="neon-edge w-full rounded-md"
+          />
+          <figcaption className="mt-3 text-sm text-muted-foreground">
+            The real &rsquo;86 kids — Wausau, Wisconsin, mid-1980s.
+          </figcaption>
+        </figure>
       </section>
 
       <section className="border-t border-border/60 bg-card/50">

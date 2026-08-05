@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -48,7 +49,16 @@ export default function AboutPage() {
                 those times and the &rsquo;80s.&rdquo;
               </p>
             </div>
-            <Card className="h-fit bg-card/70">
+            <div className="grid gap-6">
+              <Image
+                src="/images/matt-sem-author.jpg"
+                alt="Matt Sem, author of The '86 Kids"
+                width={960}
+                height={960}
+                className="neon-edge w-full max-w-sm rounded-md"
+                priority
+              />
+              <Card className="h-fit bg-card/70">
               <CardContent className="pt-6 text-sm">
                 <p className="font-display text-xs font-medium tracking-[0.3em] text-accent uppercase">
                   Quick facts
@@ -61,7 +71,8 @@ export default function AboutPage() {
                   <li>Grade school: John Marshall Elementary</li>
                 </ul>
               </CardContent>
-            </Card>
+              </Card>
+            </div>
           </div>
         </div>
       </section>
