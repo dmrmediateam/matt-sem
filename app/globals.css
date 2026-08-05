@@ -145,6 +145,23 @@
   }
 }
 
+/* Pink '80s figures cruising the horizon — two copies of the row scroll
+   left by exactly half the track width for a seamless loop. */
+.figure-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 50s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 /* Soft neon glow for headline text. */
 .neon-text {
   text-shadow:
@@ -266,7 +283,8 @@
   .neon-pulse,
   .anim-float,
   .anim-rise,
-  .anim-rise.neon-pulse {
+  .anim-rise.neon-pulse,
+  .figure-marquee {
     animation: none;
   }
   .anim-rise,

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Orbitron } from "next/font/google";
+import { Rammetto_One } from "next/font/google";
 
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -8,10 +8,12 @@ import { site } from "@/lib/site";
 import "./globals.css";
 
 // Display face only — body text stays on the system stack for speed.
-const orbitron = Orbitron({
+// Rammetto One is the closest Google Font to the chunky Cooper Black-style
+// lettering on the book cover; it ships a single 400 weight.
+const displayFont = Rammetto_One({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["500", "700", "900"],
+  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -76,7 +78,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={orbitron.variable}>
+    <html lang="en" className={displayFont.variable}>
       <body className="font-sans">
         <script
           type="application/ld+json"

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Star } from "lucide-react";
 
 import { BookCover } from "@/components/book-cover";
+import { RetroFigures } from "@/components/retro-figures";
 import { Reveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,6 +17,7 @@ export default function HomePage() {
           className="retro-grid retro-grid-animated absolute inset-x-0 bottom-0 h-72"
           aria-hidden
         />
+        <RetroFigures />
         <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 py-20 sm:px-6 md:grid-cols-[1.2fr_1fr] md:py-28">
           <div>
             <p className="anim-rise font-display text-xs font-medium tracking-[0.35em] text-accent uppercase">
