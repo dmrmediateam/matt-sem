@@ -68,7 +68,16 @@ export function SiteFooter() {
             &copy; {new Date().getFullYear()} Matt Sem. All rights reserved.
           </p>
           <p className="text-xs text-muted-foreground">
-            Site design by Erich Quist, built with a lot of neon.
+            Site design by{" "}
+            <a
+              href="https://kicklick.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary hover:underline"
+            >
+              Kicklick
+            </a>
+            , built with a lot of neon.
           </p>
         </div>
       </div>
