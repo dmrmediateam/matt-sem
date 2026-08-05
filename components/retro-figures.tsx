@@ -89,21 +89,24 @@ function Walkman() {
   );
 }
 
-const figures = [Bmx, Boombox, Cassette, Joystick, RollerSkate, Walkman];
+/* One rider per lane: spread across the width, with staggered durations and
+   negative delays so the wave is always mid-flow — no synchronized waves,
+   no empty floor on first paint. */
+const riders: {
+  Figure: () => React.JSX.Element;
+  left: string;
+  duration: string;
+  delay: string;
+}[] = [
+  { Figure: Bmx, left: "6%", duration: "11s", delay: "-2s" },
+  { Figure: Boombox, left: "22%", duration: "14s", delay: "-9s" },
+  { Figure: Cassette, left: "37%", duration: "12s", delay: "-5s" },
+  { Figure: Joystick, left: "54%", duration: "15s", delay: "-12s" },
+  { Figure: RollerSkate, left: "70%", duration: "11.5s", delay: "-7s" },
+  { Figure: Walkman, left: "86%", duration: "13s", delay: "-3.5s" },
+];
 
-function FigureRow() {
-  return (
-    <div className="flex shrink-0 items-end gap-12 pr-12 [transform-style:preserve-3d] sm:gap-16 sm:pr-16">
-      {[...figures, ...figures].map((Figure, i) => (
-        <div key={i} className="figure-stand">
-          <Figure />
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/** The whole hero floor: tilted grid plane + figures riding it. */
+/** The whole hero floor: tilted grid plane + figures riding it toward you. */
 export function RetroWave({ className }: { className?: string }) {
   return (
     <div
@@ -112,12 +115,21 @@ export function RetroWave({ className }: { className?: string }) {
     >
       <div className="retro-plane">
         <div className="retro-grid-lines retro-grid-animated" />
-        <div className="absolute inset-x-0 bottom-[34%] [transform-style:preserve-3d]">
-          <div className="figure-marquee text-accent">
-            <FigureRow />
-            <FigureRow />
+        {riders.map(({ Figure, left, duration, delay }, i) => (
+          <div
+            key={i}
+            className="figure-rider text-accent"
+            style={
+              {
+                left,
+                "--ride-duration": duration,
+                "--ride-delay": delay,
+              } as React.CSSProperties
+            }
+          >
+            <Figure />
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );

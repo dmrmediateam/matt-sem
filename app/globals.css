@@ -172,38 +172,44 @@
   mask-image: linear-gradient(to top, black 0%, transparent 75%);
 }
 
-/* Pink '80s figures embedded in the wave — two copies of the row scroll
-   left by exactly half the track width for a seamless loop. */
-.figure-marquee {
-  display: flex;
-  width: max-content;
-  animation: marquee 50s linear infinite;
-  /* keep children in the scene's 3D space so .figure-stand can lift them */
-  transform-style: preserve-3d;
+/* Pink '80s figures riding the wave toward the viewer. Each rider sits in
+   its own lane on the tilted plane and animates from the horizon down the
+   floor to the near edge; the shared perspective makes it grow as it
+   approaches. translateY moves along the plane's surface (depth), and the
+   rotateX(-48deg) in the same keyframes keeps the figure standing upright
+   out of the floor for the whole trip. */
+.figure-rider {
+  position: absolute;
+  bottom: 2%;
+  transform-origin: bottom center;
+  animation: ride var(--ride-duration, 12s) linear infinite;
+  animation-delay: var(--ride-delay, 0s);
 }
 
-.figure-stand {
-  transform: rotateX(-48deg);
-  transform-origin: bottom center;
+@keyframes ride {
+  0% {
+    transform: translateY(-250px) rotateX(-48deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(12px) rotateX(-48deg);
+    opacity: 0;
+  }
 }
 
 /* Faux-extrusion: stacked hard drop-shadows give the line art thickness,
-   plus the neon glow. Opacity lives here (per figure, not on the marquee)
-   because opacity on a 3D container flattens preserve-3d children. */
+   plus the neon glow. */
 .figure-3d {
-  opacity: 0.75;
+  opacity: 0.8;
   filter: drop-shadow(0 1.5px 0 oklch(0.42 0.18 340))
     drop-shadow(0 1.5px 0 oklch(0.3 0.14 340))
     drop-shadow(0 0 8px oklch(0.68 0.22 340 / 0.8));
-}
-
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
 }
 
 /* Soft neon glow for headline text. */
@@ -328,8 +334,12 @@
   .anim-float,
   .anim-rise,
   .anim-rise.neon-pulse,
-  .figure-marquee {
+  .figure-rider {
     animation: none;
+  }
+  /* riders freeze standing mid-floor instead of vanishing */
+  .figure-rider {
+    transform: translateY(-90px) rotateX(-48deg);
   }
   .anim-rise,
   .reveal {
