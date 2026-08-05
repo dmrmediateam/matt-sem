@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Star } from "lucide-react";
 
 import { BookCover } from "@/components/book-cover";
+import { Reveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { site } from "@/lib/site";
@@ -17,16 +18,19 @@ export default function BookPage() {
   return (
     <>
       <section className="relative overflow-hidden border-b border-border/60">
-        <div className="retro-grid absolute inset-x-0 bottom-0 h-56" aria-hidden />
+        <div
+          className="retro-grid retro-grid-animated absolute inset-x-0 bottom-0 h-56"
+          aria-hidden
+        />
         <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 py-16 sm:px-6 md:grid-cols-[1fr_1.4fr] md:py-24">
-          <div className="flex justify-center md:justify-start">
+          <div className="anim-rise anim-delay-1 flex justify-center md:justify-start">
             <BookCover />
           </div>
-          <div>
+          <div className="anim-rise">
             <p className="font-display text-xs font-medium tracking-[0.35em] text-accent uppercase">
               The book
             </p>
-            <h1 className="neon-text font-display mt-3 text-4xl font-black sm:text-5xl">
+            <h1 className="neon-text neon-pulse font-display mt-3 text-4xl font-black sm:text-5xl">
               The &rsquo;86 Kids
             </h1>
             <p className="mt-2 text-lg text-muted-foreground">
@@ -72,7 +76,7 @@ export default function BookPage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-        <div className="max-w-3xl">
+        <Reveal className="max-w-3xl">
           <h2 className="font-display text-3xl font-bold">About the book</h2>
           <p className="mt-4 text-muted-foreground">
             This is a memoir about a kid named Matt as he reminisces about his
@@ -92,9 +96,9 @@ export default function BookPage() {
             So strap yourself in and get ready for a trip back to 1985–86, when
             things made sense.
           </p>
-        </div>
+        </Reveal>
 
-        <figure className="mt-12">
+        <Reveal as="figure" className="mt-12">
           <Image
             src="/images/matt-sem.jpg"
             alt="A 1980s snapshot of a group of Wausau kids in a living room, raising cans of Mountain Dew"
@@ -105,15 +109,23 @@ export default function BookPage() {
           <figcaption className="mt-3 text-sm text-muted-foreground">
             The real &rsquo;86 kids — Wausau, Wisconsin, mid-1980s.
           </figcaption>
-        </figure>
+        </Reveal>
       </section>
 
       <section className="border-t border-border/60 bg-card/50">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <h2 className="font-display text-3xl font-bold">Pick your format</h2>
+          <Reveal>
+            <h2 className="font-display text-3xl font-bold">
+              Pick your format
+            </h2>
+          </Reveal>
           <div className="mt-8 grid gap-6 sm:grid-cols-3">
-            {site.book.formats.map((format) => (
-              <Card key={format.label} className="text-center">
+            {site.book.formats.map((format, index) => (
+              <Reveal
+                key={format.label}
+                delay={(index + 1) as 1 | 2 | 3}
+              >
+              <Card className="hover-lift h-full text-center">
                 <CardContent className="pt-6">
                   <p className="font-display text-lg font-bold">
                     {format.label}
@@ -132,6 +144,7 @@ export default function BookPage() {
                   </Button>
                 </CardContent>
               </Card>
+              </Reveal>
             ))}
           </div>
           <p className="mt-8 text-sm text-muted-foreground">

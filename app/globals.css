@@ -119,7 +119,9 @@
 
 /* ---- "Blue '80s" flourishes ---- */
 
-/* Retro horizon grid — a perspective floor of cyan lines that fades upward. */
+/* Retro horizon grid — a perspective floor of cyan lines that fades upward.
+   The background-position animation drives the "driving into the sunset"
+   scroll; it must match background-size height exactly to loop seamlessly. */
 .retro-grid {
   background-image:
     linear-gradient(to top, oklch(0.78 0.13 220 / 22%) 1px, transparent 1px),
@@ -130,11 +132,154 @@
   transform-origin: bottom;
 }
 
+.retro-grid-animated {
+  animation: grid-scroll 3s linear infinite;
+}
+
+@keyframes grid-scroll {
+  from {
+    background-position-y: 0;
+  }
+  to {
+    background-position-y: 42px;
+  }
+}
+
 /* Soft neon glow for headline text. */
 .neon-text {
   text-shadow:
     0 0 12px oklch(0.78 0.13 220 / 55%),
     0 0 42px oklch(0.68 0.22 340 / 30%);
+}
+
+/* Slow breathing glow for the hero headline. */
+.neon-pulse {
+  animation: neon-pulse 4s ease-in-out infinite;
+}
+
+@keyframes neon-pulse {
+  0%,
+  100% {
+    text-shadow:
+      0 0 12px oklch(0.78 0.13 220 / 55%),
+      0 0 42px oklch(0.68 0.22 340 / 30%);
+  }
+  50% {
+    text-shadow:
+      0 0 18px oklch(0.78 0.13 220 / 85%),
+      0 0 64px oklch(0.68 0.22 340 / 50%);
+  }
+}
+
+/* Gentle float for the hero book cover. */
+.anim-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+/* ---- Standard entrance animations ----
+   .anim-rise plays immediately on load (hero); .reveal is toggled to
+   .reveal-visible by the <Reveal> component when scrolled into view.
+   Both share the same motion so the site feels consistent. */
+
+.anim-rise {
+  animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Both classes set the `animation` shorthand, so an element carrying the two
+   needs the combined form or the entrance silently replaces the pulse. */
+.anim-rise.neon-pulse {
+  animation:
+    rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both,
+    neon-pulse 4s ease-in-out 0.9s infinite;
+}
+
+/* Delays apply to both load animations (.anim-rise) and scroll reveals. */
+.anim-delay-1 {
+  animation-delay: 0.1s;
+  transition-delay: 0.1s;
+}
+.anim-delay-2 {
+  animation-delay: 0.22s;
+  transition-delay: 0.22s;
+}
+.anim-delay-3 {
+  animation-delay: 0.34s;
+  transition-delay: 0.34s;
+}
+.anim-delay-4 {
+  animation-delay: 0.46s;
+  transition-delay: 0.46s;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Standard hover treatment for cards site-wide. */
+.hover-lift {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 0 0 1px oklch(0.78 0.13 220 / 55%),
+    0 0 28px oklch(0.78 0.13 220 / 30%),
+    0 0 72px oklch(0.68 0.22 340 / 18%);
+}
+
+/* Every animation in one place, so one media query silences them all. */
+@media (prefers-reduced-motion: reduce) {
+  .retro-grid-animated,
+  .neon-pulse,
+  .anim-float,
+  .anim-rise,
+  .anim-rise.neon-pulse {
+    animation: none;
+  }
+  .anim-rise,
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .hover-lift,
+  .hover-lift:hover {
+    transform: none;
+    transition: none;
+  }
 }
 
 /* Neon edge for cards and the book cover. */

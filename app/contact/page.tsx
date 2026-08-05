@@ -14,11 +14,11 @@ export default function ContactPage() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
       <div className="grid gap-12 md:grid-cols-[1fr_1.2fr]">
-        <div>
+        <div className="anim-rise">
           <p className="font-display text-xs font-medium tracking-[0.35em] text-accent uppercase">
             Contact
           </p>
-          <h1 className="neon-text font-display mt-3 text-4xl font-black">
+          <h1 className="neon-text neon-pulse font-display mt-3 text-4xl font-black">
             Say hello
           </h1>
           <p className="mt-4 max-w-md text-muted-foreground">
@@ -41,7 +41,7 @@ export default function ContactPage() {
             </li>
           </ul>
         </div>
-        <div>
+        <div className="anim-rise anim-delay-2">
           <ContactForm />
         </div>
       </div>

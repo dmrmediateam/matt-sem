@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
+import { Reveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -16,14 +17,14 @@ export default function AboutPage() {
     <>
       <section className="border-b border-border/60">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
-          <p className="font-display text-xs font-medium tracking-[0.35em] text-accent uppercase">
+          <p className="anim-rise font-display text-xs font-medium tracking-[0.35em] text-accent uppercase">
             About the author
           </p>
-          <h1 className="neon-text font-display mt-3 text-4xl font-black sm:text-5xl">
+          <h1 className="neon-text neon-pulse anim-rise anim-delay-1 font-display mt-3 text-4xl font-black sm:text-5xl">
             Matt Sem
           </h1>
           <div className="mt-8 grid gap-10 md:grid-cols-[1.4fr_1fr]">
-            <div className="space-y-4 text-muted-foreground">
+            <div className="anim-rise anim-delay-2 space-y-4 text-muted-foreground">
               <p>
                 Matt Sem is a Wausau, Wisconsin native and a Certified PTR
                 Tennis Teaching Professional with more than 25 years of
@@ -49,13 +50,13 @@ export default function AboutPage() {
                 those times and the &rsquo;80s.&rdquo;
               </p>
             </div>
-            <div className="grid gap-6">
+            <div className="anim-rise anim-delay-3 grid gap-6">
               <Image
                 src="/images/matt-sem-author.jpg"
                 alt="Matt Sem, author of The '86 Kids"
                 width={960}
                 height={960}
-                className="neon-edge w-full max-w-sm rounded-md"
+                className="neon-edge hover-lift w-full max-w-sm rounded-md"
                 priority
               />
               <Card className="h-fit bg-card/70">
@@ -78,15 +79,18 @@ export default function AboutPage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-        <h2 className="font-display text-3xl font-bold">
-          What&rsquo;s coming next
-        </h2>
-        <p className="mt-3 max-w-2xl text-muted-foreground">
-          The &rsquo;86 Kids won&rsquo;t be Matt&rsquo;s last book. Here&rsquo;s
-          what&rsquo;s on the workbench.
-        </p>
+        <Reveal>
+          <h2 className="font-display text-3xl font-bold">
+            What&rsquo;s coming next
+          </h2>
+          <p className="mt-3 max-w-2xl text-muted-foreground">
+            The &rsquo;86 Kids won&rsquo;t be Matt&rsquo;s last book.
+            Here&rsquo;s what&rsquo;s on the workbench.
+          </p>
+        </Reveal>
         <div className="mt-8 grid gap-6 md:grid-cols-3">
-          <Card>
+          <Reveal delay={1}>
+          <Card className="hover-lift h-full">
             <CardContent className="pt-6">
               <p className="font-display text-lg font-bold">
                 Catch and Release
@@ -97,7 +101,9 @@ export default function AboutPage() {
               </p>
             </CardContent>
           </Card>
-          <Card>
+          </Reveal>
+          <Reveal delay={2}>
+          <Card className="hover-lift h-full">
             <CardContent className="pt-6">
               <p className="font-display text-lg font-bold">Glimpses</p>
               <p className="mt-3 text-sm text-muted-foreground">
@@ -107,7 +113,9 @@ export default function AboutPage() {
               </p>
             </CardContent>
           </Card>
-          <Card>
+          </Reveal>
+          <Reveal delay={3}>
+          <Card className="hover-lift h-full">
             <CardContent className="pt-6">
               <p className="font-display text-lg font-bold">
                 Monsters Among Us
@@ -119,12 +127,13 @@ export default function AboutPage() {
               </p>
             </CardContent>
           </Card>
+          </Reveal>
         </div>
-        <div className="mt-10">
+        <Reveal className="mt-10">
           <Button asChild size="lg">
             <Link href="/contact/">Get in touch with Matt</Link>
           </Button>
-        </div>
+        </Reveal>
       </section>
     </>
   );

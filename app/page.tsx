@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Star } from "lucide-react";
 
 import { BookCover } from "@/components/book-cover";
+import { Reveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { site } from "@/lib/site";
@@ -11,22 +12,25 @@ export default function HomePage() {
     <>
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="retro-grid absolute inset-x-0 bottom-0 h-72" aria-hidden />
+        <div
+          className="retro-grid retro-grid-animated absolute inset-x-0 bottom-0 h-72"
+          aria-hidden
+        />
         <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 py-20 sm:px-6 md:grid-cols-[1.2fr_1fr] md:py-28">
           <div>
-            <p className="font-display text-xs font-medium tracking-[0.35em] text-accent uppercase">
+            <p className="anim-rise font-display text-xs font-medium tracking-[0.35em] text-accent uppercase">
               Strap yourself in — it&rsquo;s 1986
             </p>
-            <h1 className="neon-text font-display mt-4 text-4xl leading-tight font-black sm:text-5xl lg:text-6xl">
+            <h1 className="neon-text neon-pulse anim-rise anim-delay-1 font-display mt-4 text-4xl leading-tight font-black sm:text-5xl lg:text-6xl">
               The &rsquo;86 Kids
             </h1>
-            <p className="mt-4 max-w-xl text-lg text-muted-foreground">
+            <p className="anim-rise anim-delay-2 mt-4 max-w-xl text-lg text-muted-foreground">
               A funny, big-hearted memoir of growing up in Wausau, Wisconsin in
               the mid-1980s — bikes, basketball, nicknames, first crushes, and
               the last summer before middle school. Think{" "}
               <em>The Wonder Years</em> meets <em>Seinfeld</em>.
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            <div className="anim-rise anim-delay-3 mt-8 flex flex-wrap items-center gap-4">
               <Button asChild size="lg">
                 <a
                   href={site.amazonUrl}
@@ -40,7 +44,7 @@ export default function HomePage() {
                 <Link href="/book/">About the book</Link>
               </Button>
             </div>
-            <div className="mt-6 flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="anim-rise anim-delay-4 mt-6 flex items-center gap-2 text-sm text-muted-foreground">
               <span className="flex text-primary" aria-hidden>
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star key={i} className="size-4 fill-current" />
@@ -51,8 +55,10 @@ export default function HomePage() {
               </span>
             </div>
           </div>
-          <div className="flex justify-center md:justify-end">
-            <BookCover />
+          <div className="anim-rise anim-delay-2 flex justify-center md:justify-end">
+            <div className="anim-float">
+              <BookCover />
+            </div>
           </div>
         </div>
       </section>
@@ -60,32 +66,32 @@ export default function HomePage() {
       {/* Proof strip */}
       <section className="border-y border-border/60 bg-card/50">
         <div className="mx-auto grid max-w-6xl gap-6 px-4 py-8 text-center sm:grid-cols-3 sm:px-6">
-          <div>
+          <Reveal>
             <p className="font-display text-2xl font-bold text-primary">467</p>
             <p className="mt-1 text-sm text-muted-foreground">
               pages of pure &rsquo;80s nostalgia
             </p>
-          </div>
-          <div>
+          </Reveal>
+          <Reveal delay={1}>
             <p className="font-display text-2xl font-bold text-primary">
               {site.book.rating.value}★
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
               average Amazon reader rating
             </p>
-          </div>
-          <div>
+          </Reveal>
+          <Reveal delay={2}>
             <p className="font-display text-2xl font-bold text-primary">3</p>
             <p className="mt-1 text-sm text-muted-foreground">
               formats — Kindle, paperback, hardcover
             </p>
-          </div>
+          </Reveal>
         </div>
       </section>
 
       {/* About the book */}
       <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-        <div className="max-w-3xl">
+        <Reveal className="max-w-3xl">
           <h2 className="font-display text-3xl font-bold">
             A trip back to when things made sense
           </h2>
@@ -104,17 +110,20 @@ export default function HomePage() {
           <Button asChild className="mt-6" variant="outline">
             <Link href="/book/">Read more about The &rsquo;86 Kids</Link>
           </Button>
-        </div>
+        </Reveal>
       </section>
 
       {/* Reviews */}
       <section className="border-y border-border/60 bg-card/50">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-          <h2 className="font-display text-3xl font-bold">
-            What readers are saying
-          </h2>
+          <Reveal>
+            <h2 className="font-display text-3xl font-bold">
+              What readers are saying
+            </h2>
+          </Reveal>
           <div className="mt-8 grid gap-6 md:grid-cols-3">
-            <Card className="neon-edge border-transparent">
+            <Reveal delay={1}>
+            <Card className="neon-edge hover-lift h-full border-transparent">
               <CardContent className="pt-6">
                 <p className="text-sm text-muted-foreground">
                   &ldquo;A book that feels like home&hellip; captures the
@@ -128,7 +137,9 @@ export default function HomePage() {
                 </p>
               </CardContent>
             </Card>
-            <Card className="neon-edge border-transparent">
+            </Reveal>
+            <Reveal delay={2}>
+            <Card className="neon-edge hover-lift h-full border-transparent">
               <CardContent className="pt-6">
                 <p className="text-sm text-muted-foreground">
                   &ldquo;It&rsquo;s like a time machine that takes you back to
@@ -140,7 +151,9 @@ export default function HomePage() {
                 </p>
               </CardContent>
             </Card>
-            <Card className="neon-edge border-transparent">
+            </Reveal>
+            <Reveal delay={3}>
+            <Card className="neon-edge hover-lift h-full border-transparent">
               <CardContent className="pt-6">
                 <p className="text-sm text-muted-foreground">
                   &ldquo;A light-hearted and pleasurable read about childhood,
@@ -153,6 +166,7 @@ export default function HomePage() {
                 </p>
               </CardContent>
             </Card>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -160,7 +174,7 @@ export default function HomePage() {
       {/* About the author preview */}
       <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
         <div className="grid items-center gap-10 md:grid-cols-2">
-          <div>
+          <Reveal>
             <h2 className="font-display text-3xl font-bold">Meet Matt Sem</h2>
             <p className="mt-4 text-muted-foreground">
               Matt is a Wausau native and a certified PTR tennis teaching
@@ -173,8 +187,9 @@ export default function HomePage() {
             <Button asChild className="mt-6" variant="outline">
               <Link href="/about/">More about Matt</Link>
             </Button>
-          </div>
-          <Card className="bg-card/70">
+          </Reveal>
+          <Reveal delay={2}>
+          <Card className="hover-lift bg-card/70">
             <CardContent className="pt-6">
               <p className="font-display text-xs font-medium tracking-[0.3em] text-accent uppercase">
                 Coming next
@@ -203,6 +218,7 @@ export default function HomePage() {
               </ul>
             </CardContent>
           </Card>
+          </Reveal>
         </div>
       </section>
 
@@ -210,7 +226,7 @@ export default function HomePage() {
       <section className="border-t border-border/60 bg-card/50">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <div className="grid gap-10 md:grid-cols-2">
-            <div>
+            <Reveal>
               <h2 className="font-display text-3xl font-bold">
                 Where to get your copy
               </h2>
@@ -248,8 +264,8 @@ export default function HomePage() {
                   <span className="text-muted-foreground">— Wausau, WI</span>
                 </li>
               </ul>
-            </div>
-            <div className="flex flex-col items-start justify-center">
+            </Reveal>
+            <Reveal delay={2} className="flex flex-col items-start justify-center">
               <h3 className="font-display text-xl font-bold">
                 Say hi to Matt
               </h3>
@@ -260,7 +276,7 @@ export default function HomePage() {
               <Button asChild size="lg" className="mt-6">
                 <Link href="/contact/">Get in touch</Link>
               </Button>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
