@@ -7,11 +7,15 @@ import { Menu, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
+/**
+ * One-page site: nav items are anchors into the home narrative, plus the
+ * contact page. Anchors deliberately read like a story arc, not a sitemap.
+ */
 const links = [
-  { href: "/", label: "Home" },
-  { href: "/book/", label: "The '86 Kids" },
-  { href: "/about/", label: "About Matt" },
-  { href: "/contact/", label: "Contact" },
+  { href: "/#book", label: "The book" },
+  { href: "/#matt", label: "About Matt" },
+  { href: "/#next", label: "What's next" },
+  { href: "/contact/", label: "Say hello" },
 ];
 
 export function SiteHeader() {
@@ -19,8 +23,7 @@ export function SiteHeader() {
   const [open, setOpen] = React.useState(false);
 
   function isActive(href: string) {
-    if (href === "/") return pathname === "/";
-    return pathname.startsWith(href.replace(/\/$/, ""));
+    return href === "/contact/" && pathname.startsWith("/contact");
   }
 
   return (
@@ -28,7 +31,7 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Link
           href="/"
-          className="font-display text-sm font-bold tracking-[0.25em] text-primary uppercase"
+          className="font-display text-sm tracking-[0.2em] text-primary uppercase"
           onClick={() => setOpen(false)}
         >
           Matt Sem
@@ -41,9 +44,7 @@ export function SiteHeader() {
               href={link.href}
               className={cn(
                 "text-sm tracking-wide transition-colors hover:text-primary",
-                isActive(link.href)
-                  ? "text-primary"
-                  : "text-muted-foreground"
+                isActive(link.href) ? "text-primary" : "text-muted-foreground"
               )}
             >
               {link.label}

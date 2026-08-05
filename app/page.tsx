@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Star } from "lucide-react";
 
@@ -11,18 +12,18 @@ import { site } from "@/lib/site";
 export default function HomePage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden">
+      {/* Hero — the book IS the site, so it gets the whole opening frame. */}
+      <section id="book" aria-label="The '86 Kids" className="relative overflow-hidden">
         <RetroWave className="h-72" />
         <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 py-20 sm:px-6 md:grid-cols-[1.2fr_1fr] md:py-28">
           <div>
-            <p className="anim-rise font-display text-xs font-medium tracking-[0.35em] text-accent uppercase">
+            <p className="anim-rise font-display text-xs tracking-[0.3em] text-accent uppercase">
               Strap yourself in — it&rsquo;s 1986
             </p>
-            <h1 className="neon-text neon-pulse anim-rise anim-delay-1 font-display mt-4 text-4xl leading-tight font-black sm:text-5xl lg:text-6xl">
+            <h1 className="neon-text neon-pulse anim-rise anim-delay-1 font-display mt-4 text-4xl leading-tight sm:text-5xl lg:text-6xl">
               The &rsquo;86 Kids
             </h1>
-            <p className="anim-rise anim-delay-2 mt-4 max-w-xl text-lg text-muted-foreground">
+            <p className="anim-rise anim-delay-2 mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
               A funny, big-hearted memoir of growing up in Wausau, Wisconsin in
               the mid-1980s — bikes, basketball, nicknames, first crushes, and
               the last summer before middle school. Think{" "}
@@ -35,11 +36,11 @@ export default function HomePage() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Buy on Amazon
+                  Get the book on Amazon
                 </a>
               </Button>
-              <Button asChild size="lg" variant="outline">
-                <Link href="/book/">About the book</Link>
+              <Button asChild size="lg" variant="ghost">
+                <a href="#story">Keep scrolling — meet the &rsquo;86 kids ↓</a>
               </Button>
             </div>
             <div className="anim-rise anim-delay-4 mt-6 flex items-center gap-2 text-sm text-muted-foreground">
@@ -49,7 +50,7 @@ export default function HomePage() {
                 ))}
               </span>
               <span>
-                Rated {site.book.rating.value} out of 5 by Amazon readers
+                {site.book.rating.value} out of 5 from Amazon readers
               </span>
             </div>
           </div>
@@ -61,221 +62,272 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Proof strip */}
-      <section className="border-y border-border/60 bg-card/50">
-        <div className="mx-auto grid max-w-6xl gap-6 px-4 py-8 text-center sm:grid-cols-3 sm:px-6">
+      {/* The story — book copy and the polaroid that proves it all happened. */}
+      <section
+        id="story"
+        aria-label="About the book"
+        className="border-y border-border/60 bg-card/50"
+      >
+        <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 py-20 sm:px-6 md:grid-cols-[1.1fr_1fr]">
           <Reveal>
-            <p className="font-display text-2xl font-bold text-primary">467</p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              pages of pure &rsquo;80s nostalgia
+            <p className="font-display text-xs tracking-[0.3em] text-accent uppercase">
+              The story
             </p>
-          </Reveal>
-          <Reveal delay={1}>
-            <p className="font-display text-2xl font-bold text-primary">
-              {site.book.rating.value}★
-            </p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              average Amazon reader rating
-            </p>
-          </Reveal>
-          <Reveal delay={2}>
-            <p className="font-display text-2xl font-bold text-primary">3</p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              formats — Kindle, paperback, hardcover
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* About the book */}
-      <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-        <Reveal className="max-w-3xl">
-          <h2 className="font-display text-3xl font-bold">
-            A trip back to when things made sense
-          </h2>
-          <p className="mt-4 text-muted-foreground">
-            The &rsquo;86 Kids follows a year in young Matt&rsquo;s life on
-            Wausau&rsquo;s southeast side — school days at John Marshall
-            Elementary, pickup basketball, family life, sports, a first crush,
-            and the summer before everything changed with the move to middle
-            school. It&rsquo;s told with humor, old Polaroid photos, and a deep
-            affection for the era that defined Generation X.
-          </p>
-          <p className="mt-4 text-muted-foreground">
-            If you grew up in the &rsquo;80s — or just wish you had — this one
-            is for you.
-          </p>
-          <Button asChild className="mt-6" variant="outline">
-            <Link href="/book/">Read more about The &rsquo;86 Kids</Link>
-          </Button>
-        </Reveal>
-      </section>
-
-      {/* Reviews */}
-      <section className="border-y border-border/60 bg-card/50">
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-          <Reveal>
-            <h2 className="font-display text-3xl font-bold">
-              What readers are saying
+            <h2 className="font-display mt-3 text-3xl">
+              A trip back to when things made sense
             </h2>
+            <div className="mt-5 space-y-4 leading-relaxed text-muted-foreground">
+              <p>
+                One year in young Matt&rsquo;s life on Wausau&rsquo;s southeast
+                side — school days at John Marshall Elementary, pickup
+                basketball, family life, a first crush, and the summer before
+                everything changed with the move to middle school.
+              </p>
+              <p>
+                It&rsquo;s told with humor, old polaroids, and a deep affection
+                for the era that defined Generation X. {site.book.pages} pages,
+                and every one of them actually happened. Mostly.
+              </p>
+            </div>
+            <dl className="mt-8 flex flex-wrap gap-x-10 gap-y-4 text-sm">
+              <div>
+                <dt className="text-muted-foreground">Length</dt>
+                <dd className="mt-0.5 font-semibold">
+                  {site.book.pages} pages
+                </dd>
+              </div>
+              <div>
+                <dt className="text-muted-foreground">Published</dt>
+                <dd className="mt-0.5 font-semibold">July 2025</dd>
+              </div>
+              <div>
+                <dt className="text-muted-foreground">Formats</dt>
+                <dd className="mt-0.5 font-semibold">
+                  Kindle · Paperback · Hardcover
+                </dd>
+              </div>
+            </dl>
           </Reveal>
-          <div className="mt-8 grid gap-6 md:grid-cols-3">
-            <Reveal delay={1}>
-            <Card className="neon-edge hover-lift h-full border-transparent">
-              <CardContent className="pt-6">
-                <p className="text-sm text-muted-foreground">
-                  &ldquo;A book that feels like home&hellip; captures the
-                  sights, smells, and characters of growing up during the
-                  magical mid-80s. A must-read for anybody who wants to relive
-                  the simpler times of bikes, basketball, nicknames, family,
-                  and youthful relationships.&rdquo;
-                </p>
-                <p className="mt-4 text-sm font-semibold">
-                  Scott S. — Amazon review
-                </p>
-              </CardContent>
-            </Card>
-            </Reveal>
-            <Reveal delay={2}>
-            <Card className="neon-edge hover-lift h-full border-transparent">
-              <CardContent className="pt-6">
-                <p className="text-sm text-muted-foreground">
-                  &ldquo;It&rsquo;s like a time machine that takes you back to
-                  a magical era&hellip; From the very first page, you&rsquo;ll
-                  be laughing out loud.&rdquo;
-                </p>
-                <p className="mt-4 text-sm font-semibold">
-                  Sylvia — Amazon review
-                </p>
-              </CardContent>
-            </Card>
-            </Reveal>
-            <Reveal delay={3}>
-            <Card className="neon-edge hover-lift h-full border-transparent">
-              <CardContent className="pt-6">
-                <p className="text-sm text-muted-foreground">
-                  &ldquo;A light-hearted and pleasurable read about childhood,
-                  friendship, memories, and life&hellip; will likely trigger
-                  memories of your own childhood and bring a smile (or two) to
-                  your face.&rdquo;
-                </p>
-                <p className="mt-4 text-sm font-semibold">
-                  Cedric — Amazon review
-                </p>
-              </CardContent>
-            </Card>
-            </Reveal>
-          </div>
+          <Reveal delay={2} className="justify-self-center md:justify-self-end">
+            <figure className="polaroid polaroid-tilt-right max-w-md rounded-sm">
+              <Image
+                src="/images/matt-sem.jpg"
+                alt="A 1980s snapshot of a group of Wausau kids in a living room, raising cans of Mountain Dew"
+                width={1500}
+                height={1022}
+              />
+              <figcaption className="polaroid-caption">
+                The real &rsquo;86 kids — Wausau, mid-1980s
+              </figcaption>
+            </figure>
+          </Reveal>
         </div>
       </section>
 
-      {/* About the author preview */}
-      <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-        <div className="grid items-center gap-10 md:grid-cols-2">
-          <Reveal>
-            <h2 className="font-display text-3xl font-bold">Meet Matt Sem</h2>
-            <p className="mt-4 text-muted-foreground">
-              Matt is a Wausau native and a certified PTR tennis teaching
-              professional with more than 25 years on the court. The &rsquo;86
-              Kids is his first book — written for family and friends, and
-              published after the wave of &rsquo;80s nostalgia convinced him
-              other people would love those times too. Two more books are
-              already in the works.
+      {/* Reviews — real Amazon words, lightly trimmed, named. */}
+      <section aria-label="Reader reviews" className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+        <Reveal>
+          <p className="font-display text-xs tracking-[0.3em] text-accent uppercase">
+            From the back row
+          </p>
+          <h2 className="font-display mt-3 text-3xl">
+            What readers are saying
+          </h2>
+        </Reveal>
+        <div className="mt-10 grid gap-6 md:grid-cols-3">
+          {[
+            {
+              quote:
+                "A book that feels like home… captures the sights, smells, and characters of growing up during the magical mid-80s. A must-read for anybody who wants to relive the simpler times of bikes, basketball, nicknames, family, and youthful relationships.",
+              name: "Scott S.",
+              delay: 1 as const,
+            },
+            {
+              quote:
+                "It's like a time machine that takes you back to a magical era… From the very first page, you'll be laughing out loud.",
+              name: "Sylvia",
+              delay: 2 as const,
+            },
+            {
+              quote:
+                "A light-hearted and pleasurable read about childhood, friendship, memories, and life… will likely trigger memories of your own childhood and bring a smile (or two) to your face.",
+              name: "Cedric",
+              delay: 3 as const,
+            },
+          ].map((review) => (
+            <Reveal key={review.name} delay={review.delay}>
+              <Card className="hover-lift h-full bg-card/70">
+                <CardContent className="flex h-full flex-col pt-6">
+                  <p className="flex-1 leading-relaxed text-muted-foreground">
+                    &ldquo;{review.quote}&rdquo;
+                  </p>
+                  <footer className="mt-5 text-sm">
+                    <span className="font-semibold">{review.name}</span>
+                    <span className="text-muted-foreground">
+                      {" "}
+                      · Amazon review
+                    </span>
+                  </footer>
+                </CardContent>
+              </Card>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* About Matt — one section, face first. */}
+      <section
+        id="matt"
+        aria-label="About Matt Sem"
+        className="border-y border-border/60 bg-card/50"
+      >
+        <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 py-20 sm:px-6 md:grid-cols-[1fr_1.2fr]">
+          <Reveal className="order-2 justify-self-center md:order-1 md:justify-self-start">
+            <figure className="polaroid polaroid-tilt-left max-w-xs rounded-sm">
+              <Image
+                src="/images/matt-sem-author.jpg"
+                alt="Matt Sem, author of The '86 Kids"
+                width={960}
+                height={960}
+              />
+              <figcaption className="polaroid-caption">
+                Matt, a few decades past 1986
+              </figcaption>
+            </figure>
+          </Reveal>
+          <Reveal delay={1} className="order-1 md:order-2">
+            <p className="font-display text-xs tracking-[0.3em] text-accent uppercase">
+              About the author
             </p>
-            <Button asChild className="mt-6" variant="outline">
-              <Link href="/about/">More about Matt</Link>
+            <h2 className="font-display mt-3 text-3xl">Meet Matt Sem</h2>
+            <div className="mt-5 space-y-4 leading-relaxed text-muted-foreground">
+              <p>
+                Matt is a Wausau native and a certified PTR tennis teaching
+                professional with more than 25 years on the court. The
+                &rsquo;86 Kids is his first book — written for family and
+                friends, published after everyone kept telling him the same
+                thing: other people miss those times too.
+              </p>
+              <p>
+                He still lives in Wausau — the same town whose 1980s streets,
+                schools, and characters fill the book. In his words, sharing it
+                is the point: &ldquo;It&rsquo;s a great feeling to have
+                somebody else you know read it and then say that they like
+                it.&rdquo;
+              </p>
+            </div>
+            <Button asChild variant="outline" className="mt-7">
+              <Link href="/contact/">Say hello to Matt</Link>
             </Button>
           </Reveal>
-          <Reveal delay={2}>
-          <Card className="hover-lift bg-card/70">
-            <CardContent className="pt-6">
-              <p className="font-display text-xs font-medium tracking-[0.3em] text-accent uppercase">
-                Coming next
-              </p>
-              <ul className="mt-4 grid gap-3 text-sm text-muted-foreground">
-                <li>
-                  <span className="font-semibold text-foreground">
-                    Catch and Release
-                  </span>{" "}
-                  — a fictionalized memoir mixing real events with imagined
-                  ones.
-                </li>
-                <li>
-                  <span className="font-semibold text-foreground">
-                    Glimpses
-                  </span>{" "}
-                  — an honest account of recovery, written for anyone
-                  struggling.
-                </li>
-                <li>
-                  <span className="font-semibold text-foreground">
-                    Monsters Among Us
-                  </span>{" "}
-                  — a completed collection of true-story vignettes.
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
-          </Reveal>
         </div>
       </section>
 
-      {/* Where to buy + CTA */}
-      <section className="border-t border-border/60 bg-card/50">
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-          <div className="grid gap-10 md:grid-cols-2">
-            <Reveal>
-              <h2 className="font-display text-3xl font-bold">
-                Where to get your copy
-              </h2>
-              <p className="mt-4 text-muted-foreground">
-                The &rsquo;86 Kids is available online and at bookstores around
-                Wausau — and every local purchase comes with a free &rsquo;86
-                Kids bookmark.
-              </p>
-              <ul className="mt-6 grid gap-3 text-sm">
-                <li>
-                  <a
-                    href={site.amazonUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-semibold text-primary hover:underline"
-                  >
-                    Amazon
-                  </a>{" "}
-                  <span className="text-muted-foreground">
-                    — Kindle {site.book.formats[0].price}, paperback{" "}
-                    {site.book.formats[1].price}, hardcover{" "}
-                    {site.book.formats[2].price}
-                  </span>
-                </li>
-                <li>
-                  <span className="font-semibold">Janke Book Store</span>{" "}
-                  <span className="text-muted-foreground">— Wausau, WI</span>
-                </li>
-                <li>
-                  <span className="font-semibold">The Story Cellar</span>{" "}
-                  <span className="text-muted-foreground">— Wausau, WI</span>
-                </li>
-                <li>
-                  <span className="font-semibold">Barnes &amp; Noble</span>{" "}
-                  <span className="text-muted-foreground">— Wausau, WI</span>
-                </li>
-              </ul>
+      {/* What's next — future books, deliberately their own thing. */}
+      <section id="next" aria-label="Upcoming books" className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+        <Reveal>
+          <p className="font-display text-xs tracking-[0.3em] text-accent uppercase">
+            On the workbench
+          </p>
+          <h2 className="font-display mt-3 text-3xl">
+            The &rsquo;86 Kids won&rsquo;t be the last
+          </h2>
+        </Reveal>
+        <div className="mt-10 grid gap-6 md:grid-cols-3">
+          {[
+            {
+              title: "Catch and Release",
+              blurb:
+                "A fictionalized memoir that mixes real events from Matt's life with imagined ones.",
+              status: "In progress",
+              delay: 1 as const,
+            },
+            {
+              title: "Glimpses",
+              blurb:
+                "An honest account of recovery — written not just for Matt, but for anyone who's struggling.",
+              status: "In progress",
+              delay: 2 as const,
+            },
+            {
+              title: "Monsters Among Us",
+              blurb:
+                "True-story vignettes about how nobody's flawless — and how we all surprise ourselves sometimes.",
+              status: "Finished, resting",
+              delay: 3 as const,
+            },
+          ].map((book) => (
+            <Reveal key={book.title} delay={book.delay}>
+              <Card className="hover-lift h-full">
+                <CardContent className="flex h-full flex-col pt-6">
+                  <h3 className="font-display text-lg">{book.title}</h3>
+                  <p className="mt-3 flex-1 leading-relaxed text-muted-foreground">
+                    {book.blurb}
+                  </p>
+                  <p className="mt-4 text-xs tracking-widest text-accent uppercase">
+                    {book.status}
+                  </p>
+                </CardContent>
+              </Card>
             </Reveal>
-            <Reveal delay={2} className="flex flex-col items-start justify-center">
-              <h3 className="font-display text-xl font-bold">
-                Say hi to Matt
-              </h3>
-              <p className="mt-3 max-w-md text-muted-foreground">
-                Book clubs, local media, fellow &rsquo;86 kids — Matt would
-                love to hear from you.
-              </p>
-              <Button asChild size="lg" className="mt-6">
-                <Link href="/contact/">Get in touch</Link>
-              </Button>
-            </Reveal>
-          </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Where to buy + closing CTA. */}
+      <section
+        aria-label="Where to buy"
+        className="border-t border-border/60 bg-card/50"
+      >
+        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-6 md:grid-cols-2">
+          <Reveal>
+            <h2 className="font-display text-3xl">Where to get your copy</h2>
+            <p className="mt-4 leading-relaxed text-muted-foreground">
+              Online at Amazon, or in person around Wausau — and every local
+              purchase comes with a free &rsquo;86 Kids bookmark.
+            </p>
+            <ul className="mt-6 grid gap-3 text-sm">
+              <li>
+                <a
+                  href={site.amazonUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-primary hover:underline"
+                >
+                  Amazon
+                </a>{" "}
+                <span className="text-muted-foreground">
+                  — Kindle {site.book.formats[0].price}, paperback{" "}
+                  {site.book.formats[1].price}, hardcover{" "}
+                  {site.book.formats[2].price}
+                </span>
+              </li>
+              <li>
+                <span className="font-semibold">Janke Book Store</span>{" "}
+                <span className="text-muted-foreground">— Wausau, WI</span>
+              </li>
+              <li>
+                <span className="font-semibold">The Story Cellar</span>{" "}
+                <span className="text-muted-foreground">— Wausau, WI</span>
+              </li>
+              <li>
+                <span className="font-semibold">Barnes &amp; Noble</span>{" "}
+                <span className="text-muted-foreground">— Wausau, WI</span>
+              </li>
+            </ul>
+          </Reveal>
+          <Reveal delay={2} className="flex flex-col items-start justify-center">
+            <h2 className="font-display text-2xl">
+              Were you an &rsquo;86 kid too?
+            </h2>
+            <p className="mt-3 max-w-md leading-relaxed text-muted-foreground">
+              Book clubs, local media, or memories of your own from 1986 —
+              Matt reads everything that comes in.
+            </p>
+            <Button asChild size="lg" className="mt-6">
+              <Link href="/contact/">Get in touch</Link>
+            </Button>
+          </Reveal>
         </div>
       </section>
     </>

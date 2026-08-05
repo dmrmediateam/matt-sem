@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Rammetto_One } from "next/font/google";
+import { Caveat, Rammetto_One } from "next/font/google";
 
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -14,6 +14,13 @@ const displayFont = Rammetto_One({
   subsets: ["latin"],
   variable: "--font-display",
   weight: "400",
+});
+
+// Handwritten face for polaroid captions only.
+const handFont = Caveat({
+  subsets: ["latin"],
+  variable: "--font-hand",
+  weight: "600",
 });
 
 export const metadata: Metadata = {
@@ -64,7 +71,7 @@ const jsonLd = {
       numberOfPages: site.book.pages,
       datePublished: site.book.published,
       inLanguage: "en",
-      url: `${site.url}/book/`,
+      url: `${site.url}/#book`,
       aggregateRating: {
         "@type": "AggregateRating",
         ratingValue: site.book.rating.value,
@@ -78,14 +85,20 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={displayFont.variable}>
+    <html lang="en" className={`${displayFont.variable} ${handFont.variable}`}>
       <body className="font-sans">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-100 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
+        >
+          Skip to content
+        </a>
         <SiteHeader />
-        <main>{children}</main>
+        <main id="main">{children}</main>
         <SiteFooter />
       </body>
     </html>
