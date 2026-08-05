@@ -145,12 +145,56 @@
   }
 }
 
-/* Pink '80s figures cruising the horizon — two copies of the row scroll
+/* ---- 3D synthwave scene (home hero) ----
+   A shared perspective so the grid floor and the figures riding it live in
+   one 3D space: .retro-plane is the tilted floor, .retro-grid-lines paints
+   the masked grid on it, and each .figure-stand counter-rotates its figure
+   so it stands upright OUT of the wave and scales with depth. */
+.retro-scene {
+  perspective: 420px;
+}
+
+.retro-plane {
+  position: absolute;
+  inset: 0;
+  transform: rotateX(48deg) scale(1.4);
+  transform-origin: bottom;
+  transform-style: preserve-3d;
+}
+
+.retro-grid-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to top, oklch(0.78 0.13 220 / 22%) 1px, transparent 1px),
+    linear-gradient(to right, oklch(0.78 0.13 220 / 22%) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(to top, black 0%, transparent 75%);
+}
+
+/* Pink '80s figures embedded in the wave — two copies of the row scroll
    left by exactly half the track width for a seamless loop. */
 .figure-marquee {
   display: flex;
   width: max-content;
   animation: marquee 50s linear infinite;
+  /* keep children in the scene's 3D space so .figure-stand can lift them */
+  transform-style: preserve-3d;
+}
+
+.figure-stand {
+  transform: rotateX(-48deg);
+  transform-origin: bottom center;
+}
+
+/* Faux-extrusion: stacked hard drop-shadows give the line art thickness,
+   plus the neon glow. Opacity lives here (per figure, not on the marquee)
+   because opacity on a 3D container flattens preserve-3d children. */
+.figure-3d {
+  opacity: 0.75;
+  filter: drop-shadow(0 1.5px 0 oklch(0.42 0.18 340))
+    drop-shadow(0 1.5px 0 oklch(0.3 0.14 340))
+    drop-shadow(0 0 8px oklch(0.68 0.22 340 / 0.8));
 }
 
 @keyframes marquee {
