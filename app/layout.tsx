@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Caveat, Rammetto_One } from "next/font/google";
+import localFont from "next/font/local";
 
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -7,20 +7,32 @@ import { site } from "@/lib/site";
 
 import "./globals.css";
 
-// Display face only - body text stays on the system stack for speed.
-// Rammetto One is the closest Google Font to the chunky Cooper Black-style
-// lettering on the book cover; it ships a single 400 weight.
-const displayFont = Rammetto_One({
-  subsets: ["latin"],
+/*
+  Fonts are self-hosted from app/fonts rather than pulled via next/font/google.
+  next/font/google downloads the files at BUILD time, so any build image that
+  cannot reach fonts.googleapis.com fails the whole build. Serving the woff2
+  from the repo keeps the build offline-safe (and keeps font requests off
+  Google's servers for visitors).
+
+  Display face only - body text stays on the system stack for speed.
+  Rammetto One is the closest match to the chunky Cooper Black-style lettering
+  on the book cover; it ships a single 400 weight.
+*/
+const displayFont = localFont({
+  src: "./fonts/rammetto-one-latin-400.woff2",
   variable: "--font-display",
   weight: "400",
+  style: "normal",
+  display: "swap",
 });
 
 // Handwritten face for polaroid captions only.
-const handFont = Caveat({
-  subsets: ["latin"],
+const handFont = localFont({
+  src: "./fonts/caveat-latin-600.woff2",
   variable: "--font-hand",
   weight: "600",
+  style: "normal",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
