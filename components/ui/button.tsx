@@ -4,27 +4,32 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
 
+/**
+ * Shape, type and motion live in the .btn-kl classes in app/globals.css.
+ *
+ * Never hardcode a color here. Those classes read the palette tokens
+ * (--primary, --accent, --foreground, ...) directly on the button element, so
+ * a button re-resolves its own colors when it renders inside .section-light.
+ * Baking a value in here - or routing one through a :root-level --btn-*
+ * property - freezes it to the dark theme and breaks the light sections.
+ */
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:border-ring",
+  "btn-kl outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
-        default:
-          "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
-        destructive:
-          "bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90",
-        outline:
-          "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground",
-        secondary:
-          "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+        default: "btn-kl-primary",
+        destructive: "btn-kl-destructive",
+        outline: "btn-kl-quiet",
+        secondary: "btn-kl-accent",
+        ghost: "btn-kl-bare",
+        link: "btn-kl-bare underline underline-offset-4",
       },
       size: {
-        default: "h-9 px-4 py-2 has-[>svg]:px-3",
-        sm: "h-8 rounded-md px-3 has-[>svg]:px-2.5",
-        lg: "h-11 rounded-md px-6 has-[>svg]:px-4",
-        icon: "size-9",
+        default: "btn-kl-md",
+        sm: "btn-kl-sm",
+        lg: "btn-kl-lg",
+        icon: "btn-kl-icon",
       },
     },
     defaultVariants: {

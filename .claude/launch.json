@@ -3,9 +3,24 @@
   "configurations": [
     {
       "name": "matt-sem-dev",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeExecutable": "/bin/sh",
+      "runtimeArgs": [
+        "-c",
+        "[ -d \"$HOME/.local/node/bin\" ] && export PATH=\"$HOME/.local/node/bin:$PATH\"; exec npm run dev"
+      ],
       "port": 3000
+    },
+    {
+      "name": "matt-sem-static-preview",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8000",
+        "--directory",
+        "out"
+      ],
+      "port": 8000
     }
   ]
 }

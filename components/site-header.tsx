@@ -5,17 +5,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
-import { cn } from "@/lib/utils";
-
 /**
  * One-page site: nav items are anchors into the home narrative, plus the
  * contact page. Anchors deliberately read like a story arc, not a sitemap.
  */
 const links = [
   { href: "/#book", label: "The book" },
-  { href: "/#matt", label: "About Matt" },
+  { href: "/#matt", label: "About" },
   { href: "/#next", label: "What's next" },
-  { href: "/contact/", label: "Say hello" },
+  { href: "/contact/", label: "Contact" },
 ];
 
 export function SiteHeader() {
@@ -37,15 +35,13 @@ export function SiteHeader() {
           Matt Sem
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Main">
+        <nav className="hidden items-center gap-9 md:flex" aria-label="Main">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={cn(
-                "text-sm tracking-wide transition-colors hover:text-primary",
-                isActive(link.href) ? "text-primary" : "text-muted-foreground"
-              )}
+              className="nav-link"
+              aria-current={isActive(link.href) ? "page" : undefined}
             >
               {link.label}
             </Link>
@@ -65,18 +61,16 @@ export function SiteHeader() {
 
       {open ? (
         <nav
-          className="border-t border-border/60 px-4 py-4 md:hidden"
+          className="border-t border-border/60 px-4 py-3 md:hidden"
           aria-label="Mobile"
         >
-          <ul className="grid gap-3">
+          <ul className="grid">
             {links.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className={cn(
-                    "block py-1 text-base",
-                    isActive(link.href) ? "text-primary" : "text-foreground"
-                  )}
+                  className="nav-link-mobile"
+                  aria-current={isActive(link.href) ? "page" : undefined}
                   onClick={() => setOpen(false)}
                 >
                   {link.label}

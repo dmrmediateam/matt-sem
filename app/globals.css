@@ -31,6 +31,14 @@
   --accent: oklch(0.7 0.14 348);
   --accent-foreground: oklch(0.985 0.01 340);
 
+  /* Ink for .btn-kl-accent. Declared per scope, NOT read as a bare token on
+     the element, because dusty pink sits mid-lightness: on the dark body it
+     needs the deep-navy ink (near-white --accent-foreground would land near
+     2:1). A custom property holding a var() resolves where it is DECLARED and
+     then inherits as a fixed color, so this pair must stay two declarations -
+     see the matching one in .section-light. Do not collapse them into one. */
+  --btn-accent-fg: var(--primary-foreground);
+
   --background: oklch(0.23 0.032 262);
   --foreground: oklch(0.93 0.012 240);
   --card: oklch(0.27 0.036 262);
@@ -90,6 +98,10 @@
   --primary-foreground: oklch(0.98 0.002 240);
   --accent: oklch(0.54 0.16 348);
   --accent-foreground: oklch(0.98 0.002 240);
+  /* Re-declared here on purpose: the pink is dark enough in light sections to
+     carry light text, so the default accent pairing is restored. Must be
+     declared in this scope - the :root value froze to deep navy. */
+  --btn-accent-fg: var(--accent-foreground);
   --border: oklch(0.3 0.028 262 / 14%);
   --input: oklch(0.3 0.028 262 / 20%);
   --ring: oklch(0.5 0.1 235);
@@ -482,4 +494,216 @@
    the reviewer names underneath (small caps in the display face). */
 .quote-serif {
   font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+}
+
+/* ---- Neobrutalist buttons ----
+   Square corners, a hard 3px edge and a solid unblurred offset shadow. Hover
+   slides the button 3px into its own shadow instead of fading it, so the
+   press reads as physical rather than as a color change.
+
+   Colors are read as bare tokens ON the element (var(--foreground), etc.),
+   never through intermediate --btn-* properties declared on :root. A custom
+   property whose value is a var() resolves in the scope that declares it and
+   then inherits as a fixed color, which would make every button inside
+   .section-light keep painting the near-white root foreground - an invisible
+   edge on a white card. --btn-accent-fg is the one deliberate exception and
+   is declared in both scopes; see the comments on it above. */
+@layer components {
+  .btn-kl {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+    border: 3px solid var(--foreground);
+    border-radius: 0;
+    box-shadow: 5px 5px 0 var(--foreground);
+    line-height: 1;
+    /* Rammetto One ships a single 400 weight. Anything heavier makes the
+       browser synthesize a fake bold that smears the letterforms, and the
+       face is already chunky - leave the weight alone. */
+    font-family: var(--font-display);
+    font-weight: 400;
+    text-transform: uppercase;
+    /* 0.02em, not the usual 0.05em: Rammetto is wide to begin with and the
+       labels sprawl at wider tracking. */
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition:
+      transform 0.15s,
+      box-shadow 0.15s;
+  }
+
+  .btn-kl:hover {
+    transform: translate(3px, 3px);
+    box-shadow: 2px 2px 0 var(--foreground);
+  }
+
+  .btn-kl:active {
+    transform: translate(5px, 5px);
+    box-shadow: 0 0 0 var(--foreground);
+  }
+
+  .btn-kl:disabled,
+  .btn-kl[aria-disabled="true"] {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  /* ---- Fills ---- */
+  .btn-kl-primary {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+  }
+
+  .btn-kl-quiet {
+    background-color: var(--secondary);
+    color: var(--secondary-foreground);
+  }
+
+  .btn-kl-accent {
+    background-color: var(--accent);
+    color: var(--btn-accent-fg);
+  }
+
+  .btn-kl-destructive {
+    background-color: var(--destructive);
+    color: var(--destructive-foreground);
+  }
+
+  /* Bare: keeps the geometry and type treatment but drops the edge, the fill
+     and the slide, so it can sit inline without reading as a button. Must
+     follow the fills to win on source order at equal specificity. */
+  .btn-kl-bare {
+    background-color: transparent;
+    color: currentColor;
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  .btn-kl-bare:hover {
+    transform: none;
+    box-shadow: none;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .btn-kl-bare:active {
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* ---- Sizes ---- */
+  .btn-kl-sm {
+    padding: 9px 18px;
+    font-size: 13px;
+  }
+
+  .btn-kl-md {
+    padding: 13px 26px;
+    font-size: 15px;
+  }
+
+  .btn-kl-lg {
+    padding: 20px 44px;
+    font-size: 19px;
+  }
+
+  .btn-kl-icon {
+    padding: 0;
+    width: 46px;
+    height: 46px;
+  }
+
+  /* Reduced motion keeps the offset shadow - it is the button's shape, not an
+     animation - and only drops the slide. */
+  @media (prefers-reduced-motion: reduce) {
+    .btn-kl,
+    .btn-kl:hover,
+    .btn-kl:active {
+      transform: none;
+      transition: none;
+      box-shadow: 5px 5px 0 var(--foreground);
+    }
+
+    .btn-kl-bare,
+    .btn-kl-bare:hover,
+    .btn-kl-bare:active {
+      box-shadow: none;
+    }
+  }
+}
+
+/* ---- Navigation ----
+   Same vocabulary as the buttons - uppercase display-adjacent tracking and a
+   3px rule that matches the button border weight - without turning the links
+   into buttons. The rule is drawn on a pseudo-element rather than as a
+   border-bottom so the text never shifts on hover. */
+@layer components {
+  .nav-link {
+    position: relative;
+    display: inline-block;
+    padding: 4px 0;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    transition: color 0.2s;
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 3px;
+    background: var(--primary);
+    transition: width 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .nav-link:hover {
+    color: var(--foreground);
+  }
+
+  .nav-link:hover::after,
+  .nav-link[aria-current="page"]::after {
+    width: 100%;
+  }
+
+  .nav-link[aria-current="page"] {
+    color: var(--foreground);
+  }
+
+  /* A bottom rule gets lost across a full-width mobile row, so the active
+     edge moves to the left. A single-sided border must never take a radius,
+     hence the explicit 0. */
+  .nav-link-mobile {
+    display: block;
+    border-left: 3px solid transparent;
+    padding: 10px 0 10px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    border-radius: 0;
+    transition:
+      color 0.2s,
+      border-color 0.2s;
+  }
+
+  .nav-link-mobile:hover,
+  .nav-link-mobile[aria-current="page"] {
+    border-left-color: var(--primary);
+    color: var(--foreground);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-link::after {
+      transition: none;
+    }
+  }
 }

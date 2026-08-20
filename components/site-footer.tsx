@@ -26,7 +26,7 @@ export function SiteFooter() {
             </li>
             <li>
               <Link href="/#matt" className="hover:text-primary">
-                About Matt
+                About
               </Link>
             </li>
             <li>
@@ -36,7 +36,7 @@ export function SiteFooter() {
             </li>
             <li>
               <Link href="/contact/" className="hover:text-primary">
-                Say hello
+                Contact
               </Link>
             </li>
           </ul>
