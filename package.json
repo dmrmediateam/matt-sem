@@ -9,7 +9,7 @@
     "lint": "eslint",
     "check:worker": "tsc -p worker/tsconfig.json",
     "preview": "npx wrangler dev",
-    "deploy": "next build && npx wrangler deploy"
+    "deploy": "wrangler deploy"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.15",

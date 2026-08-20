@@ -3,6 +3,13 @@
   "name": "matt-sem",
   "main": "./worker/index.ts",
   "compatibility_date": "2026-08-05",
+  // Runs before every deploy so `out/` always exists, even when the CI
+  // project is configured with a deploy command but no build command.
+  // Without this, `wrangler deploy` fails with "the directory specified by
+  // the assets.directory field does not exist".
+  "build": {
+    "command": "npx next build"
+  },
   "assets": {
     "directory": "./out",
     "binding": "ASSETS",
