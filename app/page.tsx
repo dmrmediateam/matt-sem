@@ -26,13 +26,24 @@ export default function HomePage() {
             <h1 className="neon-text neon-pulse anim-rise anim-delay-1 font-display mt-4 text-4xl leading-tight sm:text-5xl lg:text-6xl">
               The &rsquo;86 Kids
             </h1>
-            <p className="anim-rise anim-delay-2 mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
-              A funny, big-hearted memoir of growing up in Wausau, Wisconsin in
-              the mid-1980s: bikes, basketball, nicknames, first crushes, and
-              the last summer before middle school. Think{" "}
-              <em>The Wonder Years</em> meets <em>Seinfeld</em>.
+
+            {/* The promise, given its own line at reading size. The title
+                names the book; this is the line that has to make someone
+                want it. */}
+            <p className="anim-rise anim-delay-2 mt-6 max-w-xl text-xl leading-snug sm:text-2xl">
+              The last summer before everything changed.
             </p>
-            <div className="anim-rise anim-delay-3 mt-8 flex flex-wrap items-center gap-4">
+
+            <p className="anim-rise anim-delay-2 mt-4 max-w-lg leading-relaxed text-muted-foreground">
+              Bikes, basketball, nicknames and first crushes in Wausau,
+              Wisconsin. Think <em>The Wonder Years</em> meets{" "}
+              <em>Seinfeld</em>.
+            </p>
+
+            {/* One dominant action. Two equal buy buttons split the decision,
+                so Barnes & Noble is a text link now rather than a second
+                button competing with the first. */}
+            <div className="anim-rise anim-delay-3 mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
               <Button asChild size="lg">
                 <a
                   href={site.amazonUrl}
@@ -42,25 +53,20 @@ export default function HomePage() {
                   Buy on Amazon
                 </a>
               </Button>
-              <Button asChild size="lg" variant="outline">
-                <a
-                  href={site.barnesNobleUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Buy at Barnes &amp; Noble
-                </a>
-              </Button>
-            </div>
-            <p className="anim-rise anim-delay-4 mt-4">
               <a
-                href="#story"
-                className="text-sm text-muted-foreground transition-colors hover:text-primary"
+                href={site.barnesNobleUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary text-sm underline underline-offset-4"
               >
-                Or keep scrolling to meet the &rsquo;86 kids ↓
+                or Barnes &amp; Noble
               </a>
-            </p>
-            <div className="anim-rise anim-delay-4 mt-6 flex items-center gap-2 text-sm text-muted-foreground">
+            </div>
+
+            {/* Proof stays above the fold — it's the strongest thing the page
+                owns, and it's doing more work than the scroll prompt that
+                used to sit here. */}
+            <div className="anim-rise anim-delay-4 mt-7 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
               <span className="flex text-primary" aria-hidden>
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star key={i} className="size-4 fill-current" />
@@ -69,6 +75,8 @@ export default function HomePage() {
               <span>
                 {site.book.rating.value} out of 5 from Amazon readers
               </span>
+              <span aria-hidden className="text-border">|</span>
+              <span>{site.book.pages} pages</span>
             </div>
           </div>
           <div className="anim-rise anim-delay-2 flex justify-center md:justify-end">
