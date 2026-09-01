@@ -761,3 +761,310 @@
     transition: none;
   }
 }
+
+/* ---- Mobile menu: 1986 VCR on-screen display ----
+   The trigger is deliberately ordinary (plain three-line mark + a visible
+   "Menu" label, no box around it) because that is the shape people actually
+   recognise; the invention all happens inside the panel, where nothing has
+   to be guessed at.
+
+   The panel is a native <dialog>, so the focus trap, Escape, top-layer
+   stacking and scroll lock come from the platform rather than from JS that
+   would need testing in every browser. */
+
+/* NOTE: this rule is appended after Tailwind's utilities, so its `display`
+   beats the `md:hidden` on the element. The explicit media query below is
+   what actually keeps the trigger off desktop - do not rely on the utility
+   alone here. Hidden nav measurably hurts desktop UX (NN/g), so the visible
+   nav must be the only option at md and up. */
+.osd-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 8px 4px;
+  color: var(--foreground);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.osd-bars {
+  display: grid;
+  gap: 4px;
+  width: 22px;
+}
+
+.osd-bars span {
+  display: block;
+  height: 2px;
+  background: currentColor;
+  border-radius: 1px;
+}
+
+.osd-trigger-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* The dialog itself is only a transparent frame; .osd-screen is the CRT. */
+.osd {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--foreground);
+  overflow: hidden;
+}
+
+.osd::backdrop {
+  background: oklch(0.12 0.02 265 / 92%);
+}
+
+.osd-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.25rem 1.25rem 1.75rem;
+  background:
+    radial-gradient(
+      120% 90% at 50% 0%,
+      oklch(0.24 0.05 265) 0%,
+      oklch(0.14 0.03 265) 60%,
+      oklch(0.11 0.02 265) 100%
+    );
+  /* Screen-on sweep: a bright line opens vertically into the full picture,
+     the way a CRT wakes up. One orchestrated moment, on the user's tap. */
+  animation: osd-on 0.42s cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+
+@keyframes osd-on {
+  0% {
+    transform: scaleY(0.004);
+    filter: brightness(3.2);
+    opacity: 1;
+  }
+  55% {
+    transform: scaleY(1);
+    filter: brightness(1.6);
+  }
+  100% {
+    transform: scaleY(1);
+    filter: brightness(1);
+  }
+}
+
+/* Scanlines + a faint colour-bleed, the reason this reads as a tape and not
+   as a dark modal. Non-interactive and behind everything. */
+.osd-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    oklch(1 0 0 / 4.5%) 0px,
+    oklch(1 0 0 / 4.5%) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay;
+}
+
+.osd-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  color: var(--primary);
+  text-transform: uppercase;
+  padding-bottom: 0.9rem;
+  border-bottom: 2px solid oklch(1 0 0 / 14%);
+}
+
+.osd-mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Solid play triangle drawn in CSS so it needs no icon font. */
+.osd-play {
+  width: 0;
+  height: 0;
+  border-left: 9px solid currentColor;
+  border-top: 5.5px solid transparent;
+  border-bottom: 5.5px solid transparent;
+}
+
+.osd-deck {
+  color: var(--muted-foreground);
+}
+
+.osd-clock {
+  margin-left: auto;
+  color: var(--accent);
+  animation: osd-blink 1.6s ease-in-out infinite;
+}
+
+@keyframes osd-blink {
+  0%,
+  55% {
+    opacity: 1;
+  }
+  70%,
+  100% {
+    opacity: 0.25;
+  }
+}
+
+.osd-list {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.osd-item {
+  display: grid;
+  grid-template-columns: 1.4rem auto 1fr auto;
+  grid-template-areas:
+    "cursor channel label label"
+    ".      .       hint  now";
+  align-items: baseline;
+  gap: 0 0.7rem;
+  padding: 0.7rem 0.35rem;
+  color: var(--muted-foreground);
+  outline: none;
+  transition:
+    color 0.18s ease,
+    background-color 0.18s ease;
+}
+
+/* Selection is shown by the cursor, the colour lift and a tinted row - not by
+   an outline, which would fight the CRT surface. Focus-visible still gets a
+   real ring for keyboard users on the desktop-width fallback. */
+.osd-item[data-selected="true"] {
+  color: var(--foreground);
+  background: oklch(1 0 0 / 5%);
+}
+
+.osd-item:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--primary);
+}
+
+.osd-cursor {
+  grid-area: cursor;
+  font-size: 0.8rem;
+  color: var(--accent);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.osd-item[data-selected="true"] .osd-cursor {
+  opacity: 1;
+  transform: translateX(0);
+  animation: osd-cursor-pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes osd-cursor-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.osd-channel {
+  grid-area: channel;
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  color: var(--primary);
+}
+
+.osd-label {
+  grid-area: label;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  line-height: 1.05;
+}
+
+.osd-hint {
+  grid-area: hint;
+  margin-top: 0.3rem;
+  font-size: 0.82rem;
+  color: var(--muted-foreground);
+}
+
+/* Sits on the hint line, not the title line: competing for width with the
+   display type was forcing longer labels to wrap. */
+.osd-now {
+  grid-area: now;
+  justify-self: end;
+  align-self: baseline;
+  white-space: nowrap;
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.osd-help {
+  position: relative;
+  padding-top: 1rem;
+  border-top: 2px solid oklch(1 0 0 / 14%);
+  font-size: 0.72rem;
+  color: var(--muted-foreground);
+}
+
+.osd-close {
+  position: relative;
+  margin-top: 0.9rem;
+  align-self: flex-start;
+  padding: 10px 18px;
+  border: 3px solid var(--foreground);
+  background: transparent;
+  color: var(--foreground);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .osd-trigger {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .osd-screen {
+    animation: none;
+  }
+  .osd-clock,
+  .osd-item[data-selected="true"] .osd-cursor {
+    animation: none;
+  }
+  .osd-cursor,
+  .osd-item {
+    transition: none;
+  }
+}

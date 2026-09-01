@@ -3,8 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
-
+import { RetroMenu } from "@/components/retro-menu";
 import { mediaPhotos, mediaVideos } from "@/lib/media";
 
 /**
@@ -50,7 +49,6 @@ export function SiteHeader() {
   const pathname = usePathname();
   const isHome = pathname === "/";
 
-  const [open, setOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
   const [spied, setSpied] = React.useState<string | null>(null);
 
@@ -93,19 +91,13 @@ export function SiteHeader() {
     return () => observer.disconnect();
   }, [isHome]);
 
-  // Close the mobile panel on Escape; it covers the page, so it needs a way
-  // out that isn't the toggle.
-  React.useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
+  // Escape, the focus trap and the scroll lock are handled by the native
+  // <dialog> inside RetroMenu, so there's nothing to wire up here.
 
   return (
     <header className="site-header" data-scrolled={scrolled}>
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" className="wordmark" onClick={() => setOpen(false)}>
+        <Link href="/" className="wordmark">
           Matt Sem
         </Link>
 
@@ -124,39 +116,8 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <button
-          type="button"
-          className="menu-toggle md:hidden"
-          aria-expanded={open}
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => setOpen((v) => !v)}
-        >
-          {open ? <X className="size-6" /> : <Menu className="size-6" />}
-        </button>
+        <RetroMenu current={current} hasMedia={hasMedia} />
       </div>
-
-      {open ? (
-        <nav
-          className="bg-background border-t border-border/60 px-4 pt-2 pb-6 md:hidden"
-          aria-label="Mobile"
-        >
-          <ul className="grid">
-            {links.map((link) => (
-              <li key={link.id}>
-                <Link
-                  href={link.href}
-                  className="nav-item-mobile"
-                  data-current={current === link.id}
-                  onClick={() => setOpen(false)}
-                >
-                  {link.label}
-                  <NavMark />
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      ) : null}
     </header>
   );
 }

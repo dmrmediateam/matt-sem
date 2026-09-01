@@ -1,0 +1,42 @@
+{
+  "_comment": "Drives the mobile menu in components/retro-menu.tsx. The deck/mode/clock values are the on-screen-display chrome of a 1986 VCR; 'clock' is 12:00 on purpose - an unset VCR blinking 12:00 is the era's signature. Adding or reordering an item is an edit here, not a code change. Channel numbers are NOT stored: they are derived from what is actually on screen, so hiding an item (Videos, until media exists) renumbers the rest instead of leaving a gap at CH 03.",
+  "osd": {
+    "deck": "SEM-86",
+    "mode": "PLAY",
+    "clock": "12:00",
+    "hint": "Use ↑ ↓ to browse · Enter to select · Esc to close"
+  },
+  "items": [
+    {
+      "id": "book",
+      "href": "/#book",
+      "label": "The book",
+      "hint": "467 pages of 1985-86"
+    },
+    {
+      "id": "matt",
+      "href": "/#matt",
+      "label": "About",
+      "hint": "Who Matt is, and why he wrote it"
+    },
+    {
+      "id": "media",
+      "href": "/#media",
+      "label": "Videos",
+      "hint": "Readings, signings, old photos",
+      "requiresMedia": true
+    },
+    {
+      "id": "next",
+      "href": "/#next",
+      "label": "What's next",
+      "hint": "Three more books in the works"
+    },
+    {
+      "id": "contact",
+      "href": "/#contact",
+      "label": "Contact",
+      "hint": "Say hello, or order a signed copy"
+    }
+  ]
+}
