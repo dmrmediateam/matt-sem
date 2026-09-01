@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 
-import { books, upcoming } from "@/lib/books";
+import { books } from "@/lib/books";
 import menuData from "@/lib/menu.json";
 import { mediaPhotos, mediaVideos } from "@/lib/media";
 
@@ -31,9 +31,9 @@ const BACKGROUND_PHOTO: string | null = "/images/matt-sem.jpg";
 
 type MenuItem = {
   id: string;
-  href: string;
+  href?: string;
   label: string;
-  hint: string;
+  expands?: boolean;
   requiresMedia?: boolean;
 };
 
@@ -49,18 +49,24 @@ export function MarqueeMenu({ current }: { current: string | null }) {
 
   const dialogRef = React.useRef<HTMLDialogElement>(null);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
-  const firstRowRef = React.useRef<HTMLAnchorElement>(null);
+  const firstRowRef = React.useRef<HTMLElement | null>(null);
 
   const [open, setOpen] = React.useState(false);
+  // The Books sub-list is closed on every open, so the menu always presents
+  // the same short list of destinations rather than remembering a state the
+  // reader set several visits ago.
+  const [booksOpen, setBooksOpen] = React.useState(false);
 
   function openMenu() {
     setOpen(true);
+    setBooksOpen(false);
     dialogRef.current?.showModal();
     requestAnimationFrame(() => firstRowRef.current?.focus());
   }
 
   function closeMenu() {
     setOpen(false);
+    setBooksOpen(false);
     dialogRef.current?.close();
     // Without this the reader is dumped at the top of the document.
     triggerRef.current?.focus();
@@ -116,49 +122,70 @@ export function MarqueeMenu({ current }: { current: string | null }) {
           <ul className="mq-list">
             {items.map((item, i) => (
               <li key={item.id}>
-                <Link
-                  href={item.href}
-                  ref={i === 0 ? firstRowRef : undefined}
-                  className="mq-row"
-                  data-current={item.id === current}
-                  onClick={closeMenu}
-                >
-                  <span className="mq-ch" aria-hidden="true">
-                    CH {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span className="mq-label">{item.label}</span>
-                  {item.id === current ? (
-                    <span className="mq-now">Now playing</span>
-                  ) : null}
-                </Link>
+                {/* Books doesn't go anywhere on its own — there is no books
+                    index page — so it's a disclosure button rather than a
+                    link. Picking a title is the reader's second step. */}
+                {item.expands ? (
+                  <button
+                    type="button"
+                    ref={(el) => {
+                      if (i === 0) firstRowRef.current = el;
+                    }}
+                    className="mq-row"
+                    data-current={item.id === current}
+                    aria-expanded={booksOpen}
+                    aria-controls="mq-books"
+                    onClick={() => setBooksOpen((v) => !v)}
+                  >
+                    <span className="mq-ch" aria-hidden="true">
+                      CH {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="mq-label">{item.label}</span>
+                    <span className="mq-caret" aria-hidden="true" />
+                    {item.id === current ? (
+                      <span className="mq-now">Now playing</span>
+                    ) : null}
+                  </button>
+                ) : (
+                  <Link
+                    href={item.href!}
+                    ref={(el) => {
+                      if (i === 0) firstRowRef.current = el;
+                    }}
+                    className="mq-row"
+                    data-current={item.id === current}
+                    onClick={closeMenu}
+                  >
+                    <span className="mq-ch" aria-hidden="true">
+                      CH {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="mq-label">{item.label}</span>
+                    {item.id === current ? (
+                      <span className="mq-now">Now playing</span>
+                    ) : null}
+                  </Link>
+                )}
 
-                {/* The book list lives under Books rather than in a nested
-                    dropdown: there's room here, and a second layer of
-                    hidden navigation inside hidden navigation would be a
-                    poor trade. */}
-                {item.id === "book" ? (
-                  <ul className="mq-sub">
-                    {books.map((book) => (
-                      <li key={book.slug}>
-                        <Link
-                          href={`/books/${book.slug}/`}
-                          onClick={closeMenu}
-                        >
-                          {book.title}
-                        </Link>
-                      </li>
-                    ))}
-                    {upcoming.map((book) => (
-                      <li key={book.title}>
-                        <span
-                          className="mq-sub-soon"
-                          data-status={book.status}
-                        >
-                          {book.title}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+                {/* Kept mounted so aria-controls always resolves and the open
+                    can be animated; `inert` is what actually takes it out of
+                    the tab order and the accessibility tree while closed. */}
+                {item.expands ? (
+                  <div className="mq-sub-wrap" data-open={booksOpen}>
+                    <div className="mq-sub-clip" inert={!booksOpen}>
+                      <ul id="mq-books" className="mq-sub">
+                        {books.map((book) => (
+                          <li key={book.slug}>
+                            <Link
+                              href={`/books/${book.slug}/`}
+                              onClick={closeMenu}
+                            >
+                              {book.title}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
                 ) : null}
               </li>
             ))}

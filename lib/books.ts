@@ -91,8 +91,9 @@ export const books: Book[] = [
 
 /**
  * Titles in the works. These have no pages yet, so they are a separate list
- * from `books` rather than entries with empty fields. Both the "What's next"
- * section and the Books dropdown read from here, so the two can't drift.
+ * from `books` rather than entries with empty fields. The "What's next"
+ * section on the home page is the only thing that reads this: the Books
+ * dropdown lists `books` alone, so it never offers a title you can't open.
  */
 export type UpcomingBook = {
   title: string;

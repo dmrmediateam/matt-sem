@@ -848,26 +848,42 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.15rem;
+  gap: 0.9rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
+/* Two rows, but only because "Now playing" gets its own line: on a phone the
+   tag and a long title were competing for the same width and wrapping the
+   display type. The descriptive hints that used to sit here are gone — the
+   labels say enough, and the list reads faster without them. */
 .osd-item {
   display: grid;
+  width: 100%;
   grid-template-columns: 1.4rem auto 1fr auto;
   grid-template-areas:
-    "cursor channel label label"
-    ".      .       hint  now";
+    "cursor channel label caret"
+    ".      .       now   now";
   align-items: baseline;
   gap: 0 0.7rem;
-  padding: 0.7rem 0.35rem;
+  padding: 0.65rem 0.35rem;
   color: var(--muted-foreground);
   outline: none;
   transition:
     color 0.18s ease,
     background-color 0.18s ease;
+}
+
+/* The Books row is a <button>; strip the UA chrome so it sits in the list as
+   though it were one of the links. */
+button.osd-item {
+  appearance: none;
+  background: none;
+  border: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
 /* Selection is shown by the cursor, the colour lift and a tinted row - not by
@@ -924,24 +940,82 @@
   line-height: 1.05;
 }
 
-.osd-hint {
-  grid-area: hint;
-  margin-top: 0.3rem;
-  font-size: 0.82rem;
-  color: var(--muted-foreground);
-}
-
-/* Sits on the hint line, not the title line: competing for width with the
-   display type was forcing longer labels to wrap. */
+/* Its own line under the title rather than beside it: competing for width
+   with the display type was forcing longer labels to wrap. */
 .osd-now {
   grid-area: now;
-  justify-self: end;
+  margin-top: 0.25rem;
+  justify-self: start;
   align-self: baseline;
   white-space: nowrap;
   font-size: 0.66rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--accent);
+}
+
+/* Disclosure arrow on the Books row. Points down at rest, up once open. */
+.osd-caret {
+  grid-area: caret;
+  align-self: center;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid var(--primary);
+  transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.osd-item[aria-expanded="true"] .osd-caret {
+  transform: rotate(180deg);
+}
+
+/* The book list under Books. Collapsed height is animated by the 0fr/1fr
+   grid row; the clip is what actually hides the overflow, and `inert` on it
+   (set in the component) is what keeps a closed list out of the tab order. */
+.osd-sub-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.osd-sub-wrap[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+
+.osd-sub-clip {
+  overflow: hidden;
+}
+
+.osd-sub {
+  margin: 0;
+  padding: 0.25rem 0 0.5rem 3.5rem;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.osd-sub a {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--muted-foreground);
+  outline: none;
+}
+
+.osd-sub a::before {
+  content: "· ";
+  color: var(--primary);
+}
+
+.osd-sub a:hover,
+.osd-sub a:focus-visible {
+  color: var(--foreground);
+}
+
+.osd-sub a:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--primary);
 }
 
 .osd-help {
@@ -1339,7 +1413,7 @@ a.book-row:focus-visible {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.9rem;
+  gap: 1.9rem;
   padding: 0 clamp(40px, 7vw, 96px);
   margin: 0;
   list-style: none;
@@ -1352,6 +1426,18 @@ a.book-row:focus-visible {
   width: max-content;
   outline: none;
   transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* The Books row is a <button>; strip the UA chrome so it reads as one of the
+   marquee rows and not as a control dropped into the list. */
+button.mq-row {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
 /* Fixed width so the markers stack in a clean column; without it each row is
@@ -1417,39 +1503,83 @@ a.book-row:focus-visible {
   white-space: nowrap;
 }
 
-/* The book list sits under the Books row, indented to the marker column. */
-.mq-sub {
-  margin: 0.6rem 0 0.2rem 4.5rem;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.4rem 2rem;
-  /* Held to the left column so it reads as a list belonging to Books, not a
-     caption strip running under the photograph. */
-  max-width: 34rem;
+/* Disclosure arrow on the Books row. Points down at rest, up once open. */
+.mq-caret {
+  align-self: center;
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 9px solid var(--primary);
+  opacity: 0.6;
+  transition:
+    transform 0.24s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.2s ease;
 }
 
-.mq-sub a,
-.mq-sub span {
-  font-size: 0.92rem;
+.mq-row:hover .mq-caret,
+.mq-row:focus-visible .mq-caret,
+.mq-row[aria-expanded="true"] .mq-caret {
+  opacity: 1;
+}
+
+.mq-row[aria-expanded="true"] .mq-caret {
+  transform: rotate(180deg);
+}
+
+/* The book list sits under the Books row, indented to the marker column. It
+   stays mounted so aria-controls resolves; the 0fr/1fr grid row animates the
+   height, the clip hides the overflow, and `inert` on the clip (set in the
+   component) keeps a closed list out of the tab order. */
+.mq-sub-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.mq-sub-wrap[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+
+.mq-sub-clip {
+  overflow: hidden;
+}
+
+.mq-sub {
+  margin: 0;
+  padding: 0.7rem 0 0.3rem 4.5rem;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.mq-sub a {
+  display: inline-block;
+  width: max-content;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
   color: var(--muted-foreground);
+  transition:
+    color 0.2s ease,
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.mq-sub a::before {
+  content: "· ";
+  color: var(--primary);
 }
 
 .mq-sub a:hover,
 .mq-sub a:focus-visible {
-  color: var(--primary);
+  color: var(--foreground);
   outline: none;
-  text-decoration: underline;
-  text-underline-offset: 4px;
+  transform: translateX(8px);
 }
 
-.mq-sub .mq-sub-soon::after {
-  content: " · " attr(data-status);
-  color: var(--accent);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.mq-sub a:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 5px;
 }
 
 .mq-help {
@@ -1465,10 +1595,17 @@ a.book-row:focus-visible {
   .mq-row,
   .mq-label,
   .mq-ch,
+  .mq-caret,
+  .mq-sub a,
+  .mq-sub-wrap,
+  .osd-caret,
+  .osd-sub-wrap,
   .mq-trigger,
   .osd-trigger {
     transition: none;
   }
+  .mq-sub a:hover,
+  .mq-sub a:focus-visible,
   .mq-row:hover,
   .mq-row:focus-visible,
   .mq-trigger:hover,

@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 
+import { books } from "@/lib/books";
 import menuData from "@/lib/menu.json";
 
 /**
@@ -26,9 +27,9 @@ import menuData from "@/lib/menu.json";
 
 type MenuItem = {
   id: string;
-  href: string;
+  href?: string;
   label: string;
-  hint: string;
+  expands?: boolean;
   requiresMedia?: boolean;
 };
 
@@ -49,12 +50,14 @@ export function RetroMenu({
 
   const dialogRef = React.useRef<HTMLDialogElement>(null);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
-  const itemRefs = React.useRef<(HTMLAnchorElement | null)[]>([]);
+  const itemRefs = React.useRef<(HTMLElement | null)[]>([]);
 
   const [open, setOpen] = React.useState(false);
   // Which row the arrow-key cursor sits on. Opens on the section being read,
   // so the menu answers "where am I" before it answers "where can I go".
   const [cursor, setCursor] = React.useState(0);
+  // Books opens collapsed every time; see the note in marquee-menu.tsx.
+  const [booksOpen, setBooksOpen] = React.useState(false);
 
   function openMenu() {
     const startAt = Math.max(
@@ -63,6 +66,7 @@ export function RetroMenu({
     );
     setCursor(startAt);
     setOpen(true);
+    setBooksOpen(false);
     dialogRef.current?.showModal();
     // Focus the row the cursor is on, not blindly the first.
     requestAnimationFrame(() => itemRefs.current[startAt]?.focus());
@@ -70,6 +74,7 @@ export function RetroMenu({
 
   function closeMenu() {
     setOpen(false);
+    setBooksOpen(false);
     dialogRef.current?.close();
     // Return focus to what opened it, or the user lands back at the page top.
     triggerRef.current?.focus();
@@ -77,14 +82,26 @@ export function RetroMenu({
 
   // Arrow keys move the cursor the way a VCR remote would. Tab is left alone
   // so the standard keyboard path still works.
+  //
+  // The rows are read from the DOM rather than from `items` because an open
+  // Books sub-list adds rows that aren't in that array. Anything inside the
+  // collapsed sub-list is `inert` and can't take focus, so it's filtered out
+  // — otherwise the cursor would stop on a row nobody can see.
   function onKeyDown(e: React.KeyboardEvent<HTMLDialogElement>) {
-    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
-      e.preventDefault();
-      const dir = e.key === "ArrowDown" ? 1 : -1;
-      const next = (cursor + dir + items.length) % items.length;
-      setCursor(next);
-      itemRefs.current[next]?.focus();
-    }
+    if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+    e.preventDefault();
+
+    const rows = Array.from(
+      dialogRef.current?.querySelectorAll<HTMLElement>("[data-osd-row]") ?? []
+    ).filter((el) => !el.closest("[inert]"));
+    if (rows.length === 0) return;
+
+    const at = rows.indexOf(document.activeElement as HTMLElement);
+    const dir = e.key === "ArrowDown" ? 1 : -1;
+    // A cursor that isn't on any row (-1) steps to the first row going down
+    // and the last going up, which is what both keys should do from nowhere.
+    const next = (at + dir + rows.length) % rows.length;
+    rows[next]?.focus();
   }
 
   return (
@@ -140,29 +157,80 @@ export function RetroMenu({
               const selected = i === cursor;
               return (
                 <li key={item.id}>
-                  <Link
-                    href={item.href}
-                    ref={(el) => {
-                      itemRefs.current[i] = el;
-                    }}
-                    className="osd-item"
-                    data-selected={selected}
-                    data-current={item.id === current}
-                    onFocus={() => setCursor(i)}
-                    onClick={closeMenu}
-                  >
-                    <span className="osd-cursor" aria-hidden="true">
-                      &#9654;
-                    </span>
-                    <span className="osd-channel" aria-hidden="true">
-                      CH {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <span className="osd-label">{item.label}</span>
-                    <span className="osd-hint">{item.hint}</span>
-                    {item.id === current ? (
-                      <span className="osd-now">Now playing</span>
-                    ) : null}
-                  </Link>
+                  {/* Books is a disclosure, not a destination — same reason
+                      as on desktop. */}
+                  {item.expands ? (
+                    <button
+                      type="button"
+                      data-osd-row
+                      ref={(el) => {
+                        itemRefs.current[i] = el;
+                      }}
+                      className="osd-item"
+                      data-selected={selected}
+                      data-current={item.id === current}
+                      aria-expanded={booksOpen}
+                      aria-controls="osd-books"
+                      onFocus={() => setCursor(i)}
+                      onClick={() => setBooksOpen((v) => !v)}
+                    >
+                      <span className="osd-cursor" aria-hidden="true">
+                        &#9654;
+                      </span>
+                      <span className="osd-channel" aria-hidden="true">
+                        CH {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="osd-label">{item.label}</span>
+                      <span className="osd-caret" aria-hidden="true" />
+                      {item.id === current ? (
+                        <span className="osd-now">Now playing</span>
+                      ) : null}
+                    </button>
+                  ) : (
+                    <Link
+                      href={item.href!}
+                      data-osd-row
+                      ref={(el) => {
+                        itemRefs.current[i] = el;
+                      }}
+                      className="osd-item"
+                      data-selected={selected}
+                      data-current={item.id === current}
+                      onFocus={() => setCursor(i)}
+                      onClick={closeMenu}
+                    >
+                      <span className="osd-cursor" aria-hidden="true">
+                        &#9654;
+                      </span>
+                      <span className="osd-channel" aria-hidden="true">
+                        CH {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="osd-label">{item.label}</span>
+                      {item.id === current ? (
+                        <span className="osd-now">Now playing</span>
+                      ) : null}
+                    </Link>
+                  )}
+
+                  {item.expands ? (
+                    <div className="osd-sub-wrap" data-open={booksOpen}>
+                      <div className="osd-sub-clip" inert={!booksOpen}>
+                        <ul id="osd-books" className="osd-sub">
+                          {books.map((book) => (
+                            <li key={book.slug}>
+                              <Link
+                                href={`/books/${book.slug}/`}
+                                data-osd-row
+                                onClick={closeMenu}
+                              >
+                                {book.title}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  ) : null}
                 </li>
               );
             })}

@@ -1,5 +1,5 @@
 {
-  "_comment": "Drives the mobile menu in components/retro-menu.tsx. The deck/mode/clock values are the on-screen-display chrome of a 1986 VCR; 'clock' is 12:00 on purpose - an unset VCR blinking 12:00 is the era's signature. Adding or reordering an item is an edit here, not a code change. Channel numbers are NOT stored: they are derived from what is actually on screen, so hiding an item (Videos, until media exists) renumbers the rest instead of leaving a gap at CH 03.",
+  "_comment": "Drives both menus: the mobile OSD in components/retro-menu.tsx and the desktop marquee in components/marquee-menu.tsx. The deck/mode/clock values are the on-screen-display chrome of a 1986 VCR; 'clock' is 12:00 on purpose - an unset VCR blinking 12:00 is the era's signature. Adding or reordering an item is an edit here, not a code change. Channel numbers are NOT stored: they are derived from what is actually on screen, so hiding an item (Videos, until media exists) renumbers the rest instead of leaving a gap at CH 03. An item has EITHER an 'href' (it navigates) OR 'expands' (it opens a sub-list); Books expands, and its titles come from lib/books.ts so the menu can't drift from the catalog.",
   "osd": {
     "deck": "SEM-86",
     "mode": "PLAY",
@@ -9,34 +9,29 @@
   "items": [
     {
       "id": "book",
-      "href": "/books/the-86-kids/",
       "label": "Books",
-      "hint": "The '86 Kids, plus three in the works"
+      "expands": true
     },
     {
       "id": "matt",
       "href": "/#matt",
-      "label": "About",
-      "hint": "Who Matt is, and why he wrote it"
+      "label": "About"
     },
     {
       "id": "media",
       "href": "/#media",
       "label": "Videos",
-      "hint": "Readings, signings, old photos",
       "requiresMedia": true
     },
     {
       "id": "next",
       "href": "/#next",
-      "label": "What's next",
-      "hint": "Three more books in the works"
+      "label": "What's next"
     },
     {
       "id": "contact",
       "href": "/#contact",
-      "label": "Contact",
-      "hint": "Say hello, or order a signed copy"
+      "label": "Contact"
     }
   ]
 }
