@@ -5,13 +5,21 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
+import { mediaPhotos, mediaVideos } from "@/lib/media";
+
 /**
  * One-page site: nav items are anchors into the home narrative, plus the
  * contact page. Anchors deliberately read like a story arc, not a sitemap.
+ *
+ * The media anchor only appears once lib/media.ts actually has something in
+ * it, so the nav can never point at a section that isn't rendered.
  */
+const hasMedia = mediaPhotos.length > 0 || mediaVideos.length > 0;
+
 const links = [
   { href: "/#book", label: "The book" },
   { href: "/#matt", label: "About" },
+  ...(hasMedia ? [{ href: "/#media", label: "Videos" }] : []),
   { href: "/#next", label: "What's next" },
   { href: "/contact/", label: "Contact" },
 ];

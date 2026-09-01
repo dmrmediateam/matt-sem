@@ -187,10 +187,11 @@ export default async function BookPage({
             ))}
           </div>
           <p className="mt-8 text-sm text-muted-foreground">
-            Signed and &rsquo;80s Edition orders go straight to Matt through
-            the contact form while the web store is being finished. Local
-            readers: Janke Book Store, the Story Cellar, and Barnes &amp;
-            Noble in Wausau carry the book, bookmark included.
+            Signed and &rsquo;80s Edition orders go straight to Matt. Send a
+            note through the contact form and he&rsquo;ll email you back to
+            sort out payment and delivery. Local readers: Janke Book Store
+            and the Story Cellar in Wausau carry the book, bookmark
+            included.
           </p>
         </div>
       </section>

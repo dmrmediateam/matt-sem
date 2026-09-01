@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Star } from "lucide-react";
 
 import { BookCover } from "@/components/book-cover";
+import { MediaGallery } from "@/components/media-gallery";
 import { RetroWave } from "@/components/retro-figures";
 import { Reveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
@@ -324,15 +325,18 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Videos and pictures. Renders only when lib/media.ts has entries. */}
+      <MediaGallery />
+
       {/* Where to buy + closing CTA. */}
       <section aria-label="Where to buy">
         <div className="mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-6 md:grid-cols-2">
           <Reveal>
             <h2 className="font-display text-3xl">Where to get your copy</h2>
             <p className="mt-4 leading-relaxed text-muted-foreground">
-              Online at Amazon or Barnes &amp; Noble, or in person around
-              Wausau, and every local purchase comes with a free &rsquo;86
-              Kids bookmark.
+              Online at Amazon or Barnes &amp; Noble, or in person at two
+              Wausau bookstores, and every local purchase comes with a free
+              &rsquo;86 Kids bookmark.
             </p>
             <ul className="mt-6 grid gap-3 text-sm">
               <li>
@@ -360,7 +364,8 @@ export default function HomePage() {
                   Barnes &amp; Noble
                 </a>{" "}
                 <span className="text-muted-foreground">
-                  · online and in the Wausau store
+                  · paperback {site.book.formats[1].price}, hardcover{" "}
+                  {site.book.formats[2].price}
                 </span>
               </li>
               <li>
@@ -369,10 +374,6 @@ export default function HomePage() {
               </li>
               <li>
                 <span className="font-semibold">The Story Cellar</span>{" "}
-                <span className="text-muted-foreground">· Wausau, WI</span>
-              </li>
-              <li>
-                <span className="font-semibold">Barnes &amp; Noble</span>{" "}
                 <span className="text-muted-foreground">· Wausau, WI</span>
               </li>
             </ul>

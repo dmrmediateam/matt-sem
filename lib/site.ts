@@ -9,10 +9,11 @@ export const site = {
   location: "Wausau, Wisconsin",
   amazonUrl:
     "https://www.amazon.com/86-Kids-sometimes-humorous-Childhood-ebook/dp/B0FJ23N722",
-  // TODO: replace with the direct product URL once the client sends it
-  // (Tony has asked Matt for the link). Search results page until then.
+  // Direct B&N product page. The previous value was a /s/ search URL that
+  // returned a 404, which is the "link doesn't work" the client reported.
+  // ISBN 9798899725128. Paperback $19.99, hardcover $27.99, eBook $9.99.
   barnesNobleUrl:
-    "https://www.barnesandnoble.com/s/the%2086%20kids%20matt%20sem",
+    "https://www.barnesandnoble.com/w/the-86-kids-matt-sem/1147922971",
   book: {
     title: "The '86 Kids",
     subtitle:
