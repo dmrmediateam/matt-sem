@@ -8,12 +8,11 @@ three states that matter:
                                           photos turn out unusable
   C  the original 01, for comparison    - plain type list, no channel marks
 
-Borrowed from 03:
-  * CH 01-04 markers, keeping the tape-deck vocabulary and tying the desktop
-    menu to the mobile VCR menu
-  * the offset-shadow lift as the hover state, rendered as a hard pink
-    text-shadow so the type itself carries the button system's 5px offset
-    rather than a plain colour change
+Borrowed from 03: the offset-shadow lift as the hover state, rendered as a
+hard pink text-shadow so the type itself carries the button system's 5px
+offset rather than a plain colour change. The CH channel markers were tried
+and cut - see the third frame for why they were a reasonable idea that the
+layout did not need.
 """
 
 import base64
@@ -90,9 +89,7 @@ h1 {{ max-width: 1180px; margin: 0 auto 6px; font-family: display; font-size: 1.
 .stage.nophoto .art, .stage.nophoto .scrim {{ display: none; }}
 .stage.nophoto {{ background: radial-gradient(120% 120% at 20% 0%, oklch(.19 .035 265), oklch(.13 .025 262) 70%); }}
 
-/* State C: the original, for comparison. */
-.stage.plain .ch {{ display: none; }}
-.stage.plain .row:hover .lbl {{ text-shadow: none; }}
+/* Frame C keeps the markers, for the record. */
 
 @media (prefers-reduced-motion: reduce) {{
   .row, .lbl, .ch {{ transition: none; }}
@@ -101,7 +98,7 @@ h1 {{ max-width: 1180px; margin: 0 auto 6px; font-family: display; font-size: 1.
 """
 
 
-def rows(with_ch: bool = True) -> str:
+def rows(with_ch: bool = False) -> str:
     out = []
     for i, label in enumerate(ITEMS):
         ch = f'<span class="ch">CH 0{i+1}</span>' if with_ch else ""
@@ -113,7 +110,7 @@ def stage(cls: str) -> str:
     return f"""<div class="stage {cls}">
       <div class="art"></div><div class="scrim"></div><div class="scan"></div>
       <div class="close">&times; Close</div>
-      <div class="list">{rows(with_ch="plain" not in cls)}</div>
+      <div class="list">{rows(with_ch="withch" in cls)}</div>
     </div>"""
 
 
@@ -131,16 +128,15 @@ HTML = f"""<!DOCTYPE html>
 <title>Matt Sem — 01 with the 03 borrowings</title>
 <style>{CSS}</style></head><body>
 
-<h1>Design 01, with the two things worth taking from 03</h1>
-<p class="sub">Hover the rows. The channel markers and the pink offset lift are the borrowings;
-everything else is 01. The middle frame is the same design with no photograph, which is what
-ships until Matt&rsquo;s media lands.</p>
+<h1>Markers removed</h1>
+<p class="sub">Hover the rows. The pink offset lift stays; the CH markers are gone. The last frame
+keeps them so you can see the two side by side.</p>
 
-{opt("A", "Hybrid — with a photograph", "The channel markers sit small and cyan beside each row, and hovering pushes the type right while a hard pink shadow drops behind it at the same 5px offset the buttons use. It reads as the same kit as the rest of the site rather than a generic full-screen menu.", "")}
+{opt("A", "With a photograph", "Just the four names. Hovering pushes the type right and drops a hard pink shadow behind it at the same 5px offset the buttons use — that hover is now the only thing tying the menu to the rest of the site, and it carries it fine.", "")}
 
-{opt("B", "Hybrid — no photograph (ships today)", "Same design with the image removed. This is the state that matters most right now: nothing looks broken or empty, because the type was carrying it all along. If Matt&rsquo;s photos turn out to be dark vertical phone snaps, this stays the honest choice.", "nophoto")}
+{opt("B", "No photograph (ships today)", "The same thing with the image removed. This is the state that matters until Matt&rsquo;s media lands: nothing looks broken or empty, because the type was doing the work all along.", "nophoto")}
 
-{opt("C", "Original 01, for comparison", "No channel markers, plain colour change on hover. Perfectly decent — but it is also the full-screen big-type menu on every agency site, with nothing tying it to this one.", "plain")}
+{opt("C", "With the markers, for the record", "What was just removed. The markers were doing a job — tying the desktop menu to the mobile VCR channel list — but they also pushed the names off the left edge and added a second thing to read on every row.", "withch")}
 
 </body></html>
 """
