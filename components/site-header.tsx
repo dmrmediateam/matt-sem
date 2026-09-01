@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import { MarqueeMenu } from "@/components/marquee-menu";
+import { Wordmark } from "@/components/wordmark";
 import { RetroMenu } from "@/components/retro-menu";
 import { mediaPhotos, mediaVideos } from "@/lib/media";
 
@@ -82,8 +83,8 @@ export function SiteHeader() {
   return (
     <header className="site-header" data-scrolled={scrolled}>
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" className="wordmark">
-          Matt Sem
+        <Link href="/" className="wordmark" aria-label="Matt Sem, home">
+          <Wordmark className="h-[18px] w-auto" title="" />
         </Link>
 
         <div className="flex items-center gap-5">

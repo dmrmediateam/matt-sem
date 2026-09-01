@@ -669,12 +669,23 @@
   border-bottom-color: var(--foreground);
 }
 
+/* The wordmark is now outlined SVG (components/wordmark.tsx), so this only
+   has to hold the colour it inherits through currentColor and give the link
+   a sane box. No font-family or letter-spacing: there is no text left. */
 .wordmark {
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
   color: var(--primary);
-  line-height: 1;
+  line-height: 0;
+}
+
+.wordmark:hover {
+  color: var(--foreground);
+}
+
+.wordmark:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 6px;
 }
 
 .menu-toggle {

@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { Wordmark } from "@/components/wordmark";
 import { site } from "@/lib/site";
 
 export function SiteFooter() {
@@ -7,9 +8,7 @@ export function SiteFooter() {
     <footer className="border-t border-border/60">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-3">
         <div>
-          <p className="font-display text-sm tracking-[0.2em] text-primary uppercase">
-            Matt Sem
-          </p>
+          <Wordmark className="text-primary h-[17px] w-auto" />
           <p className="mt-3 max-w-xs text-sm text-muted-foreground">
             Author of {site.book.title}: stories from a Wausau, Wisconsin
             childhood, straight out of the 1980s.
