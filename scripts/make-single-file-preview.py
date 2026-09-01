@@ -97,11 +97,6 @@ def main() -> None:
         hidden = "" if key == "home" else ' hidden=""'
         sections.append(f'<div class="pv-page" data-page="{key}"{hidden}>{body}</div>')
 
-    switcher_items = "".join(
-        f'<button type="button" data-goto="{k}"{" class=\"on\"" if k == "home" else ""}>{lbl}</button>'
-        for k, _r, lbl in PAGES
-    )
-
     html = f"""<!DOCTYPE html>
 <html lang="en" class="{html_cls}">
 <head>
@@ -120,22 +115,6 @@ def main() -> None:
   .reveal {{ opacity: 1 !important; transform: none !important; }}
   .anim-rise {{ animation: none !important; opacity: 1 !important; }}
 
-  .pv-bar {{
-    position: fixed; z-index: 9999; left: 50%; bottom: 18px;
-    transform: translateX(-50%);
-    display: flex; gap: 6px; padding: 6px;
-    background: #0f0f1a; border: 2px solid rgba(255,255,255,.28);
-    box-shadow: 0 8px 30px rgba(0,0,0,.5);
-    font: 500 11px/1 ui-sans-serif, system-ui, sans-serif;
-    letter-spacing: .12em; text-transform: uppercase;
-  }}
-  .pv-bar button {{
-    padding: 9px 14px; cursor: pointer; color: #b9b9cc;
-    background: transparent; border: 0; letter-spacing: inherit;
-    text-transform: inherit; font: inherit;
-  }}
-  .pv-bar button:hover {{ color: #fff; }}
-  .pv-bar button.on {{ background: #6ec7dd; color: #0f0f1a; }}
   .pv-note {{
     position: fixed; z-index: 9999; right: 14px; bottom: 18px;
     max-width: 260px; padding: 10px 12px;
@@ -148,27 +127,22 @@ def main() -> None:
 <body class="{body_cls}">
 {"".join(sections)}
 
-<nav class="pv-bar" aria-label="Preview pages">{switcher_items}</nav>
-<p class="pv-note">Preview file. Scroll animations and the mobile menu are
-disabled here; everything else is the real build.</p>
+<p class="pv-note">Preview file. Scroll animations and the menus need React,
+which browsers block over file:// &mdash; use the logo, the Buy the book button
+and the footer links to move between pages. Everything else is the real build.</p>
 
 <script>
 (function () {{
   var pages = document.querySelectorAll('.pv-page');
-  var buttons = document.querySelectorAll('.pv-bar button');
-
   function show(key) {{
     pages.forEach(function (p) {{ p.hidden = p.dataset.page !== key; }});
-    buttons.forEach(function (b) {{ b.classList.toggle('on', b.dataset.goto === key); }});
     window.scrollTo(0, 0);
   }}
 
-  buttons.forEach(function (b) {{
-    b.addEventListener('click', function () {{ show(b.dataset.goto); }});
-  }});
-
-  // Make the site's own nav work: map its hrefs onto the page switcher, and
-  // let in-page anchors scroll normally.
+  // The site's own links are the only navigation in here now: the logo, the
+  // "Buy the book" button and the footer links all map onto the page switch.
+  // There is no preview chrome bar - it sat over the page and read as part
+  // of the design, which it never was.
   document.addEventListener('click', function (e) {{
     var a = e.target.closest ? e.target.closest('a') : null;
     if (!a) return;
