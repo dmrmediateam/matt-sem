@@ -656,7 +656,11 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  border-bottom: 3px solid transparent;
+  /* A rule is always present so the bar reads as a distinct band rather than
+     type floating on the hero. It stays low-contrast over the hero and
+     resolves to the full hard edge once the reader scrolls past it. The
+     width never changes, so nothing below shifts when the state flips. */
+  border-bottom: 3px solid oklch(1 0 0 / 14%);
   background: transparent;
   transition:
     background-color 0.3s ease,
@@ -667,6 +671,12 @@
   background: color-mix(in oklab, var(--background) 92%, transparent);
   backdrop-filter: blur(8px);
   border-bottom-color: var(--foreground);
+}
+
+/* In light sections the low-contrast white rule would vanish, so it flips to
+   a matching ink tint. */
+.section-light .site-header {
+  border-bottom-color: oklch(0.3 0.028 262 / 16%);
 }
 
 /* The wordmark is now outlined SVG (components/wordmark.tsx), so this only
