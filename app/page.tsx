@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Star } from "lucide-react";
 
 import { BookCover } from "@/components/book-cover";
+import { ContactSection } from "@/components/contact-section";
 import { MediaGallery } from "@/components/media-gallery";
 import { RetroWave } from "@/components/retro-figures";
 import { Reveal } from "@/components/reveal";
@@ -266,7 +267,7 @@ export default function HomePage() {
               </p>
             </div>
             <Button asChild variant="outline" className="mt-7">
-              <Link href="/contact/">Say hello to Matt</Link>
+              <Link href="/#contact">Say hello to Matt</Link>
             </Button>
           </Reveal>
         </div>
@@ -328,7 +329,7 @@ export default function HomePage() {
       {/* Videos and pictures. Renders only when lib/media.ts has entries. */}
       <MediaGallery />
 
-      {/* Where to buy + closing CTA. */}
+      {/* Where to buy. */}
       <section aria-label="Where to buy">
         <div className="mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-6 md:grid-cols-2">
           <Reveal>
@@ -379,19 +380,21 @@ export default function HomePage() {
             </ul>
           </Reveal>
           <Reveal delay={2} className="flex flex-col items-start justify-center">
-            <h2 className="font-display text-2xl">
-              Were you an &rsquo;86 kid too?
-            </h2>
+            <h2 className="font-display text-2xl">Signed by Matt</h2>
             <p className="mt-3 max-w-md leading-relaxed text-muted-foreground">
-              Book clubs, local media, or memories of your own from 1986.
-              Matt reads everything that comes in.
+              He signs and mails copies himself from Wausau, with a personal
+              message if you want one. The &rsquo;80s Edition adds the
+              bookmark and the tote bag.
             </p>
             <Button asChild size="lg" className="mt-6">
-              <Link href="/contact/">Get in touch</Link>
+              <Link href="/books/the-86-kids/">See the editions</Link>
             </Button>
           </Reveal>
         </div>
       </section>
+
+      {/* Contact closes the page. This used to be its own /contact/ route. */}
+      <ContactSection />
     </>
   );
 }

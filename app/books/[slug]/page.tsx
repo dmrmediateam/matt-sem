@@ -177,7 +177,7 @@ export default async function BookPage({
                           className="w-full"
                           variant={edition.featured ? "default" : "outline"}
                         >
-                          <Link href="/contact/">Order from Matt</Link>
+                          <Link href="/#contact">Order from Matt</Link>
                         </Button>
                       )}
                     </div>
@@ -188,7 +188,8 @@ export default async function BookPage({
           </div>
           <p className="mt-8 text-sm text-muted-foreground">
             Signed and &rsquo;80s Edition orders go straight to Matt. Send a
-            note through the contact form and he&rsquo;ll email you back to
+            note through the form at the bottom of the home page and
+            he&rsquo;ll email you back to
             sort out payment and delivery. Local readers: Janke Book Store
             and the Story Cellar in Wausau carry the book, bookmark
             included.

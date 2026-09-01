@@ -1,0 +1,5 @@
+# /contact/ was a real page and shipped in the sitemap, so anything already
+# linking to or indexing it must land somewhere useful rather than a 404.
+# The form now lives at the bottom of the home page.
+/contact/ /#contact 301
+/contact /#contact 301
