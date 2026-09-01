@@ -1161,17 +1161,20 @@ a.book-row:focus-visible {
    It carries a dark fill rather than the cyan of the adjacent "Buy the book"
    button on purpose: same kit, clear hierarchy, so the two don't compete. */
 
+/* Sized a step below the "Buy the book" button beside it, and carrying a
+   slightly shallower shadow, so the two don't read as equals. The menu is
+   secondary to the sale. */
 .mq-trigger,
 .osd-trigger {
   display: inline-flex;
   align-items: center;
-  gap: 0.7rem;
-  padding: 11px 18px;
+  gap: 0.6rem;
+  padding: 9px 15px;
   background: oklch(0.2 0.03 262);
   color: var(--foreground);
   border: 3px solid var(--foreground);
   border-radius: 0;
-  box-shadow: 5px 5px 0 var(--foreground);
+  box-shadow: 4px 4px 0 var(--foreground);
   cursor: pointer;
   font: inherit;
   transition:
@@ -1196,13 +1199,13 @@ a.book-row:focus-visible {
 
 .mq-trigger:hover,
 .osd-trigger:hover {
-  transform: translate(3px, 3px);
+  transform: translate(2px, 2px);
   box-shadow: 2px 2px 0 var(--foreground);
 }
 
 .mq-trigger:active,
 .osd-trigger:active {
-  transform: translate(5px, 5px);
+  transform: translate(4px, 4px);
   box-shadow: 0 0 0 var(--foreground);
 }
 
@@ -1215,8 +1218,8 @@ a.book-row:focus-visible {
 .mq-bars,
 .osd-bars {
   display: grid;
-  gap: 5px;
-  width: 24px;
+  gap: 4px;
+  width: 21px;
 }
 
 .mq-bars span,
@@ -1230,7 +1233,7 @@ a.book-row:focus-visible {
 .mq-trigger-label,
 .osd-trigger-label {
   font-family: var(--font-display);
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -1239,8 +1242,8 @@ a.book-row:focus-visible {
    inside 390px, so the mobile instance loses a little padding. */
 @media (max-width: 420px) {
   .osd-trigger {
-    gap: 0.5rem;
-    padding: 10px 13px;
+    gap: 0.45rem;
+    padding: 9px 12px;
   }
 }
 
@@ -1478,6 +1481,6 @@ a.book-row:focus-visible {
   .mq-trigger:active,
   .osd-trigger:hover,
   .osd-trigger:active {
-    box-shadow: 5px 5px 0 var(--foreground);
+    box-shadow: 4px 4px 0 var(--foreground);
   }
 }

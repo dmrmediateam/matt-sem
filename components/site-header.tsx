@@ -82,14 +82,19 @@ export function SiteHeader() {
 
   return (
     <header className="site-header" data-scrolled={scrolled}>
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+      <div className="mx-auto flex h-20 max-w-6xl items-center justify-between px-4 sm:px-8">
         <Link href="/" className="wordmark" aria-label="Matt Sem, home">
           <Wordmark className="h-[18px] w-auto" title="" />
         </Link>
 
-        <div className="flex items-center gap-5">
-          {/* Combo navigation: the links hide, this never does. */}
-          <Button asChild size="sm" className="hidden sm:inline-flex">
+        {/* gap-7 rather than gap-5: both controls cast a 5px offset shadow to
+            the right, which ate a quarter of the old gap and left the two
+            reading as one crowded block. */}
+        <div className="flex items-center gap-7">
+          {/* Combo navigation: the links hide, this never does. It also takes
+              the larger size, so the action that earns money outweighs the
+              one that opens a menu. */}
+          <Button asChild className="hidden sm:inline-flex">
             <Link href="/books/the-86-kids/">Buy the book</Link>
           </Button>
           <MarqueeMenu current={current} />
