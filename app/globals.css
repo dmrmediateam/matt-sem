@@ -720,39 +720,9 @@
    stacking and scroll lock come from the platform rather than from JS that
    would need testing in every browser. */
 
-/* NOTE: this rule is appended after Tailwind's utilities, so its `display`
-   beats the `md:hidden` on the element. The explicit media query below is
-   what actually keeps the trigger off desktop - do not rely on the utility
-   alone here. Hidden nav measurably hurts desktop UX (NN/g), so the visible
-   nav must be the only option at md and up. */
-.osd-trigger {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 8px 4px;
-  color: var(--foreground);
-  background: none;
-  border: 0;
-  cursor: pointer;
-}
-
-.osd-bars {
-  display: grid;
-  gap: 4px;
-  width: 22px;
-}
-
-.osd-bars span {
-  display: block;
-  height: 2px;
-  background: currentColor;
-  border-radius: 1px;
-}
-
-.osd-trigger-label {
-  font-size: 0.9rem;
-  font-weight: 500;
-}
+/* The trigger itself is styled with the desktop one, further down: both
+   breakpoints use the same keycap button so the control is identical
+   whichever menu it opens. Only the panel behind it differs. */
 
 /* The dialog itself is only a transparent frame; .osd-screen is the CRT. */
 .osd {
@@ -1191,8 +1161,9 @@ a.book-row:focus-visible {
    It carries a dark fill rather than the cyan of the adjacent "Buy the book"
    button on purpose: same kit, clear hierarchy, so the two don't compete. */
 
-.mq-trigger {
-  display: none;
+.mq-trigger,
+.osd-trigger {
+  display: inline-flex;
   align-items: center;
   gap: 0.7rem;
   padding: 11px 18px;
@@ -1208,45 +1179,69 @@ a.book-row:focus-visible {
     box-shadow 0.15s;
 }
 
-@media (min-width: 768px) {
+/* Which trigger is shown is decided here, explicitly, in both directions.
+   These rules are appended after Tailwind's utilities, so a `display` here
+   beats any `md:hidden` on the element - the utility cannot be relied on. */
+@media (max-width: 767px) {
   .mq-trigger {
-    display: inline-flex;
+    display: none;
   }
 }
 
-.mq-trigger:hover {
+@media (min-width: 768px) {
+  .osd-trigger {
+    display: none;
+  }
+}
+
+.mq-trigger:hover,
+.osd-trigger:hover {
   transform: translate(3px, 3px);
   box-shadow: 2px 2px 0 var(--foreground);
 }
 
-.mq-trigger:active {
+.mq-trigger:active,
+.osd-trigger:active {
   transform: translate(5px, 5px);
   box-shadow: 0 0 0 var(--foreground);
 }
 
-.mq-trigger:focus-visible {
+.mq-trigger:focus-visible,
+.osd-trigger:focus-visible {
   outline: 3px solid var(--primary);
   outline-offset: 4px;
 }
 
-.mq-bars {
+.mq-bars,
+.osd-bars {
   display: grid;
   gap: 5px;
   width: 24px;
 }
 
-.mq-bars span {
+.mq-bars span,
+.osd-bars span {
   display: block;
   height: 3px;
   background: currentColor;
   border-radius: 1px;
 }
 
-.mq-trigger-label {
+.mq-trigger-label,
+.osd-trigger-label {
   font-family: var(--font-display);
   font-size: 0.82rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+/* Phones are tight: the keycap plus the wordmark plus the shadow has to fit
+   inside 390px, so the mobile instance loses a little padding. */
+@media (max-width: 420px) {
+  .osd-trigger {
+    gap: 0.5rem;
+    padding: 10px 13px;
+  }
 }
 
 .mq {
@@ -1467,17 +1462,22 @@ a.book-row:focus-visible {
   .mq-row,
   .mq-label,
   .mq-ch,
-  .mq-trigger {
+  .mq-trigger,
+  .osd-trigger {
     transition: none;
   }
   .mq-row:hover,
   .mq-row:focus-visible,
   .mq-trigger:hover,
-  .mq-trigger:active {
+  .mq-trigger:active,
+  .osd-trigger:hover,
+  .osd-trigger:active {
     transform: none;
   }
   .mq-trigger:hover,
-  .mq-trigger:active {
+  .mq-trigger:active,
+  .osd-trigger:hover,
+  .osd-trigger:active {
     box-shadow: 5px 5px 0 var(--foreground);
   }
 }
