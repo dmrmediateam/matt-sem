@@ -1154,16 +1154,37 @@ a.book-row:focus-visible {
    media query. These are appended after Tailwind's utilities, so a `display`
    here silently beats `md:hidden` on the element. */
 
+/* The trigger is a physical deck button: hard 3px edge, 5px offset shadow,
+   and it presses into that shadow when clicked. Three reasons it looks like
+   this rather than a bare icon:
+
+   - Scale. NN/g's recognizability work notes an icon sized for a phone goes
+     nearly invisible on a desktop screen, which is what the previous 22px
+     mark did here.
+   - Affordance. Extreme flat design measurably hurts discoverability, so the
+     control should read as pressable before anyone hovers it.
+   - Recognition. The three stacked lines stay, and the word "Menu" stays,
+     because that shape plus a label is what people actually parse. The
+     invention is in the material, not the glyph.
+
+   It carries a dark fill rather than the cyan of the adjacent "Buy the book"
+   button on purpose: same kit, clear hierarchy, so the two don't compete. */
+
 .mq-trigger {
   display: none;
   align-items: center;
-  gap: 0.55rem;
-  padding: 8px 4px;
-  background: none;
-  border: 0;
+  gap: 0.7rem;
+  padding: 11px 18px;
+  background: oklch(0.2 0.03 262);
   color: var(--foreground);
+  border: 3px solid var(--foreground);
+  border-radius: 0;
+  box-shadow: 5px 5px 0 var(--foreground);
   cursor: pointer;
   font: inherit;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
 }
 
 @media (min-width: 768px) {
@@ -1172,22 +1193,39 @@ a.book-row:focus-visible {
   }
 }
 
+.mq-trigger:hover {
+  transform: translate(3px, 3px);
+  box-shadow: 2px 2px 0 var(--foreground);
+}
+
+.mq-trigger:active {
+  transform: translate(5px, 5px);
+  box-shadow: 0 0 0 var(--foreground);
+}
+
+.mq-trigger:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 4px;
+}
+
 .mq-bars {
   display: grid;
-  gap: 4px;
-  width: 22px;
+  gap: 5px;
+  width: 24px;
 }
 
 .mq-bars span {
   display: block;
-  height: 2px;
+  height: 3px;
   background: currentColor;
   border-radius: 1px;
 }
 
 .mq-trigger-label {
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .mq {
@@ -1407,11 +1445,18 @@ a.book-row:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .mq-row,
   .mq-label,
-  .mq-ch {
+  .mq-ch,
+  .mq-trigger {
     transition: none;
   }
   .mq-row:hover,
-  .mq-row:focus-visible {
+  .mq-row:focus-visible,
+  .mq-trigger:hover,
+  .mq-trigger:active {
     transform: none;
+  }
+  .mq-trigger:hover,
+  .mq-trigger:active {
+    box-shadow: 5px 5px 0 var(--foreground);
   }
 }
