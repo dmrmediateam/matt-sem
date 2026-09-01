@@ -9,6 +9,7 @@ import { RetroWave } from "@/components/retro-figures";
 import { Reveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { upcoming } from "@/lib/books";
 import { site } from "@/lib/site";
 
 export default function HomePage() {
@@ -285,30 +286,8 @@ export default function HomePage() {
           </h2>
         </Reveal>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {[
-            {
-              title: "Catch and Release",
-              blurb:
-                "A fictionalized memoir that mixes real events from Matt's life with imagined ones.",
-              status: "In progress",
-              delay: 1 as const,
-            },
-            {
-              title: "Glimpses",
-              blurb:
-                "An honest account of recovery, written not just for Matt, but for anyone who's struggling.",
-              status: "In progress",
-              delay: 2 as const,
-            },
-            {
-              title: "Monsters Among Us",
-              blurb:
-                "True-story vignettes about how nobody's flawless, and how we all surprise ourselves sometimes.",
-              status: "Finished, resting",
-              delay: 3 as const,
-            },
-          ].map((book) => (
-            <Reveal key={book.title} delay={book.delay}>
+          {upcoming.map((book, i) => (
+            <Reveal key={book.title} delay={(i + 1) as 1 | 2 | 3}>
               <Card className="hover-lift h-full">
                 <CardContent className="flex h-full flex-col pt-6">
                   <h3 className="font-display text-lg">{book.title}</h3>

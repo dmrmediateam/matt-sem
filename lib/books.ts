@@ -89,6 +89,38 @@ export const books: Book[] = [
   },
 ];
 
+/**
+ * Titles in the works. These have no pages yet, so they are a separate list
+ * from `books` rather than entries with empty fields. Both the "What's next"
+ * section and the Books dropdown read from here, so the two can't drift.
+ */
+export type UpcomingBook = {
+  title: string;
+  blurb: string;
+  status: string;
+};
+
+export const upcoming: UpcomingBook[] = [
+  {
+    title: "Catch and Release",
+    blurb:
+      "A fictionalized memoir that mixes real events from Matt's life with imagined ones.",
+    status: "In progress",
+  },
+  {
+    title: "Glimpses",
+    blurb:
+      "An honest account of recovery, written not just for Matt, but for anyone who's struggling.",
+    status: "In progress",
+  },
+  {
+    title: "Monsters Among Us",
+    blurb:
+      "True-story vignettes about how nobody's flawless, and how we all surprise ourselves sometimes.",
+    status: "Finished, resting",
+  },
+];
+
 export function getBook(slug: string): Book | undefined {
   return books.find((b) => b.slug === slug);
 }

@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { BooksMenu } from "@/components/books-menu";
 import { RetroMenu } from "@/components/retro-menu";
 import { mediaPhotos, mediaVideos } from "@/lib/media";
 
@@ -19,7 +20,6 @@ const hasMedia = mediaPhotos.length > 0 || mediaVideos.length > 0;
 
 /** `id` is the section this item points at on the home page. */
 const links = [
-  { id: "book", href: "/#book", label: "The book" },
   { id: "matt", href: "/#matt", label: "About" },
   ...(hasMedia ? [{ id: "media", href: "/#media", label: "Videos" }] : []),
   { id: "next", href: "/#next", label: "What's next" },
@@ -71,8 +71,10 @@ export function SiteHeader() {
   React.useEffect(() => {
     if (!isHome) return;
 
-    const sections = links
-      .map((l) => document.getElementById(l.id))
+    // "book" is watched even though the Books dropdown isn't in `links`, so
+    // its marker still draws while that section is on screen.
+    const sections = ["book", ...links.map((l) => l.id)]
+      .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
 
     if (sections.length === 0) return;
@@ -102,6 +104,10 @@ export function SiteHeader() {
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex" aria-label="Main">
+          {/* Books sits first and is a dropdown, so it's outside the link map.
+              It still reflects scroll-spy: the marker draws while the reader
+              is in the book section of the home page. */}
+          <BooksMenu current={current === "book"} />
           {links.map((link) => (
             <Link
               key={link.id}

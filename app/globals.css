@@ -1068,3 +1068,145 @@
     transition: none;
   }
 }
+
+/* ---- Books dropdown ----
+   "Books" is a button, not a link. There is no /books index route, and a
+   top-level item that is both a link and an expander is a documented
+   accessibility trap: screen reader and keyboard users can't tell which
+   action they're about to get. A dedicated toggle removes the ambiguity.
+
+   The panel is hoverable and stays open until dismissed (WCAG 1.4.13):
+   the close is delayed slightly so the diagonal mouse path from the trigger
+   to the first row doesn't dismiss it mid-move. */
+
+.nav-books {
+  position: relative;
+}
+
+.nav-books-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+.nav-books-caret {
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.2s ease;
+  opacity: 0.75;
+}
+
+.nav-books[data-open="true"] .nav-books-caret {
+  transform: translateY(1px) rotate(-135deg);
+}
+
+.nav-books-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: -18px;
+  z-index: 60;
+  width: 330px;
+  padding: 8px;
+  background: var(--card);
+  border: 3px solid var(--foreground);
+  box-shadow: 6px 6px 0 var(--foreground);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease,
+    visibility 0.18s;
+}
+
+.nav-books[data-open="true"] .nav-books-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Bridges the gap between trigger and panel so the pointer never crosses
+   dead space on its way down. */
+.nav-books-panel::before {
+  content: "";
+  position: absolute;
+  top: -13px;
+  left: 0;
+  right: 0;
+  height: 13px;
+}
+
+.book-row {
+  display: block;
+  padding: 11px 12px;
+  color: var(--foreground);
+  transition: background-color 0.16s ease;
+}
+
+a.book-row:hover,
+a.book-row:focus-visible {
+  background: oklch(1 0 0 / 7%);
+  outline: none;
+}
+
+a.book-row:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--primary);
+}
+
+/* These are spans inside the row, so they need to be told to stack — as
+   inline elements the title and its meta line ran together on one line. */
+.book-row-title,
+.book-row-meta,
+.book-row-status {
+  display: block;
+}
+
+.book-row-title {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  line-height: 1.15;
+}
+
+.book-row-meta {
+  margin-top: 4px;
+  font-size: 0.78rem;
+  color: var(--muted-foreground);
+}
+
+/* Titles with no page yet: shown for context, not clickable, and marked so
+   the state is announced rather than implied by colour alone. */
+.book-row-soon {
+  cursor: default;
+}
+
+.book-row-soon .book-row-title {
+  color: var(--muted-foreground);
+}
+
+.book-row-status {
+  margin-top: 5px;
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.books-divider {
+  margin: 6px 10px;
+  border-top: 2px solid oklch(1 0 0 / 12%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-books-panel,
+  .nav-books-caret,
+  .book-row {
+    transition: none;
+  }
+}

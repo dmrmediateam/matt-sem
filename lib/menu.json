@@ -9,9 +9,9 @@
   "items": [
     {
       "id": "book",
-      "href": "/#book",
-      "label": "The book",
-      "hint": "467 pages of 1985-86"
+      "href": "/books/the-86-kids/",
+      "label": "Books",
+      "hint": "The '86 Kids, plus three in the works"
     },
     {
       "id": "matt",
