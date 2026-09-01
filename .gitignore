@@ -43,3 +43,7 @@ next-env.d.ts
 # Cloudflare
 .wrangler/
 out/
+
+# Python bytecode from the generator scripts in scripts/
+__pycache__/
+*.pyc
