@@ -647,11 +647,10 @@
    wordmark is the only display type up here, and two competing display
    treatments in a 64px bar is what made the old version noisy.
 
-   The signature element is .nav-mark - a hand-drawn marker underline in
-   dusty pink that sits under the section you are currently reading, the way
-   someone would circle a name in a yearbook. The site already speaks in
-   handwriting on the polaroid captions, so the gesture is native to it
-   rather than borrowed. */
+   The desktop links moved behind the marquee menu, so the bar now holds
+   only the wordmark, the always-visible CTA, and the two menu triggers. The
+   hand-drawn marker that used to underline the current nav item went with
+   them; its job is done by the "Now playing" row inside the menus. */
 
 .site-header {
   position: sticky;
@@ -678,76 +677,6 @@
   line-height: 1;
 }
 
-.nav-item {
-  position: relative;
-  display: inline-block;
-  padding: 6px 2px 10px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--muted-foreground);
-  transition: color 0.2s ease;
-}
-
-.nav-item:hover,
-.nav-item[data-current="true"] {
-  color: var(--foreground);
-}
-
-/* The marker sits below the baseline and is drawn with stroke-dashoffset so
-   it sweeps on like a pen stroke rather than fading in. Sized in em so it
-   tracks the label width at any breakpoint. */
-.nav-mark {
-  position: absolute;
-  left: -4%;
-  bottom: 0;
-  width: 108%;
-  height: 8px;
-  overflow: visible;
-  pointer-events: none;
-  color: var(--accent);
-}
-
-.nav-mark path {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 5;
-  stroke-linecap: round;
-  stroke-dasharray: 240;
-  stroke-dashoffset: 240;
-  transition: stroke-dashoffset 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.nav-item:hover .nav-mark path,
-.nav-item[data-current="true"] .nav-mark path,
-.nav-item-mobile:hover .nav-mark path,
-.nav-item-mobile[data-current="true"] .nav-mark path {
-  stroke-dashoffset: 0;
-}
-
-/* Mobile: a full panel with larger type, not a cramped dropdown. The marker
-   would be lost on a full-width row, so the current item is set in the
-   foreground colour and carries the mark under the text itself. */
-.nav-item-mobile {
-  position: relative;
-  display: inline-block;
-  padding: 14px 2px;
-  font-size: 1.35rem;
-  font-weight: 500;
-  color: var(--muted-foreground);
-  transition: color 0.2s ease;
-}
-
-.nav-item-mobile[data-current="true"],
-.nav-item-mobile:hover {
-  color: var(--foreground);
-}
-
-/* The label is larger here, so the mark needs a little more room under it. */
-.nav-item-mobile .nav-mark {
-  height: 11px;
-  bottom: 6px;
-}
-
 .menu-toggle {
   color: var(--foreground);
   padding: 6px;
@@ -755,9 +684,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .site-header,
-  .nav-item,
-  .nav-mark path {
+  .site-header {
     transition: none;
   }
 }
@@ -1208,5 +1135,283 @@ a.book-row:focus-visible {
   .nav-books-caret,
   .book-row {
     transition: none;
+  }
+}
+
+/* ---- Desktop navigation: marquee menu ----
+   The desktop links are now behind a trigger. That costs discoverability
+   (NN/g measured hidden nav performing worse on desktop than on mobile), so
+   the hedge is combo navigation: "Buy the book" stays visible in the bar at
+   all times. The single action that earns money never goes behind a click.
+
+   Inside, the sections are set as a type list over a photograph. Two details
+   carry the site's own vocabulary rather than generic full-screen-menu
+   chrome: the CH markers, which echo the channel list in the mobile VCR
+   menu, and the hover, which drops a hard pink shadow behind the type at the
+   same 5px offset the buttons use.
+
+   Every rule that hides or shows by breakpoint is written as an explicit
+   media query. These are appended after Tailwind's utilities, so a `display`
+   here silently beats `md:hidden` on the element. */
+
+.mq-trigger {
+  display: none;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 8px 4px;
+  background: none;
+  border: 0;
+  color: var(--foreground);
+  cursor: pointer;
+  font: inherit;
+}
+
+@media (min-width: 768px) {
+  .mq-trigger {
+    display: inline-flex;
+  }
+}
+
+.mq-bars {
+  display: grid;
+  gap: 4px;
+  width: 22px;
+}
+
+.mq-bars span {
+  display: block;
+  height: 2px;
+  background: currentColor;
+  border-radius: 1px;
+}
+
+.mq-trigger-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.mq {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--foreground);
+  overflow: hidden;
+}
+
+.mq::backdrop {
+  background: oklch(0.1 0.02 265 / 80%);
+}
+
+.mq-screen {
+  position: relative;
+  height: 100%;
+  background: oklch(0.13 0.028 262);
+}
+
+/* The photograph is optional. With no image the radial wash below shows
+   through and the type carries the screen on its own — which is the state
+   that ships until Matt's media arrives. */
+.mq-art {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: 72% 30%;
+  filter: saturate(0.55) brightness(0.3);
+}
+
+.mq-screen[data-has-art="false"] {
+  background: radial-gradient(
+    120% 120% at 20% 0%,
+    oklch(0.19 0.035 265),
+    oklch(0.13 0.025 262) 70%
+  );
+}
+
+.mq-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    oklch(0.13 0.028 262 / 96%) 0%,
+    oklch(0.13 0.028 262 / 72%) 42%,
+    transparent 78%
+  );
+}
+
+.mq-scan {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    oklch(1 0 0 / 4%) 0 1px,
+    transparent 1px 3px
+  );
+  mix-blend-mode: overlay;
+}
+
+.mq-close {
+  position: absolute;
+  top: 22px;
+  right: 40px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 8px;
+  background: none;
+  border: 0;
+  color: var(--muted-foreground);
+  font: inherit;
+  cursor: pointer;
+}
+
+.mq-close:hover {
+  color: var(--foreground);
+}
+
+.mq-list {
+  position: relative;
+  z-index: 3;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.9rem;
+  padding: 0 clamp(40px, 7vw, 96px);
+  margin: 0;
+  list-style: none;
+}
+
+.mq-row {
+  display: flex;
+  align-items: baseline;
+  gap: 1.1rem;
+  width: max-content;
+  outline: none;
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Fixed width so the markers stack in a clean column; without it each row is
+   max-content and the markers wander with the label length. */
+.mq-ch {
+  flex: 0 0 3.4rem;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  color: var(--primary);
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.mq-label {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 2.9rem);
+  line-height: 1.1;
+  color: oklch(1 0 0 / 42%);
+  transition:
+    color 0.2s ease,
+    text-shadow 0.22s ease;
+}
+
+.mq-row:hover,
+.mq-row:focus-visible {
+  transform: translateX(14px);
+}
+
+/* Hover/focus gets the pink offset. The CURRENT row only gets the colour
+   lift and its "Now playing" tag — if both used the shadow, two rows would
+   look selected at once and neither would mean anything. */
+.mq-row[data-current="true"] .mq-label {
+  color: var(--foreground);
+}
+
+.mq-row:hover .mq-label,
+.mq-row:focus-visible .mq-label {
+  color: var(--foreground);
+  text-shadow: 5px 5px 0 var(--accent);
+}
+
+.mq-row:hover .mq-ch,
+.mq-row:focus-visible .mq-ch,
+.mq-row[data-current="true"] .mq-ch {
+  opacity: 1;
+}
+
+/* Keyboard focus needs a visible ring of its own — the hover treatment alone
+   isn't a focus indicator. */
+.mq-row:focus-visible .mq-label {
+  outline: 2px solid var(--primary);
+  outline-offset: 6px;
+}
+
+.mq-now {
+  align-self: center;
+  margin-left: 1rem;
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+/* The book list sits under the Books row, indented to the marker column. */
+.mq-sub {
+  margin: 0.6rem 0 0.2rem 4.5rem;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem 2rem;
+  /* Held to the left column so it reads as a list belonging to Books, not a
+     caption strip running under the photograph. */
+  max-width: 34rem;
+}
+
+.mq-sub a,
+.mq-sub span {
+  font-size: 0.92rem;
+  color: var(--muted-foreground);
+}
+
+.mq-sub a:hover,
+.mq-sub a:focus-visible {
+  color: var(--primary);
+  outline: none;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.mq-sub .mq-sub-soon::after {
+  content: " · " attr(data-status);
+  color: var(--accent);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mq-help {
+  position: absolute;
+  left: clamp(40px, 7vw, 96px);
+  bottom: 34px;
+  z-index: 3;
+  font-size: 0.74rem;
+  color: var(--muted-foreground);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mq-row,
+  .mq-label,
+  .mq-ch {
+    transition: none;
+  }
+  .mq-row:hover,
+  .mq-row:focus-visible {
+    transform: none;
   }
 }

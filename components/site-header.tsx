@@ -2,8 +2,10 @@
 
 import * as React from "react";
 import Link from "next/link";
+
+import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
-import { BooksMenu } from "@/components/books-menu";
+import { MarqueeMenu } from "@/components/marquee-menu";
 import { RetroMenu } from "@/components/retro-menu";
 import { mediaPhotos, mediaVideos } from "@/lib/media";
 
@@ -13,7 +15,7 @@ import { mediaPhotos, mediaVideos } from "@/lib/media";
  * instead of by URL: on a single page a pathname match would leave the nav
  * permanently inert.
  *
- * Visual rules live in .site-header / .nav-item / .nav-mark in globals.css.
+ * Visual rules live in .site-header in globals.css; each menu owns its own.
  */
 
 const hasMedia = mediaPhotos.length > 0 || mediaVideos.length > 0;
@@ -25,25 +27,6 @@ const links = [
   { id: "next", href: "/#next", label: "What's next" },
   { id: "contact", href: "/#contact", label: "Contact" },
 ];
-
-/**
- * Hand-drawn marker underline. The wobble is intentional and asymmetric — a
- * perfectly smooth curve reads as a swoosh, which is exactly the generic
- * thing this replaces. Drawn with a stroke-dashoffset sweep so it arrives
- * like a pen stroke.
- */
-function NavMark() {
-  return (
-    <svg
-      className="nav-mark"
-      viewBox="0 0 200 12"
-      preserveAspectRatio="none"
-      aria-hidden="true"
-    >
-      <path d="M3 8.5C34 4.2 71 3.1 104 4.4c30 1.2 58 3.6 93 1.1" />
-    </svg>
-  );
-}
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -103,26 +86,14 @@ export function SiteHeader() {
           Matt Sem
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Main">
-          {/* Books sits first and is a dropdown, so it's outside the link map.
-              It still reflects scroll-spy: the marker draws while the reader
-              is in the book section of the home page. */}
-          <BooksMenu current={current === "book"} />
-          {links.map((link) => (
-            <Link
-              key={link.id}
-              href={link.href}
-              className="nav-item"
-              data-current={current === link.id}
-              aria-current={current === link.id ? "true" : undefined}
-            >
-              {link.label}
-              <NavMark />
-            </Link>
-          ))}
-        </nav>
-
-        <RetroMenu current={current} hasMedia={hasMedia} />
+        <div className="flex items-center gap-5">
+          {/* Combo navigation: the links hide, this never does. */}
+          <Button asChild size="sm" className="hidden sm:inline-flex">
+            <Link href="/books/the-86-kids/">Buy the book</Link>
+          </Button>
+          <MarqueeMenu current={current} />
+          <RetroMenu current={current} hasMedia={hasMedia} />
+        </div>
       </div>
     </header>
   );
