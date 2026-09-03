@@ -1,0 +1,35 @@
+{
+  "_comment": "Geometry and feel of the 3D carousel in components/media-gallery.tsx. Everything here is a number you can turn without touching the component. The ring itself is not stored: its radius is DERIVED from the card width and how many cards are on screen (see radiusFor in the component), because a fixed radius would either overlap the cards when there are many or leave a gap when there are few. What the media IS lives in lib/media.ts; this file is only how it moves.",
+
+  "card": {
+    "_comment": "Card footprint in px. Every item is the same size or the ring stops being a circle. The mobile pair is used below the `mobileBelow` width.",
+    "width": 300,
+    "height": 340,
+    "mobileWidth": 208,
+    "mobileHeight": 246,
+    "mobileBelow": 640,
+    "_gap": "Chord multiplier: 1 packs cards edge to edge, higher pushes the ring wider and opens daylight between them.",
+    "gap": 1.16
+  },
+
+  "stage": {
+    "_comment": "perspective is the viewer's distance from the front of the ring: lower is a wider, more dramatic lens. tilt looks down on the ring by this many degrees, which is what makes it read as a carousel rather than a row.",
+    "perspective": 1500,
+    "tilt": 12,
+    "minRadius": 300
+  },
+
+  "depth": {
+    "_comment": "How the far side of the ring recedes. Each is applied in proportion to how far a card has turned away from the front, 0 at dead centre and 1 at the back. fade is how much opacity is lost, scrim is how much darkness is laid over, blur is in px. The backs stay visible on purpose - seeing the whole circle is the point of the thing.",
+    "fade": 0.42,
+    "scrim": 0.62,
+    "blur": 1.6
+  },
+
+  "motion": {
+    "_comment": "snapMs is the glide to the next card. dragDegreesPerPx converts a drag into rotation; raise it to make the ring spin more freely under the finger. flickFactor is how far a fast flick throws the ring past where it was released.",
+    "snapMs": 620,
+    "dragDegreesPerPx": 0.22,
+    "flickFactor": 0.11
+  }
+}

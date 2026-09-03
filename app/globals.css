@@ -1623,13 +1623,20 @@ button.mq-row {
 }
 
 /* ---------------------------------------------------------------------------
-   Gallery ("The '86 Kids videos and pictures")
+   Gallery ("The '86 Kids videos and pictures") — 3D carousel
 
-   Two tile shapes in one grid: video tiles are tape cases (hard border, offset
-   shadow, play button) and photo tiles are polaroids, reusing the treatment
-   from Matt's portrait in the About section. The lightbox borrows the header's
-   keycap buttons and the VCR counter from the mobile menu, so the section
-   reads as part of the same site rather than a plugin.
+   One circle, every card on its rim facing outward. `.gal3d` owns the
+   perspective, `.gal3d-stage` is the thing that spins, and each `.gal3d-slot`
+   is parked at its own angle on the rim and never moves again.
+
+   The far side is left visible on purpose — seeing the whole ring recede is
+   the point — so depth is drawn rather than hidden: opacity, a scrim and a
+   small blur, each scaled by `--dim` (0 dead ahead, 1 directly behind), which
+   the component sets per card. Transitioning that one number lets the browser
+   interpolate all three alongside the rotation, with no frame loop.
+
+   Tunable numbers live in lib/gallery.json and arrive as custom properties on
+   .gal-section.
 --------------------------------------------------------------------------- */
 
 .gal-tabs {
@@ -1678,115 +1685,216 @@ button.mq-row {
   outline-offset: 4px;
 }
 
-.gal-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem 1.75rem;
-  margin: 2.5rem 0 0;
-  padding: 0;
-  list-style: none;
+/* --- the ring --------------------------------------------------------- */
+
+.gal3d {
+  position: relative;
+  /* Tall enough for the card plus the arc the tilt throws it through. */
+  height: calc(var(--gal-card-h) + 150px);
+  /* The circle is far wider than the page; the sides are meant to run off. */
+  overflow: hidden;
+  touch-action: pan-y;
+  cursor: grab;
+  outline: none;
+  /* A vignette, so cards leave at the edges instead of being guillotined. */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 12%,
+    #000 88%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 12%,
+    #000 88%,
+    transparent 100%
+  );
 }
 
-/* Tighter to the tabs than to the heading: the tabs belong to the grid. */
-.gal-grid[data-tabs="true"] {
-  margin-top: 1.75rem;
+.gal3d[data-dragging="true"] {
+  cursor: grabbing;
 }
 
-@media (min-width: 640px) {
-  .gal-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+.gal3d:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: -6px;
 }
 
-@media (min-width: 1024px) {
-  .gal-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+.gal3d-stage {
+  position: absolute;
+  /* The rim sits on this point; every slot is pushed out from here. */
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  transition: transform var(--gal-snap) cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.gal-cell {
-  min-width: 0;
+/* Nothing should glide while a finger is on it. */
+.gal3d[data-dragging="true"] .gal3d-stage,
+.gal3d[data-dragging="true"] .gal3d-slot {
+  transition: none;
 }
 
-.gal-fig {
-  margin: 0;
+.gal3d-slot {
+  position: absolute;
+  width: var(--gal-card-w);
+  height: var(--gal-card-h);
+  /* Centred on the stage's origin before being pushed out to the rim. */
+  margin-left: calc(var(--gal-card-w) / -2);
+  margin-top: calc(var(--gal-card-h) / -2);
+  transform-style: preserve-3d;
+  /* Backs stay visible: the far half of the ring is the whole effect. */
+  backface-visibility: visible;
+  opacity: calc(1 - var(--dim) * var(--gal-fade));
+  filter: blur(calc(var(--dim) * var(--gal-blur)));
+  transition:
+    opacity var(--gal-snap) ease,
+    filter var(--gal-snap) ease;
 }
 
-/* --- video tiles --- */
-
-.gal-video {
-  display: block;
+.gal3d-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
   width: 100%;
+  height: 100%;
   padding: 0;
-  background: none;
-  border: 0;
-  cursor: pointer;
+  background: oklch(0.19 0.028 262);
+  border: 3px solid var(--foreground);
+  box-shadow: 6px 6px 0 oklch(0.09 0.02 262 / 55%);
+  color: inherit;
+  font: inherit;
   text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    border-color var(--gal-snap) ease,
+    box-shadow var(--gal-snap) ease;
 }
 
-.gal-video-frame {
+/* The scrim that darkens the far side. Sits above the card's own content so
+   it dims the picture, the label and the play button together. */
+.gal3d-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: oklch(0.09 0.02 262);
+  opacity: calc(var(--dim) * var(--gal-scrim));
+  transition: opacity var(--gal-snap) ease;
+}
+
+.gal3d-card[data-active="true"] {
+  border-color: var(--accent);
+  box-shadow: 6px 6px 0 var(--accent);
+}
+
+.gal3d-card:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 4px;
+}
+
+.gal3d-window {
   position: relative;
   display: block;
-  width: 100%;
-  aspect-ratio: 16 / 9;
+  flex: 1;
+  min-height: 0;
   overflow: hidden;
-  background: oklch(0.16 0.025 262);
-  border: 3px solid var(--foreground);
-  box-shadow: 5px 5px 0 var(--foreground);
+  background: oklch(0.14 0.02 262);
 }
 
-.gal-video-still {
+.gal3d-media {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* YouTube's 4:3 hqdefault has black bars baked in; a nudge in scale crops
-     them instead of framing them. */
-  transform: scale(1.02);
-  transition: transform 0.4s ease;
 }
 
-.gal-video:hover .gal-video-still {
-  transform: scale(1.06);
-}
-
-.gal-video-blank {
+.gal3d-blank {
   position: absolute;
   inset: 0;
-  background:
-    repeating-linear-gradient(
-      45deg,
-      oklch(0.22 0.03 262) 0 10px,
-      oklch(0.19 0.03 262) 10px 20px
-    );
+  background: repeating-linear-gradient(
+    45deg,
+    oklch(0.22 0.03 262) 0 10px,
+    oklch(0.19 0.03 262) 10px 20px
+  );
 }
 
+/* Photographs are scans of scrapbook pages; a warm paper edge separates them
+   from the video cards without changing the card's footprint. */
+.gal3d-card[data-kind="photo"] .gal3d-window {
+  margin: 9px 9px 0;
+  border: 1px solid oklch(0.96 0.01 90 / 45%);
+}
+
+.gal3d-label {
+  display: block;
+  flex: 0 0 auto;
+  padding: 0.6rem 0.7rem 0.7rem;
+}
+
+.gal3d-title {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  line-height: 1.2;
+  color: var(--foreground);
+  /* Two lines, then ellipsis: a long caption must not resize the card and
+     bend the ring out of shape. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.gal3d-title-hand {
+  font-family: var(--font-hand, cursive);
+  font-size: 1.05rem;
+  color: oklch(0.9 0.01 90);
+}
+
+.gal3d-sub {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+/* The play button, reused from the old grid. */
 .gal-play {
   position: absolute;
   inset: 0;
   display: grid;
   place-items: center;
+  z-index: 1;
 }
 
 .gal-play::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: oklch(0.12 0.02 262 / 30%);
+  background: oklch(0.12 0.02 262 / 26%);
   transition: background-color 0.25s ease;
 }
 
-.gal-video:hover .gal-play::before {
-  background: oklch(0.12 0.02 262 / 12%);
+.gal3d-card:hover .gal-play::before {
+  background: oklch(0.12 0.02 262 / 8%);
 }
 
 .gal-play-tri {
   position: relative;
   display: grid;
   place-items: center;
-  width: 62px;
-  height: 62px;
+  width: 54px;
+  height: 54px;
   background: var(--accent);
   border: 3px solid var(--foreground);
   box-shadow: 4px 4px 0 var(--foreground);
@@ -1795,101 +1903,76 @@ button.mq-row {
     box-shadow 0.2s ease;
 }
 
-/* The play triangle itself, drawn rather than shipped as an icon. */
+/* The triangle itself, drawn rather than shipped as an icon. */
 .gal-play-tri::after {
   content: "";
   width: 0;
   height: 0;
   margin-left: 4px;
-  border-top: 12px solid transparent;
-  border-bottom: 12px solid transparent;
-  border-left: 19px solid var(--foreground);
+  border-top: 11px solid transparent;
+  border-bottom: 11px solid transparent;
+  border-left: 17px solid var(--foreground);
 }
 
-.gal-video:hover .gal-play-tri {
+.gal3d-card:hover .gal-play-tri {
   transform: translate(2px, 2px);
   box-shadow: 2px 2px 0 var(--foreground);
 }
 
-.gal-video:focus-visible .gal-video-frame {
-  outline: 3px solid var(--primary);
-  outline-offset: 4px;
+/* --- controls under the ring ------------------------------------------ */
+
+.gal3d-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
 }
 
-.gal-cap {
-  display: block;
-  margin-top: 0.85rem;
-  font-size: 0.875rem;
-  line-height: 1.45;
+.gal3d-now {
+  margin: 0;
+  min-width: 0;
+  flex: 1;
+  text-align: center;
 }
 
-.gal-cap-title {
+.gal3d-now-count {
   display: block;
   font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  color: var(--primary);
+}
+
+.gal3d-now-title {
+  display: block;
+  margin-top: 0.25rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
   color: var(--foreground);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.gal-cap-sub {
-  display: block;
-  margin-top: 0.15rem;
-  color: var(--muted-foreground);
-}
-
-/* --- photo tiles --- */
-
-.gal-photo {
-  display: block;
-  width: 100%;
-  padding: 0;
-  background: none;
-  border: 0;
-  cursor: pointer;
-}
-
-.gal-photo .polaroid {
-  margin: 0;
-}
-
-.gal-photo[data-tilt="left"] .polaroid {
-  transform: rotate(-1.6deg);
-}
-
-.gal-photo[data-tilt="right"] .polaroid {
-  transform: rotate(1.6deg);
-}
-
-/* Straightens on hover, which reads as picking the photo up off the pile. */
-.gal-photo:hover .polaroid,
-.gal-photo:focus-visible .polaroid {
-  transform: rotate(0deg) translateY(-5px);
-  box-shadow:
-    0 10px 26px oklch(0 0 0 / 42%),
-    0 0 56px oklch(0.78 0.13 220 / 18%);
-}
-
-.gal-photo:focus-visible {
-  outline: none;
-}
-
-.gal-photo:focus-visible .polaroid {
-  outline: 3px solid var(--primary);
-  outline-offset: 4px;
-}
-
-/* No forced ratio: these are upright scrapbook pages and landscape event
-   shots, and cropping either to a common rectangle cuts the handwriting off
-   the bottom of the polaroid, which is the best part of them. */
-.gal-photo-img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-/* Rows are as tall as their tallest polaroid; without this the shorter ones
-   stretch to match and the frames go out of proportion. */
-.gal-grid-photos {
-  align-items: start;
-  margin-top: 2.5rem;
+@media (prefers-reduced-motion: reduce) {
+  .gal-tab,
+  .gal3d-stage,
+  .gal3d-slot,
+  .gal3d-card,
+  .gal3d-card::after,
+  .gal-play-tri,
+  .gal-play::before {
+    transition: none;
+  }
+  .gal-tab:hover,
+  .gal3d-card:hover .gal-play-tri {
+    transform: none;
+  }
+  /* Blur is the expensive half of the depth cue and the one that reads as
+     motion sickness on a spin; the scrim alone still says "further away". */
+  .gal3d-slot {
+    filter: none;
+  }
 }
 
 /* --- lightbox --- */
