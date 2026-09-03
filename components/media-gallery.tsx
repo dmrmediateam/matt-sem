@@ -69,11 +69,23 @@ function itemTitle(item: GalleryItem): string {
     : item.photo.caption ?? item.photo.alt;
 }
 
+/** Video cards are wider; see videoWidthScale in lib/gallery.json. */
+function cardWidthFor(item: GalleryItem, baseWidth: number): number {
+  return item.type === "video"
+    ? Math.round(baseWidth * config.card.videoWidthScale)
+    : baseWidth;
+}
+
 /**
  * Radius that spaces `count` cards of `width` evenly around a circle without
  * overlapping them. Each card sits on a chord; solving that chord for the
  * radius is where the tan comes from. Two or fewer cards make no meaningful
  * circle, so they fall back to the configured minimum.
+ *
+ * `width` is the WIDEST card on the ring, not the average. Spacing is angular
+ * and equal for everything, so the ring has to be big enough that the widest
+ * pair still clears; sizing to the average would let two video cards collide.
+ * The cost is a little more daylight around the narrower photographs.
  */
 function radiusFor(count: number, width: number): number {
   const chord = width * config.card.gap;
@@ -183,7 +195,11 @@ export function MediaGallery() {
 
   const count = items.length;
   const step = count > 0 ? 360 / count : 360;
-  const radius = radiusFor(count, card.width);
+  const widest = items.reduce(
+    (max, item) => Math.max(max, cardWidthFor(item, card.width)),
+    card.width
+  );
+  const radius = radiusFor(count, widest);
   const rotation = index * step + drag;
 
   // Breathing room so the ring never touches the section's edges.
@@ -432,6 +448,9 @@ export function MediaGallery() {
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
         onPointerCancel={endDrag}
+        // Belt and braces with the CSS below: a drag across the ring must
+        // spin it, never start the browser's own drag-and-drop.
+        onDragStart={(e) => e.preventDefault()}
         onKeyDown={onRingKeyDown}
         role="group"
         aria-roledescription="carousel"
@@ -473,6 +492,7 @@ export function MediaGallery() {
                     // Nearest the front paints over everything behind it.
                     zIndex: Math.round(180 - Math.abs(rel)),
                     "--dim": dim,
+                    "--w": cardWidthFor(item, card.width) + "px",
                   } as React.CSSProperties
                 }
               >
@@ -611,7 +631,13 @@ function CardFace({ item, armed }: { item: GalleryItem; armed: boolean }) {
             // YouTube fallback is remote. With images.unoptimized there is
             // nothing next/image would add here but a hostname to configure.
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={poster} alt="" loading="lazy" className="gal3d-media" />
+            <img
+              src={poster}
+              alt=""
+              loading="lazy"
+              draggable={false}
+              className="gal3d-media"
+            />
           ) : (
             <span className="gal3d-blank" aria-hidden="true" />
           )}
@@ -640,6 +666,7 @@ function CardFace({ item, armed }: { item: GalleryItem; armed: boolean }) {
             width={photo.width}
             height={photo.height}
             sizes="320px"
+            draggable={false}
             className="gal3d-media"
           />
         ) : (

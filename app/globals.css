@@ -1718,6 +1718,18 @@ button.mq-row {
   cursor: grabbing;
 }
 
+/* Spinning the ring is a drag, so the browser's own drag-and-drop must stay
+   out of it. Without this, dragging across a card picks the photograph up and
+   trails a translucent copy of it under the cursor, and the text under the
+   cards gets selected on the way past. `draggable={false}` on the media
+   elements covers Firefox, which ignores -webkit-user-drag. */
+.gal3d,
+.gal3d img {
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 .gal3d:focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: -6px;
@@ -1743,10 +1755,13 @@ button.mq-row {
 
 .gal3d-slot {
   position: absolute;
-  width: var(--gal-card-w);
+  /* Width is per-card — video cards are wider — and set inline by the
+     component; the fallback keeps this meaningful on its own. Height is
+     shared, because every card sits on the same rim. */
+  width: var(--w, var(--gal-card-w));
   height: var(--gal-card-h);
   /* Centred on the stage's origin before being pushed out to the rim. */
-  margin-left: calc(var(--gal-card-w) / -2);
+  margin-left: calc(var(--w, var(--gal-card-w)) / -2);
   margin-top: calc(var(--gal-card-h) / -2);
   transform-style: preserve-3d;
   /* Backs stay visible: the far half of the ring is the whole effect. */

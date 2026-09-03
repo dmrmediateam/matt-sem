@@ -2,12 +2,14 @@
   "_comment": "Geometry and feel of the 3D carousel in components/media-gallery.tsx. Everything here is a number you can turn without touching the component. The ring itself is not stored: its radius is DERIVED from the card width and how many cards are on screen (see radiusFor in the component), because a fixed radius would either overlap the cards when there are many or leave a gap when there are few. What the media IS lives in lib/media.ts; this file is only how it moves.",
 
   "card": {
-    "_comment": "Card footprint in px. Every item is the same size or the ring stops being a circle. The mobile pair is used below the `mobileBelow` width.",
+    "_comment": "Card footprint in px. Height is shared by every card - they all sit on the same rim, so a card of a different height would ride above or below the ring. Widths may differ: what the circle actually needs is even ANGULAR spacing, and a radius wide enough for the widest card. The mobile pair is used below the `mobileBelow` width.",
     "width": 300,
     "height": 340,
     "mobileWidth": 208,
     "mobileHeight": 246,
     "mobileBelow": 640,
+    "_videoWidthScale": "Video cards, times the widths above. Their posters are 16:9 and the photographs are upright, so one width had to crop one of them badly; this lets the video window come back towards its own shape. Raising it widens the whole ring, since the radius follows the widest card.",
+    "videoWidthScale": 1.24,
     "_gap": "Chord multiplier: 1 packs cards edge to edge, higher pushes the ring wider and opens daylight between them.",
     "gap": 1.16
   },
