@@ -610,6 +610,28 @@
     font-size: 19px;
   }
 
+  /* On a phone a big button's 44px of side padding is a quarter of the
+     screen before a word is set, and .btn-kl refuses to wrap or shrink — so
+     a long label has nowhere to go but out of its container. "See editions
+     & pricing" was running 67px past a panel that clips its overflow, which
+     cut the button in half. Narrower padding keeps most labels on one line;
+     wrapping is the backstop, so no label can ever be clipped again. */
+  @media (max-width: 639px) {
+    .btn-kl {
+      white-space: normal;
+      flex-shrink: 1;
+      /* justify-content centres the line box, not the lines inside it, so a
+         label that wraps needs this too or the second line hangs left. */
+      text-align: center;
+    }
+
+    .btn-kl-lg {
+      padding: 17px 24px;
+      font-size: 17px;
+      line-height: 1.2;
+    }
+  }
+
   .btn-kl-icon {
     padding: 0;
     width: 46px;
