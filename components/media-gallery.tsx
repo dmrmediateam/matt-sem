@@ -410,7 +410,7 @@ export function MediaGallery() {
         } as React.CSSProperties
       }
     >
-      <div className="mx-auto max-w-6xl px-4 pt-20 pb-14 sm:px-6">
+      <div className="mx-auto max-w-6xl px-4 pt-20 pb-14 text-center sm:px-6">
         <Reveal>
           <p className="font-display text-xs tracking-[0.3em] text-accent uppercase">
             Roll the tape
@@ -418,7 +418,7 @@ export function MediaGallery() {
           <h2 className="font-display mt-3 text-3xl">
             The &rsquo;86 Kids videos and pictures
           </h2>
-          <p className="mt-4 max-w-2xl leading-relaxed text-muted-foreground">
+          <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-muted-foreground">
             Readings, signings, and a few shots from around Wausau. Spin the
             carousel round, or open whatever&rsquo;s facing you.
           </p>

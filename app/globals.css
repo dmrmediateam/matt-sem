@@ -1642,6 +1642,7 @@ button.mq-row {
 .gal-tabs {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.7rem;
   margin-top: 2rem;
 }
@@ -1861,6 +1862,9 @@ button.mq-row {
   height: var(--gal-label-h);
   overflow: hidden;
   padding: 0.6rem 0.7rem 0.7rem;
+  /* The card sets text-align: left for its own sake, so this has to say
+     otherwise rather than inherit. */
+  text-align: center;
 }
 
 .gal3d-title {
