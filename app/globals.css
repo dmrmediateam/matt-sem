@@ -1781,7 +1781,9 @@ button.mq-row {
   height: 100%;
   padding: 0;
   background: oklch(0.19 0.028 262);
-  border: 3px solid var(--foreground);
+  /* Width from lib/gallery.json: the video card's width is derived from the
+     space inside this border, so both have to agree. */
+  border: var(--gal-card-border) solid var(--foreground);
   box-shadow: 6px 6px 0 oklch(0.09 0.02 262 / 55%);
   color: inherit;
   font: inherit;
@@ -1850,9 +1852,14 @@ button.mq-row {
   border: 1px solid oklch(0.96 0.01 90 / 45%);
 }
 
+/* Fixed height, not content height. The video card's width is derived from
+   whatever the label leaves behind, so a label that grew with a long title
+   would quietly change the shape of every video window. */
 .gal3d-label {
   display: block;
-  flex: 0 0 auto;
+  flex: 0 0 var(--gal-label-h);
+  height: var(--gal-label-h);
+  overflow: hidden;
   padding: 0.6rem 0.7rem 0.7rem;
 }
 

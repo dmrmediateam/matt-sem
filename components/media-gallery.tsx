@@ -69,11 +69,25 @@ function itemTitle(item: GalleryItem): string {
     : item.photo.caption ?? item.photo.alt;
 }
 
-/** Video cards are wider; see videoWidthScale in lib/gallery.json. */
-function cardWidthFor(item: GalleryItem, baseWidth: number): number {
-  return item.type === "video"
-    ? Math.round(baseWidth * config.card.videoWidthScale)
-    : baseWidth;
+/**
+ * Width of a video card, so that its WINDOW comes out at videoAspect.
+ *
+ * Card height is shared across the ring — a card of a different height would
+ * ride above or below the rim — so the height of the picture area is already
+ * decided: whatever the card has left after the label. Width is the only
+ * dimension free to move, and this is the width that makes what's left 16:9.
+ */
+function videoCardWidth(cardHeight: number): number {
+  const [w, h] = config.card.videoAspect.split("/").map(Number);
+  const border = config.card.borderWidth;
+  // Inside the border and above the label is all the room the picture gets.
+  const windowHeight = cardHeight - border * 2 - config.card.labelHeight;
+  return Math.round((windowHeight * w) / h) + border * 2;
+}
+
+/** Photos keep the base footprint; videos are widened to suit their posters. */
+function cardWidthFor(item: GalleryItem, base: { width: number; height: number }): number {
+  return item.type === "video" ? videoCardWidth(base.height) : base.width;
 }
 
 /**
@@ -196,7 +210,7 @@ export function MediaGallery() {
   const count = items.length;
   const step = count > 0 ? 360 / count : 360;
   const widest = items.reduce(
-    (max, item) => Math.max(max, cardWidthFor(item, card.width)),
+    (max, item) => Math.max(max, cardWidthFor(item, card)),
     card.width
   );
   const radius = radiusFor(count, widest);
@@ -387,6 +401,8 @@ export function MediaGallery() {
         {
           "--gal-card-w": card.width + "px",
           "--gal-card-h": card.height + "px",
+          "--gal-label-h": config.card.labelHeight + "px",
+          "--gal-card-border": config.card.borderWidth + "px",
           "--gal-fade": config.depth.fade,
           "--gal-scrim": config.depth.scrim,
           "--gal-blur": config.depth.blur + "px",
@@ -492,7 +508,7 @@ export function MediaGallery() {
                     // Nearest the front paints over everything behind it.
                     zIndex: Math.round(180 - Math.abs(rel)),
                     "--dim": dim,
-                    "--w": cardWidthFor(item, card.width) + "px",
+                    "--w": cardWidthFor(item, card) + "px",
                   } as React.CSSProperties
                 }
               >
