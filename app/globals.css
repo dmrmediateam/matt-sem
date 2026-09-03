@@ -1621,3 +1621,436 @@ button.mq-row {
     box-shadow: 4px 4px 0 var(--foreground);
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Gallery ("The '86 Kids videos and pictures")
+
+   Two tile shapes in one grid: video tiles are tape cases (hard border, offset
+   shadow, play button) and photo tiles are polaroids, reusing the treatment
+   from Matt's portrait in the About section. The lightbox borrows the header's
+   keycap buttons and the VCR counter from the mobile menu, so the section
+   reads as part of the same site rather than a plugin.
+--------------------------------------------------------------------------- */
+
+.gal-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-top: 2rem;
+}
+
+/* The keycap from the header trigger, at button scale. */
+.gal-tab {
+  appearance: none;
+  padding: 7px 16px;
+  background: oklch(0.2 0.03 262);
+  color: var(--muted-foreground);
+  border: 3px solid var(--foreground);
+  border-radius: 0;
+  box-shadow: 4px 4px 0 var(--foreground);
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s,
+    color 0.15s,
+    background-color 0.15s;
+}
+
+.gal-tab:hover {
+  color: var(--foreground);
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--foreground);
+}
+
+.gal-tab[data-active="true"] {
+  background: var(--accent);
+  color: var(--btn-accent-fg, var(--accent-foreground));
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--foreground);
+}
+
+.gal-tab:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
+}
+
+.gal-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem 1.75rem;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Tighter to the tabs than to the heading: the tabs belong to the grid. */
+.gal-grid[data-tabs="true"] {
+  margin-top: 1.75rem;
+}
+
+@media (min-width: 640px) {
+  .gal-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .gal-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.gal-cell {
+  min-width: 0;
+}
+
+.gal-fig {
+  margin: 0;
+}
+
+/* --- video tiles --- */
+
+.gal-video {
+  display: block;
+  width: 100%;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.gal-video-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: oklch(0.16 0.025 262);
+  border: 3px solid var(--foreground);
+  box-shadow: 5px 5px 0 var(--foreground);
+}
+
+.gal-video-still {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* YouTube's 4:3 hqdefault has black bars baked in; a nudge in scale crops
+     them instead of framing them. */
+  transform: scale(1.02);
+  transition: transform 0.4s ease;
+}
+
+.gal-video:hover .gal-video-still {
+  transform: scale(1.06);
+}
+
+.gal-video-blank {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      oklch(0.22 0.03 262) 0 10px,
+      oklch(0.19 0.03 262) 10px 20px
+    );
+}
+
+.gal-play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.gal-play::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: oklch(0.12 0.02 262 / 30%);
+  transition: background-color 0.25s ease;
+}
+
+.gal-video:hover .gal-play::before {
+  background: oklch(0.12 0.02 262 / 12%);
+}
+
+.gal-play-tri {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  background: var(--accent);
+  border: 3px solid var(--foreground);
+  box-shadow: 4px 4px 0 var(--foreground);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* The play triangle itself, drawn rather than shipped as an icon. */
+.gal-play-tri::after {
+  content: "";
+  width: 0;
+  height: 0;
+  margin-left: 4px;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-left: 19px solid var(--foreground);
+}
+
+.gal-video:hover .gal-play-tri {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--foreground);
+}
+
+.gal-video:focus-visible .gal-video-frame {
+  outline: 3px solid var(--primary);
+  outline-offset: 4px;
+}
+
+.gal-cap {
+  display: block;
+  margin-top: 0.85rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.gal-cap-title {
+  display: block;
+  font-family: var(--font-display);
+  color: var(--foreground);
+}
+
+.gal-cap-sub {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--muted-foreground);
+}
+
+/* --- photo tiles --- */
+
+.gal-photo {
+  display: block;
+  width: 100%;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.gal-photo .polaroid {
+  margin: 0;
+}
+
+.gal-photo[data-tilt="left"] .polaroid {
+  transform: rotate(-1.6deg);
+}
+
+.gal-photo[data-tilt="right"] .polaroid {
+  transform: rotate(1.6deg);
+}
+
+/* Straightens on hover, which reads as picking the photo up off the pile. */
+.gal-photo:hover .polaroid,
+.gal-photo:focus-visible .polaroid {
+  transform: rotate(0deg) translateY(-5px);
+  box-shadow:
+    0 10px 26px oklch(0 0 0 / 42%),
+    0 0 56px oklch(0.78 0.13 220 / 18%);
+}
+
+.gal-photo:focus-visible {
+  outline: none;
+}
+
+.gal-photo:focus-visible .polaroid {
+  outline: 3px solid var(--primary);
+  outline-offset: 4px;
+}
+
+/* No forced ratio: these are upright scrapbook pages and landscape event
+   shots, and cropping either to a common rectangle cuts the handwriting off
+   the bottom of the polaroid, which is the best part of them. */
+.gal-photo-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Rows are as tall as their tallest polaroid; without this the shorter ones
+   stretch to match and the frames go out of proportion. */
+.gal-grid-photos {
+  align-items: start;
+  margin-top: 2.5rem;
+}
+
+/* --- lightbox --- */
+
+.gal-box {
+  width: min(1000px, 92vw);
+  max-width: none;
+  max-height: 92vh;
+  /* Tailwind's preflight zeroes margins on every element, which kills the
+     `margin: auto` a <dialog> centres itself with. Put it back. */
+  margin: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--foreground);
+  overflow: visible;
+}
+
+.gal-box::backdrop {
+  background: oklch(0.09 0.02 262 / 88%);
+  backdrop-filter: blur(3px);
+}
+
+.gal-box-inner {
+  border: 3px solid var(--foreground);
+  background: oklch(0.15 0.025 262);
+  box-shadow: 8px 8px 0 var(--accent);
+}
+
+.gal-box-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0.9rem;
+  border-bottom: 3px solid var(--foreground);
+}
+
+/* The VCR counter from the mobile menu's status bar. */
+.gal-box-count {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  color: var(--primary);
+}
+
+.gal-box-close,
+.gal-box-step {
+  appearance: none;
+  padding: 5px 12px;
+  background: none;
+  border: 2px solid oklch(1 0 0 / 26%);
+  border-radius: 0;
+  color: var(--muted-foreground);
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.gal-box-close:hover,
+.gal-box-step:hover {
+  color: var(--foreground);
+  border-color: var(--foreground);
+}
+
+.gal-box-close:focus-visible,
+.gal-box-step:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+.gal-box-stage {
+  display: grid;
+  place-items: center;
+  background: oklch(0.1 0.02 262);
+  /* Caps the tall-photo case so the caption and controls stay on screen. */
+  max-height: 68vh;
+  overflow: hidden;
+}
+
+.gal-box-photo {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 68vh;
+  object-fit: contain;
+}
+
+/* Shape is preserved by capping WIDTH, not height. A max-height would win
+   over the aspect-ratio and hand a 4:3 tape a widescreen box to letterbox
+   itself into; the component instead sets max-width to (stage height x ratio)
+   inline, so the height cap is respected without the ratio ever breaking.
+   The box has no in-flow content — the player is absolutely positioned — so
+   `width: auto` would collapse it to nothing. */
+.gal-box-video {
+  position: relative;
+  width: 100%;
+  margin-inline: auto;
+  aspect-ratio: 16 / 9;
+}
+
+.gal-box-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #000;
+}
+
+.gal-box-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  padding: 0.8rem 0.9rem;
+  border-top: 3px solid var(--foreground);
+}
+
+.gal-box-caption {
+  margin: 0;
+  min-width: 0;
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+}
+
+.gal-box-title {
+  font-family: var(--font-display);
+  color: var(--foreground);
+}
+
+.gal-box-nav {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gal-tab,
+  .gal-video-still,
+  .gal-play-tri,
+  .gal-play::before,
+  .gal-photo .polaroid {
+    transition: none;
+  }
+  .gal-tab:hover,
+  .gal-video:hover .gal-play-tri {
+    transform: none;
+  }
+  .gal-video:hover .gal-video-still {
+    transform: scale(1.02);
+  }
+  .gal-photo:hover .polaroid,
+  .gal-photo:focus-visible .polaroid {
+    transform: none;
+  }
+}
