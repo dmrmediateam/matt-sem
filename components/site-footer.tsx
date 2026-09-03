@@ -64,10 +64,11 @@ export function SiteFooter() {
                 Barnes &amp; Noble (paperback, hardcover)
               </a>
             </li>
-            {/* The two online channels first, then the one shop that stocks
-                it. Barnes & Noble is a link rather than a Wausau address:
-                the store there no longer carries the book, but the product
-                page is live. */}
+            {/* The two online channels first, then the shops you can walk
+                into. Barnes & Noble is a link rather than a Wausau address:
+                the store there doesn't carry the book, but the product page
+                is live. */}
+            <li>Janke Book Store · Wausau</li>
             <li>The Story Cellar · Wausau</li>
           </ul>
         </div>
