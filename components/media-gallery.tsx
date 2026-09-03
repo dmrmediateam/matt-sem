@@ -92,6 +92,45 @@ function round(value: number, places = 3): number {
   return Math.round(value * factor) / factor;
 }
 
+/**
+ * How far the ring actually reaches above and below its own centre, once the
+ * tilt and the perspective have had their way with it.
+ *
+ * This is measured rather than guessed because it isn't symmetrical: tilting
+ * to look down at the ring drops the near side and lifts the far side, and
+ * the far side is also shrunk by perspective, so the bottom of the front card
+ * ends up much further from the centre than the top of the back one. A single
+ * fixed height either clips the ring or leaves a hole under it.
+ *
+ * Walks the circle and projects the top and bottom edge of a card at each
+ * step, the same way the browser will.
+ */
+function ringBounds(
+  radius: number,
+  tiltDeg: number,
+  cardHeight: number
+): { top: number; bottom: number } {
+  const tilt = (-tiltDeg * Math.PI) / 180;
+  const persp = config.stage.perspective;
+  const half = cardHeight / 2;
+
+  let top = 0;
+  let bottom = 0;
+
+  for (let deg = 0; deg < 360; deg += 2) {
+    const cos = Math.cos((deg * Math.PI) / 180);
+    // The ring point after rotateX, then the stage's translateZ(-radius).
+    const y = -radius * cos * Math.sin(tilt);
+    const z = radius * cos * Math.cos(tilt) - radius;
+    // Everything is at or behind the viewer's plane, so this is <= 1.
+    const scale = persp / (persp - z);
+    top = Math.min(top, y * scale - half * scale);
+    bottom = Math.max(bottom, y * scale + half * scale);
+  }
+
+  return { top, bottom };
+}
+
 /** Signed angle from the front of the ring, in (-180, 180]. */
 function relativeAngle(cardAngle: number, rotation: number): number {
   return ((((cardAngle - rotation) % 360) + 540) % 360) - 180;
@@ -146,6 +185,14 @@ export function MediaGallery() {
   const step = count > 0 ? 360 / count : 360;
   const radius = radiusFor(count, card.width);
   const rotation = index * step + drag;
+
+  // Breathing room so the ring never touches the section's edges.
+  const pad = 24;
+  const bounds = ringBounds(radius, config.stage.tilt, card.height);
+  const ringHeight = Math.round(bounds.bottom - bounds.top + pad * 2);
+  // The ring's centre is NOT the box's centre; it sits wherever it has to for
+  // the highest and lowest points of the circle to both clear the edges.
+  const ringOrigin = Math.round(-bounds.top + pad);
   // Wrapped back into the array after any number of turns in either direction.
   const active = count > 0 ? ((index % count) + count) % count : 0;
 
@@ -377,7 +424,10 @@ export function MediaGallery() {
         ref={ringRef}
         className="gal3d"
         data-dragging={dragging}
-        style={{ perspective: config.stage.perspective + "px" }}
+        style={{
+          perspective: config.stage.perspective + "px",
+          height: ringHeight + "px",
+        }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
@@ -391,11 +441,14 @@ export function MediaGallery() {
         <div
           className="gal3d-stage"
           style={{
+            top: ringOrigin + "px",
+            // Negative: `tilt` is how far you look DOWN at the ring, which
+            // lifts the far side above the near one.
             transform:
               "translateZ(-" +
               radius +
               "px) rotateX(" +
-              config.stage.tilt +
+              -config.stage.tilt +
               "deg) rotateY(" +
               round(-rotation) +
               "deg)",

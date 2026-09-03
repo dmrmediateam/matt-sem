@@ -1689,8 +1689,9 @@ button.mq-row {
 
 .gal3d {
   position: relative;
-  /* Tall enough for the card plus the arc the tilt throws it through. */
-  height: calc(var(--gal-card-h) + 150px);
+  /* Height comes from the component: see ringBounds, which projects the whole
+     circle and measures what it actually needs. A fixed height here clipped
+     the top of the ring, because the tilt makes its reach asymmetric. */
   /* The circle is far wider than the page; the sides are meant to run off. */
   overflow: hidden;
   touch-action: pan-y;
@@ -1724,8 +1725,9 @@ button.mq-row {
 
 .gal3d-stage {
   position: absolute;
-  /* The rim sits on this point; every slot is pushed out from here. */
-  top: 50%;
+  /* The rim sits on this point; every slot is pushed out from here. `top` is
+     set by the component, not centred here — the ring's centre is not the
+     box's centre once it's tilted. */
   left: 50%;
   width: 0;
   height: 0;

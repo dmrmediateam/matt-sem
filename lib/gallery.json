@@ -13,9 +13,9 @@
   },
 
   "stage": {
-    "_comment": "perspective is the viewer's distance from the front of the ring: lower is a wider, more dramatic lens. tilt looks down on the ring by this many degrees, which is what makes it read as a carousel rather than a row.",
+    "_comment": "perspective is the viewer's distance from the front of the ring: lower is a wider, more dramatic lens. tilt is how many degrees you look DOWN at the ring, the way you look down at a round table - so the far side of the circle sits ABOVE the near side, which is what makes it read as a carousel rather than a row. Keep it shallow; past about 10 the ring stops looking like a circle and starts looking like a floor. The component applies it as rotateX(-tilt).",
     "perspective": 1500,
-    "tilt": 12,
+    "tilt": 6,
     "minRadius": 300
   },
 
