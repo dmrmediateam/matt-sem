@@ -190,9 +190,8 @@ export default async function BookPage({
             Signed and &rsquo;80s Edition orders go straight to Matt. Send a
             note through the form at the bottom of the home page and
             he&rsquo;ll email you back to
-            sort out payment and delivery. Local readers: Janke Book Store
-            and the Story Cellar in Wausau carry the book, bookmark
-            included.
+            sort out payment and delivery. Local readers: the Story Cellar
+            in Wausau carries the book, bookmark included.
           </p>
         </div>
       </section>

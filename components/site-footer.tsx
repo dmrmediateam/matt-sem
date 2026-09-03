@@ -54,7 +54,6 @@ export function SiteFooter() {
                 Amazon (Kindle, paperback, hardcover)
               </a>
             </li>
-            <li>Janke Book Store · Wausau</li>
             <li>The Story Cellar · Wausau</li>
             <li>Barnes &amp; Noble · Wausau</li>
           </ul>

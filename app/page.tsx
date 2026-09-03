@@ -322,9 +322,9 @@ export default function HomePage() {
           <Reveal>
             <h2 className="font-display text-3xl">Where to get your copy</h2>
             <p className="mt-4 leading-relaxed text-muted-foreground">
-              Online at Amazon or Barnes &amp; Noble, or in person at two
-              Wausau bookstores, and every local purchase comes with a free
-              &rsquo;86 Kids bookmark.
+              Online at Amazon or Barnes &amp; Noble, or in person at the
+              Story Cellar in Wausau, and every local purchase comes with a
+              free &rsquo;86 Kids bookmark.
             </p>
             <ul className="mt-6 grid gap-3 text-sm">
               <li>
@@ -355,10 +355,6 @@ export default function HomePage() {
                   · paperback {site.book.formats[1].price}, hardcover{" "}
                   {site.book.formats[2].price}
                 </span>
-              </li>
-              <li>
-                <span className="font-semibold">Janke Book Store</span>{" "}
-                <span className="text-muted-foreground">· Wausau, WI</span>
               </li>
               <li>
                 <span className="font-semibold">The Story Cellar</span>{" "}
