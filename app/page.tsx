@@ -18,23 +18,27 @@ export default function HomePage() {
       {/* Hero - the book IS the site, so it gets the whole opening frame. */}
       <section id="book" aria-label="The '86 Kids" className="relative overflow-hidden">
         <RetroWave className="h-72" />
-        <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 py-20 sm:px-6 md:grid-cols-[1.2fr_1fr] md:py-28">
-          <div>
-            <p className="anim-rise font-display text-xs tracking-[0.3em] text-accent uppercase">
+        <div className="relative mx-auto grid max-w-6xl items-center gap-6 px-4 py-10 sm:px-6 md:gap-12 md:grid-cols-[1.2fr_1fr] md:py-28">
+          {/* Below md this is a flex column ONLY so the reading order can
+              differ from the source order; `md:block` returns it to normal
+              flow, where every `order-*` below is inert. Desktop keeps the
+              source order it always had. */}
+          <div className="order-2 flex flex-col md:order-1 md:block">
+            <p className="anim-rise order-1 font-display text-xs tracking-[0.3em] text-accent uppercase">
               Strap yourself in. It&rsquo;s 1986
             </p>
-            <h1 className="neon-text neon-pulse anim-rise anim-delay-1 font-display mt-4 text-4xl leading-tight sm:text-5xl lg:text-6xl">
+            <h1 className="neon-text neon-pulse anim-rise anim-delay-1 order-2 font-display mt-4 text-4xl leading-tight sm:text-5xl lg:text-6xl">
               The &rsquo;86 Kids
             </h1>
 
             {/* The promise, given its own line at reading size. The title
                 names the book; this is the line that has to make someone
                 want it. */}
-            <p className="anim-rise anim-delay-2 mt-6 max-w-xl text-xl leading-snug sm:text-2xl">
+            <p className="anim-rise anim-delay-2 order-3 mt-6 max-w-xl text-xl leading-snug sm:text-2xl">
               The last summer before everything changed.
             </p>
 
-            <p className="anim-rise anim-delay-2 mt-4 max-w-lg leading-relaxed text-muted-foreground">
+            <p className="anim-rise anim-delay-2 order-7 mt-6 max-w-lg leading-relaxed text-muted-foreground md:mt-4">
               Bikes, basketball, nicknames and first crushes in Wausau,
               Wisconsin. Think <em>The Wonder Years</em> meets{" "}
               <em>Seinfeld</em>.
@@ -43,8 +47,8 @@ export default function HomePage() {
             {/* One dominant action. Two equal buy buttons split the decision,
                 so Barnes & Noble is a text link now rather than a second
                 button competing with the first. */}
-            <div className="anim-rise anim-delay-3 mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
-              <Button asChild size="lg">
+            <div className="anim-rise anim-delay-3 order-6 mt-8 flex max-w-sm flex-col items-stretch gap-3 md:max-w-none md:flex-row md:flex-wrap md:items-center md:gap-x-6 md:gap-y-4">
+              <Button asChild size="lg" className="w-full md:w-auto">
                 <a
                   href={site.amazonUrl}
                   target="_blank"
@@ -57,7 +61,7 @@ export default function HomePage() {
                 href={site.barnesNobleUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-primary text-sm underline underline-offset-4"
+                className="text-muted-foreground hover:text-primary text-center text-sm underline underline-offset-4 md:text-left"
               >
                 or Barnes &amp; Noble
               </a>
@@ -66,7 +70,7 @@ export default function HomePage() {
             {/* Proof stays above the fold — it's the strongest thing the page
                 owns, and it's doing more work than the scroll prompt that
                 used to sit here. */}
-            <div className="anim-rise anim-delay-4 mt-7 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
+            <div className="anim-rise anim-delay-4 order-5 mt-7 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
               <span className="flex text-primary" aria-hidden>
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star key={i} className="size-4 fill-current" />
@@ -79,9 +83,12 @@ export default function HomePage() {
               <span>{site.book.pages} pages</span>
             </div>
           </div>
-          <div className="anim-rise anim-delay-2 flex justify-center md:justify-end">
+          {/* The cover goes first on a phone. It was below the whole text
+              block, which put the single most persuasive thing on the page
+              under the fold; every book app leads with it. */}
+          <div className="anim-rise anim-delay-2 order-1 flex justify-center md:order-2 md:justify-end">
             <div className="anim-float">
-              <BookCover />
+              <BookCover className="max-w-[170px] sm:max-w-xs" />
             </div>
           </div>
         </div>
