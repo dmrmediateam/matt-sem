@@ -5,6 +5,7 @@ import { Star } from "lucide-react";
 import { BookCover } from "@/components/book-cover";
 import { ContactSection } from "@/components/contact-section";
 import { MediaGallery } from "@/components/media-gallery";
+import { PressSection } from "@/components/press-section";
 import { RetroWave } from "@/components/retro-figures";
 import { Reveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
@@ -289,6 +290,10 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Press - straight after meeting Matt, while the reader is deciding
+          whether to take him seriously. */}
+      <PressSection />
+
       {/* What's next - future books, deliberately their own thing. */}
       <section id="next" aria-label="Upcoming books" className="section-light border-y border-border/60">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
@@ -359,7 +364,8 @@ export default function HomePage() {
                   Barnes &amp; Noble
                 </a>{" "}
                 <span className="text-muted-foreground">
-                  · paperback {site.book.formats[1].price}, hardcover{" "}
+                  · eBook {site.book.barnesNobleEbookPrice}, paperback{" "}
+                  {site.book.formats[1].price}, hardcover{" "}
                   {site.book.formats[2].price}
                 </span>
               </li>

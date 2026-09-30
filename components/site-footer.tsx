@@ -61,7 +61,7 @@ export function SiteFooter() {
                 rel="noopener noreferrer"
                 className="hover:text-primary"
               >
-                Barnes &amp; Noble (paperback, hardcover)
+                Barnes &amp; Noble (eBook, paperback, hardcover)
               </a>
             </li>
             {/* The two online channels first, then the shops you can walk

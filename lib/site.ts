@@ -25,6 +25,10 @@ export const site = {
       { label: "Paperback", price: "$19.99" },
       { label: "Hardcover", price: "$27.99" },
     ],
+    // Barnes & Noble's own eBook (NOOK). Its own field rather than a reuse of
+    // the Kindle price above: they match today, but they're set by two
+    // different stores and needn't stay in step.
+    barnesNobleEbookPrice: "$9.99",
     rating: { value: 4.8, count: 8 },
   },
 } as const;

@@ -7,7 +7,7 @@ import { ArrowLeft, Check, Star } from "lucide-react";
 import { Reveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { books, getBook } from "@/lib/books";
+import { books, getBook, upcoming } from "@/lib/books";
 
 /**
  * The product page template. One file serves every book in lib/books.ts;
@@ -203,9 +203,16 @@ export default async function BookPage({
           <Reveal className="flex flex-wrap items-center justify-between gap-6">
             <div>
               <h2 className="font-display text-2xl">More books on the way</h2>
+              {/* Built from the same list as "What's next" on the home page.
+                  These titles used to be typed out here by hand, so a rename
+                  updated one page and not the other. */}
               <p className="mt-2 max-w-xl text-muted-foreground">
-                Catch and Release, Glimpses, and Monsters Among Us are all in
-                the works. They&rsquo;ll land on this shelf as they arrive.
+                {new Intl.ListFormat("en", {
+                  style: "long",
+                  type: "conjunction",
+                }).format(upcoming.map((b) => b.title))}{" "}
+                are all in the works. They&rsquo;ll land on this shelf as
+                they arrive.
               </p>
             </div>
             <Button asChild variant="outline">

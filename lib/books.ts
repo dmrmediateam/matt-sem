@@ -91,9 +91,10 @@ export const books: Book[] = [
 
 /**
  * Titles in the works. These have no pages yet, so they are a separate list
- * from `books` rather than entries with empty fields. The "What's next"
- * section on the home page is the only thing that reads this: the Books
- * dropdown lists `books` alone, so it never offers a title you can't open.
+ * from `books` rather than entries with empty fields. Read by the "What's
+ * next" section on the home page and the "More books on the way" line on
+ * the book page, so a retitle here reaches both. The Books dropdown lists
+ * `books` alone, so it never offers a title you can't open.
  */
 export type UpcomingBook = {
   title: string;
@@ -103,7 +104,7 @@ export type UpcomingBook = {
 
 export const upcoming: UpcomingBook[] = [
   {
-    title: "Catch and Release",
+    title: "Split Step",
     blurb:
       "A fictionalized memoir that mixes real events from Matt's life with imagined ones.",
     status: "In progress",
@@ -115,7 +116,7 @@ export const upcoming: UpcomingBook[] = [
     status: "In progress",
   },
   {
-    title: "Monsters Among Us",
+    title: "There Are Monsters Among Us",
     blurb:
       "True-story vignettes about how nobody's flawless, and how we all surprise ourselves sometimes.",
     status: "Finished, resting",
