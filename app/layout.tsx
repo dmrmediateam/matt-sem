@@ -33,6 +33,12 @@ const handFont = localFont({
   weight: "600",
   style: "normal",
   display: "swap",
+  // Not preloaded. It's only used for photo captions on the home page, all
+  // below the fold, so preloading it put it ahead of the hero on that page
+  // and downloaded it for nothing on every other page (the book page and
+  // the 404 never draw a single character in it). The browser fetches it
+  // when a caption actually needs it.
+  preload: false,
 });
 
 export const metadata: Metadata = {
