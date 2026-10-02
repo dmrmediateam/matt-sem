@@ -181,8 +181,11 @@ export const mediaPhotos: MediaPhoto[] = [
   {
     src: "/images/gallery/on-the-shelf.jpg",
     alt: "Copies of The '86 Kids standing on a shop table among other local authors' books",
-    width: 1400,
-    height: 1050,
+    // Portrait. The file's pixels are stored landscape with a rotate flag from
+    // the phone, which every browser obeys - so 1050x1400 is what's drawn,
+    // whatever a tool that ignores the flag reports.
+    width: 1050,
+    height: 1400,
     caption: "On the table at a local shop",
   },
   {

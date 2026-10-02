@@ -294,16 +294,32 @@ export function MediaGallery() {
 
   /* ---- drag to spin ---------------------------------------------------- */
 
-  const dragState = React.useRef({ startX: 0, lastX: 0, lastT: 0, velocity: 0 });
+  // How far a press has to travel before it counts as a spin rather than a
+  // click. Shared by the capture below and wasDrag().
+  const DRAG_THRESHOLD = 6;
+
+  const dragState = React.useRef({
+    startX: 0,
+    lastX: 0,
+    lastT: 0,
+    velocity: 0,
+    captured: false,
+  });
 
   function onPointerDown(e: React.PointerEvent<HTMLDivElement>) {
     setArmed(true);
-    ringRef.current?.setPointerCapture(e.pointerId);
+    // Pointer capture is NOT taken here. With the ring capturing from the
+    // first press, the browser sends the release - and so the click - to the
+    // ring instead of the card under the pointer, and the card never hears
+    // it: a mouse click couldn't open a video or bring a card round. It's
+    // taken in onPointerMove once the press has moved far enough to be a
+    // drag, which is the only time it's needed.
     dragState.current = {
       startX: e.clientX,
       lastX: e.clientX,
       lastT: e.timeStamp,
       velocity: 0,
+      captured: false,
     };
     setDragging(true);
   }
@@ -311,6 +327,11 @@ export function MediaGallery() {
   function onPointerMove(e: React.PointerEvent<HTMLDivElement>) {
     if (!dragging) return;
     const state = dragState.current;
+    if (!state.captured && Math.abs(e.clientX - state.startX) > DRAG_THRESHOLD) {
+      // Now it's a drag: keep receiving moves even if the pointer leaves the ring.
+      ringRef.current?.setPointerCapture(e.pointerId);
+      state.captured = true;
+    }
     const dt = e.timeStamp - state.lastT;
     if (dt > 0) state.velocity = (e.clientX - state.lastX) / dt;
     state.lastX = e.clientX;
@@ -322,7 +343,9 @@ export function MediaGallery() {
 
   function endDrag(e: React.PointerEvent<HTMLDivElement>) {
     if (!dragging) return;
-    ringRef.current?.releasePointerCapture(e.pointerId);
+    if (ringRef.current?.hasPointerCapture(e.pointerId)) {
+      ringRef.current.releasePointerCapture(e.pointerId);
+    }
     setDragging(false);
 
     const flick = -dragState.current.velocity * 1000 * config.motion.flickFactor;
@@ -332,7 +355,7 @@ export function MediaGallery() {
 
   /** A press that barely moved is a click on the card, not a spin. */
   function wasDrag(): boolean {
-    return Math.abs(dragState.current.lastX - dragState.current.startX) > 6;
+    return Math.abs(dragState.current.lastX - dragState.current.startX) > DRAG_THRESHOLD;
   }
 
   /* ---- lightbox -------------------------------------------------------- */
@@ -650,7 +673,11 @@ function CardFace({ item, armed }: { item: GalleryItem; armed: boolean }) {
             <img
               src={poster}
               alt=""
-              loading="lazy"
+              // Eager, not lazy. This only renders once `armed` says the reader
+              // is near, and a browser can't tell whether a card rotated in 3D
+              // is on screen - with lazy it held back the far side of the ring,
+              // so cards came round blank and filled in late.
+              loading="eager"
               draggable={false}
               className="gal3d-media"
             />
@@ -682,6 +709,7 @@ function CardFace({ item, armed }: { item: GalleryItem; armed: boolean }) {
             width={photo.width}
             height={photo.height}
             sizes="320px"
+            loading="eager"
             draggable={false}
             className="gal3d-media"
           />
