@@ -8,6 +8,7 @@ import { Reveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { books, getBook, upcoming } from "@/lib/books";
+import { site } from "@/lib/site";
 
 /**
  * The product page template. One file serves every book in lib/books.ts;
@@ -26,9 +27,40 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const book = getBook((await params).slug);
   if (!book) return {};
+  const title = `${book.title}: editions and where to buy`;
+  const description = `${book.title} by Matt Sem. ${book.subtitle}. Standard, signed, and deluxe editions.`;
+  // The image made by app/opengraph-image.tsx; size, type and alt match the
+  // exports there.
+  const shareImage = {
+    url: "/opengraph-image",
+    width: 1200,
+    height: 630,
+    type: "image/png",
+    alt: "The '86 Kids: a memoir by Matt Sem",
+  };
   return {
-    title: `${book.title}: editions and where to buy`,
-    description: `${book.title} by Matt Sem. ${book.subtitle}. Standard, signed, and deluxe editions.`,
+    title,
+    description,
+    // Spelled out in full because Next replaces a parent's openGraph wholesale
+    // rather than merging it. Left to inherit, a shared link to this page
+    // previewed with the home page's title. The image has to be named here
+    // too: the root's file-based share image is only inherited by pages that
+    // don't set openGraph, so setting it alone dropped the picture and
+    // downgraded the X card to its small "summary" style.
+    openGraph: {
+      type: "website",
+      siteName: site.name,
+      title: `${title} | ${site.name}`,
+      description,
+      url: `/books/${book.slug}/`,
+      images: [shareImage],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} | ${site.name}`,
+      description,
+      images: [shareImage],
+    },
   };
 }
 
@@ -150,6 +182,13 @@ export default async function BookPage({
                         </li>
                       ))}
                     </ul>
+                    {/* Labels may wrap in here. Between about 768 and 1080
+                        the three cards are too narrow for "Buy at Barnes &
+                        Noble" on one line, and a .btn-kl label that can't wrap
+                        has nowhere to go: the store buttons stretched their
+                        grid out past the card by up to 100px and "Order from
+                        Matt" spilled past its own edges. From xl they're back
+                        to single-line and exactly as before. */}
                     <div className="mt-6">
                       {edition.name === "The book" ? (
                         <div className="grid gap-2">
@@ -158,7 +197,7 @@ export default async function BookPage({
                               key={link.label}
                               asChild
                               variant="outline"
-                              className="w-full"
+                              className="w-full whitespace-normal text-center leading-tight xl:whitespace-nowrap xl:leading-none"
                             >
                               <a
                                 href={link.href}
@@ -174,7 +213,7 @@ export default async function BookPage({
                         // TODO: swap for real checkout once payments exist.
                         <Button
                           asChild
-                          className="w-full"
+                          className="w-full whitespace-normal text-center leading-tight xl:whitespace-nowrap xl:leading-none"
                           variant={edition.featured ? "default" : "outline"}
                         >
                           <Link href="/#contact">Order from Matt</Link>
