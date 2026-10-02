@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { site } from "@/lib/site";
 
 /**
  * Posts to the Cloudflare Worker at /api/contact.
@@ -27,22 +28,38 @@ export function ContactForm() {
     const form = event.currentTarget;
     const data = new FormData(form);
 
+    // Only the Worker's own JSON is trusted to supply wording. Anything else
+    // that comes back - a host error page, an outage, a proxy in the way - used
+    // to reach the visitor as the raw parser error ("Unexpected token '<'...
+    // is not valid JSON"). The fallbacks name Matt's address because this form
+    // is also how signed copies get ordered; a dead end here is a lost sale.
+    const fallback = `Something went wrong sending that. Please try again, or email Matt directly at ${site.email}.`;
+
+    let res: Response;
     try {
-      const res = await fetch("/api/contact", { method: "POST", body: data });
-      const json = (await res.json()) as { ok: boolean; error?: string };
-
-      if (!res.ok || !json.ok) {
-        throw new Error(json.error ?? "Something went wrong. Please try again.");
-      }
-
-      setStatus("sent");
-      form.reset();
-    } catch (err) {
+      res = await fetch("/api/contact", { method: "POST", body: data });
+    } catch {
+      // The request never got an answer: offline, DNS, blocked.
       setStatus("error");
       setError(
-        err instanceof Error ? err.message : "Something went wrong. Please try again."
+        `Couldn't reach the server. Check your connection and try again, or email Matt directly at ${site.email}.`
       );
+      return;
     }
+
+    const json = (await res.json().catch(() => null)) as {
+      ok?: boolean;
+      error?: string;
+    } | null;
+
+    if (res.ok && json?.ok) {
+      setStatus("sent");
+      form.reset();
+      return;
+    }
+
+    setStatus("error");
+    setError(json?.error ?? fallback);
   }
 
   if (status === "sent") {
