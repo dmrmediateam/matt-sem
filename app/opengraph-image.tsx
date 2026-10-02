@@ -14,6 +14,11 @@ const WORDMARK =
 export const dynamic = "force-static";
 export const alt = "The '86 Kids: a memoir by Matt Sem";
 export const size = { width: 1200, height: 630 };
+// Static export writes this to /opengraph-image with no file extension, and
+// Cloudflare sets Content-Type from the extension - so it went out with none,
+// which is enough for Facebook, LinkedIn or X to drop the preview image.
+// public/_headers restores it. That file is deliberately bare (its syntax
+// documents no comments), so the explanation lives here.
 export const contentType = "image/png";
 
 export default function OpengraphImage() {
