@@ -104,9 +104,8 @@ export type UpcomingBook = {
 
 export const upcoming: UpcomingBook[] = [
   {
-    title: "Split Step",
-    blurb:
-      "A fictionalized memoir that mixes real events from Matt's life with imagined ones.",
+    title: "The Swoon",
+    blurb: "A fantasy romance novel, told from a man's point of view.",
     status: "In progress",
   },
   {
